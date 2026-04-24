@@ -42,6 +42,7 @@ async function checkAuth() {
       const dRes = await fetch("/api/admin/dates", { credentials: "same-origin" });
       if (dRes.ok) DATES = await dRes.json();
       showDashboard();
+      loadAnalytics();
       return;
     }
   } catch {}
@@ -124,6 +125,7 @@ document.getElementById("login-btn").addEventListener("click", async () => {
       DATES = await apiJSON("/api/admin/dates");
     } catch {}
     showDashboard();
+    loadAnalytics();
   } catch (e) { errEl.textContent = "Fehler: " + e.message; }
 });
 
@@ -540,6 +542,37 @@ document.getElementById("btn-pw-save").addEventListener("click", async () => {
     showStatus("Passwort geaendert");
   } catch (e) { errEl.textContent = "Fehler: " + e.message; }
 });
+
+// --- Analytics widget ---
+
+async function loadAnalytics() {
+  const bar = document.getElementById("analytics-bar");
+  if (!bar) return;
+  try {
+    const res = await api("/api/admin/analytics");
+    if (!res.ok) { bar.innerHTML = ""; return; }
+    const d = await res.json();
+
+    // Mini bar chart from daily data
+    const maxViews = Math.max(1, ...d.daily.map(x => x.views));
+    const bars = [];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(Date.now() - i * 86400000).toISOString().split("T")[0];
+      const day = d.daily.find(x => x.date === date);
+      const v = day ? day.views : 0;
+      const h = Math.max(2, (v / maxViews) * 32);
+      const cls = v > 0 ? "mini-bar has-data" : "mini-bar";
+      bars.push(`<div class="${cls}" style="height:${h}px" title="${date}: ${v}"></div>`);
+    }
+
+    bar.innerHTML = `
+      <div class="stat-box"><div class="stat-num">${d.week.views}</div><div class="stat-label">Views / 7d</div></div>
+      <div class="stat-box"><div class="stat-num">${d.week.visits}</div><div class="stat-label">Besucher / 7d</div></div>
+      <div class="stat-box"><div class="mini-chart">${bars.join("")}</div><div class="stat-label">Letzte 7 Tage</div></div>
+      <div class="stat-box"><div class="stat-num">${d.month.views}</div><div class="stat-label">Views / 30d</div></div>
+    `;
+  } catch { bar.innerHTML = ""; }
+}
 
 // --- Init ---
 checkAuth();

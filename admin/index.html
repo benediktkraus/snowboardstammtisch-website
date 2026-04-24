@@ -80,6 +80,13 @@
     .modal { background: var(--bg); border-radius: 8px; padding: 24px; max-width: 400px; width: 100%; }
     .modal h2 { font-weight: 900; font-size: 16px; text-transform: uppercase; margin-bottom: 16px; }
     .hidden { display: none !important; }
+    .analytics-bar { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; padding: 14px 16px; background: var(--card); border: 1px solid var(--rule); border-radius: 6px; }
+    .stat-box { text-align: center; }
+    .stat-num { font-weight: 900; font-size: 22px; line-height: 1; }
+    .stat-label { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-soft); opacity: 0.6; margin-top: 2px; }
+    .mini-chart { display: flex; align-items: flex-end; gap: 3px; height: 32px; }
+    .mini-bar { width: 12px; background: var(--fg); opacity: 0.2; border-radius: 2px 2px 0 0; min-height: 2px; transition: height 0.3s; }
+    .mini-bar.has-data { opacity: 0.5; }
   </style>
 </head>
 <body>
@@ -104,6 +111,7 @@
         <button id="btn-logout" class="btn btn-ghost btn-sm">Logout</button>
       </div>
     </div>
+    <div id="analytics-bar" class="analytics-bar"></div>
     <div id="status-bar"></div>
     <div class="tabs">
       <button class="tab active" data-tab="dates">Termine</button>
