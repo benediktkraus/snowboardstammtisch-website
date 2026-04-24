@@ -21,7 +21,11 @@ async function apiJSON(path, opts = {}) {
 
 function showStatus(msg, type = "ok") {
   const bar = document.getElementById("status-bar");
-  bar.innerHTML = `<div class="status status-${type}">${msg}</div>`;
+  const div = document.createElement("div");
+  div.className = `status status-${type}`;
+  div.textContent = msg;
+  bar.innerHTML = "";
+  bar.appendChild(div);
   if (type === "ok") setTimeout(() => bar.innerHTML = "", 3000);
 }
 
