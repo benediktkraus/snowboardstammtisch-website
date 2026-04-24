@@ -1,0 +1,15 @@
+# Cloudflare Pages config
+[build]
+  command = ""
+  publish = "/"
+
+[[headers]]
+  for = "/content/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=60"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

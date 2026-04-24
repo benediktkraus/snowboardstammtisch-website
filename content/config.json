@@ -1,0 +1,34 @@
+{
+  "season": "2025/26",
+  "time": "20:00",
+  "startedInYear": 2022,
+  "location": {
+    "name": "Hopfmann und Söhne",
+    "address": "Pfarrgasse 6, 6020 Innsbruck",
+    "mapsUrl": "https://maps.app.goo.gl/?q=Hopfmann+Söhne+Pfarrgasse+Innsbruck"
+  },
+  "links": {
+    "whatsapp": "https://chat.whatsapp.com/REPLACE_ME",
+    "boardSwap": "https://chat.whatsapp.com/REPLACE_ME_BOARDS"
+  },
+  "partners": [
+    {
+      "name": "Hopfmann und Söhne",
+      "url": "https://www.hopfmann.at/",
+      "role": "host",
+      "shape": "wordmark",
+      "logo": "assets/logo-hopfmann.png"
+    },
+    {
+      "name": "Waxelbude",
+      "url": "",
+      "role": "partner",
+      "shape": "badge",
+      "logo": "assets/logo-waxelbude.png"
+    }
+  ],
+  "intro": {
+    "de": "Einmal im Monat. Bier, Boards, Leute. Kommt vorbei.",
+    "en": "Once a month. Beer, boards, people. Come through."
+  }
+}
