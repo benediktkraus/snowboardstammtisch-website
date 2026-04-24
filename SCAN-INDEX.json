@@ -1,0 +1,5073 @@
+{
+  "structure": {
+    "schema_version": "1.0.0",
+    "manifest": {
+      "import": [
+        "assets/app.js",
+        "functions/api/admin/analytics.js",
+        "functions/api/admin/config.js",
+        "functions/api/admin/dates.js",
+        "functions/api/admin/password.js",
+        "functions/api/admin/photos.js",
+        "functions/api/admin/seed.js",
+        "functions/api/auth.js",
+        "functions/api/content.js",
+        "functions/api/photos/list.js",
+        "functions/api/photos/serve.js",
+        "functions/api/setup.js"
+      ],
+      "integration": [],
+      "data": [
+        "wrangler.toml"
+      ]
+    },
+    "files": {
+      ".wrangler/cache/cf.json": {
+        "loc": 0,
+        "language": "JSON",
+        "type": "unknown",
+        "content_hash": "sha256:466b0c79b7771c46c723d97479f460ca2bf8388ee380f5515faf76ea4a803500",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "unknown"
+      },
+      "admin/admin.js": {
+        "loc": 591,
+        "language": "JavaScript",
+        "type": "unknown",
+        "content_hash": "sha256:71b44fc551cea3fe9198b5c3429edcfa052829378db55a5f08b8a2430dc4ce34",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "admin/index.html": {
+        "loc": 227,
+        "language": "HTML",
+        "type": "unknown",
+        "content_hash": "sha256:fa6c2c5996c7c1aee06575992c38850caf32f275b89fbc37734d80c8ed388711",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "assets/app.js": {
+        "loc": 614,
+        "language": "JavaScript",
+        "type": "entry-point",
+        "content_hash": "sha256:ba06395a7c31977ea22751f6f072d0cf1383dd4eb00e9c3e38ffc84e27850ff0",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "assets/styles.css": {
+        "loc": 379,
+        "language": "CSS",
+        "type": "unknown",
+        "content_hash": "sha256:2971a8d1e67a6825ff3e0396a5492803781cb244496554d228d24886ab226709",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "content/config.json": {
+        "loc": 34,
+        "language": "JSON",
+        "type": "unknown",
+        "content_hash": "sha256:dca6f59da73a3372ebdb8200acb4ea3946182cb6a2f3e6f45466d484aa4ddc3b",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "content/dates.json": {
+        "loc": 28,
+        "language": "JSON",
+        "type": "unknown",
+        "content_hash": "sha256:a53e759262f97fcf4a70f2a58c7b87ab17295d838835ad93386ed48660c7a894",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/_auth.js": {
+        "loc": 126,
+        "language": "JavaScript",
+        "type": "unknown",
+        "content_hash": "sha256:a6dfc2c4471f7f3a324fa0907fdffd540c235e46944650f6ca16271bf2312184",
+        "exports": [
+          "createJWT",
+          "getCookie",
+          "getJWTSecret",
+          "hashPassword",
+          "json",
+          "requireAuth",
+          "verifyJWT",
+          "verifyPassword"
+        ],
+        "imports": [],
+        "imported_by": [
+          "functions/api/admin/analytics.js",
+          "functions/api/admin/config.js",
+          "functions/api/admin/dates.js",
+          "functions/api/admin/password.js",
+          "functions/api/admin/photos.js",
+          "functions/api/admin/seed.js",
+          "functions/api/auth.js",
+          "functions/api/content.js",
+          "functions/api/setup.js"
+        ],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/_middleware.js": {
+        "loc": 19,
+        "language": "JavaScript",
+        "type": "unknown",
+        "content_hash": "sha256:62d1222aa3e5bd49ba2382b7f0f601487ff09c20ea5130a1b521d35b3924f6a2",
+        "exports": [
+          "onRequest"
+        ],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/admin/analytics.js": {
+        "loc": 59,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:6c46232a21b1e3e7ea4c8aeb0e9e079b7673ac959f2ab5c8a2c8fc5ed1523777",
+        "exports": [
+          "onRequestGet"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/admin/config.js": {
+        "loc": 24,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:e1830a2610e5861a878c1558279d198c77f269a60287f21477ce677ee7a62657",
+        "exports": [
+          "onRequestGet",
+          "onRequestPut"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/admin/dates.js": {
+        "loc": 33,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:e1995dd162cc0e81cf9f0ef004cfa32113716e3f3de8c67474679cd80ea08e05",
+        "exports": [
+          "onRequestGet",
+          "onRequestPut"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/admin/password.js": {
+        "loc": 24,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:b025174de24ac4e680e8f0aaefc5e70d183e7adb30a33f2fb74f14a557519a82",
+        "exports": [
+          "onRequestPut"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/admin/photos.js": {
+        "loc": 72,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:417a8f40674a52e59bf01589b7b0547282b0b74c961eb206d797a2452750cf3f",
+        "exports": [
+          "onRequestDelete",
+          "onRequestPost"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/admin/seed.js": {
+        "loc": 44,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:f9a24010a7a6f1d467b2be04dfac307efac23b43431786df124c6247e2c02047",
+        "exports": [
+          "onRequestPost"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/auth.js": {
+        "loc": 23,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:bae1a0c4078cfbf2521aafb6c9cbf9e1c6a525a30921507865d011b310ec1970",
+        "exports": [
+          "onRequestPost"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/content.js": {
+        "loc": 22,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:2f705ede91e2bbde3d6f385cd9e908c3da87ba1c92cdd544ff8d891d948795b2",
+        "exports": [
+          "onRequestGet"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/photos/list.js": {
+        "loc": 14,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:75db6f8c86e7cd0c00f88665c0d15f72bc86d8c59404ba3535db64f58ec7524a",
+        "exports": [
+          "onRequestGet"
+        ],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/photos/serve.js": {
+        "loc": 16,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:b4696c3487c0d8611167ac26d4e302ae8106a348e82653e110a99e6aa219d33b",
+        "exports": [
+          "onRequestGet"
+        ],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "functions/api/setup.js": {
+        "loc": 27,
+        "language": "JavaScript",
+        "type": "library",
+        "content_hash": "sha256:459e54fe028a71b29c4c909615f7b673ebb08470697007e93b4af8ec4403f20e",
+        "exports": [
+          "onRequestGet",
+          "onRequestPost"
+        ],
+        "imports": [
+          "functions/_auth.js"
+        ],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "impressum.html": {
+        "loc": 62,
+        "language": "HTML",
+        "type": "unknown",
+        "content_hash": "sha256:4e7769a9aead5ad4baf558de247daccbff910e7480c7968333a75bdb5a12ca1b",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "index.html": {
+        "loc": 137,
+        "language": "HTML",
+        "type": "unknown",
+        "content_hash": "sha256:dfa87a32efc83025317a12273d6535e43ef69a7a74596ed6fd9e733279f59b27",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      },
+      "wrangler.toml": {
+        "loc": 8,
+        "language": "TOML",
+        "type": "config",
+        "content_hash": "sha256:24e5b2a025214f9cb870d75381947ec334727cd570dc5994884cdd5720f4341f",
+        "exports": [],
+        "imports": [],
+        "imported_by": [],
+        "last_modified": "2026-04-24",
+        "last_author": "Moltbot"
+      }
+    },
+    "graph": {
+      "edges": [
+        {
+          "from": "functions/api/admin/dates.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        },
+        {
+          "from": "functions/api/admin/analytics.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        },
+        {
+          "from": "functions/api/admin/config.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        },
+        {
+          "from": "functions/api/admin/password.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        },
+        {
+          "from": "functions/api/setup.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        },
+        {
+          "from": "functions/api/auth.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        },
+        {
+          "from": "functions/api/admin/photos.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        },
+        {
+          "from": "functions/api/admin/seed.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        },
+        {
+          "from": "functions/api/content.js",
+          "to": "functions/_auth.js",
+          "type": "imports"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "project": "snowboardstammtisch-website",
+    "project_path": "/mnt/onedrive/Workspace/projects/snowboardstammtisch-website",
+    "index_version": "1.0.0",
+    "manifest_loc": 2583,
+    "total_files": 23,
+    "created": "2026-04-24T19:13:44Z",
+    "last_updated": "2026-04-24T19:13:55Z",
+    "last_full_scan": "2026-04-24T19:13:44Z"
+  },
+  "intelligence": {
+    "static_findings": [
+      {
+        "file": "admin/admin.js",
+        "line": 4,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 4,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 5,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 5,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 6,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 6,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 7,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 7,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 12,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 12,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 13,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 18,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 18,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 23,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 24,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 25,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 25,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 32,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 32,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 32,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 32,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 32,
+        "rule": "R9",
+        "pattern": "R9-no-then-chains",
+        "desc": "R9: Use async/await instead of .then() chains.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 38,
+        "rule": "R7",
+        "pattern": "R7-empty-catch",
+        "desc": "R7: Empty catch block swallows errors.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 39,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 42,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 80,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 81,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 84,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 87,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 91,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 96,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 110,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 116,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 119,
+        "rule": "R7",
+        "pattern": "R7-empty-catch",
+        "desc": "R7: Empty catch block swallows errors.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 123,
+        "rule": "R7",
+        "pattern": "R7-empty-catch",
+        "desc": "R7: Empty catch block swallows errors.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 134,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 154,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 156,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 157,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 167,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 168,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 176,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 180,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 181,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 183,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 185,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 189,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 191,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 197,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 223,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 230,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 232,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 236,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 248,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 264,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 267,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 272,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 296,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 297,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 299,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 301,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 311,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 313,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 317,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 345,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 350,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 359,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 360,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 362,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 363,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 364,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 365,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 368,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 369,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 376,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 381,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 382,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 386,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 392,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 393,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 395,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 395,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 395,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 395,
+        "rule": "R9",
+        "pattern": "R9-no-then-chains",
+        "desc": "R9: Use async/await instead of .then() chains.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 396,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 397,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 399,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 407,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 408,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 410,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 414,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 431,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 432,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 448,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 451,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 453,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 453,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 455,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 464,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 466,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 467,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 472,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 474,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 488,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 491,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 493,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 494,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 495,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 498,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 503,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 507,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 509,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 523,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 526,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 546,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 547,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 548,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 549,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 556,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 561,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 571,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 574,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 575,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 576,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 579,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 581,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "admin/admin.js",
+        "line": 587,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 5,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 62,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 62,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 63,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 63,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 64,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 64,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 65,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 65,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 69,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 73,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 80,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 84,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 85,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 91,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 92,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 94,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 97,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 98,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 99,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 100,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 101,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 103,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 104,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 105,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 107,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 108,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 109,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 112,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 113,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 120,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 121,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 122,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 123,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 124,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 126,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 127,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 129,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 130,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 131,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 132,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 133,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 134,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 137,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 143,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 150,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 151,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 155,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 156,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 157,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 158,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 159,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 160,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 174,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 203,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 204,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 205,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 208,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 213,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 215,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 216,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 219,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 225,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 226,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 229,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 236,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 243,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 246,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 247,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 248,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 250,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 251,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 263,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 268,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 280,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 281,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 282,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 286,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 289,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 292,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 307,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 316,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 325,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 333,
+        "rule": "R9",
+        "pattern": "R9-no-then-chains",
+        "desc": "R9: Use async/await instead of .then() chains.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 338,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 340,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 344,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 350,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 352,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 353,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 359,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 360,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 361,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 364,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 365,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 366,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 368,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 371,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 374,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 375,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 388,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 390,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 391,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 392,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 396,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 397,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 399,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 402,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 408,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 410,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 411,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 412,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 414,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 415,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 419,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 425,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 427,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 430,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 445,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 459,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 469,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 482,
+        "rule": "R7",
+        "pattern": "R7-empty-catch",
+        "desc": "R7: Empty catch block swallows errors.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 483,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 483,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 483,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 483,
+        "rule": "R9",
+        "pattern": "R9-no-then-chains",
+        "desc": "R9: Use async/await instead of .then() chains.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 487,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 489,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 491,
+        "rule": "SEC-02",
+        "pattern": "xss-innerhtml",
+        "desc": "Potential XSS — innerHTML/dangerouslySetInnerHTML without sanitization"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 498,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 501,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 503,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 516,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 536,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 537,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 537,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 537,
+        "rule": "R9",
+        "pattern": "R9-no-then-chains",
+        "desc": "R9: Use async/await instead of .then() chains.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 538,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 538,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 538,
+        "rule": "R9",
+        "pattern": "R9-no-then-chains",
+        "desc": "R9: Use async/await instead of .then() chains.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 542,
+        "rule": "R18",
+        "pattern": "console-warn-error-in-production",
+        "desc": "console.*() call in committed code — use structured logging"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 543,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 556,
+        "rule": "R7",
+        "pattern": "R7-empty-catch",
+        "desc": "R7: Empty catch block swallows errors.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 557,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 557,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 557,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 557,
+        "rule": "R9",
+        "pattern": "R9-no-then-chains",
+        "desc": "R9: Use async/await instead of .then() chains.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 559,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 561,
+        "rule": "R29",
+        "pattern": "R29-async-foreach",
+        "desc": "R29: async forEach is broken. Use for...of or Promise.all.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 562,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 578,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 578,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 579,
+        "rule": "R30",
+        "pattern": "R30-module-level-let",
+        "desc": "R30: Module-level let is mutable shared state.",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 579,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 584,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 585,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "assets/app.js",
+        "line": 607,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 4,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 5,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 6,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 11,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 12,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 12,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 15,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 15,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 23,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 25,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 26,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 26,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 29,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 29,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 39,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 40,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 41,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 41,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 47,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 49,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 49,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 52,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 58,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 58,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 61,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 61,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 68,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 69,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 77,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 80,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 83,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 83,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 92,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 93,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 93,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 103,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 109,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_auth.js",
+        "line": 110,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_middleware.js",
+        "line": 7,
+        "rule": "SEC-11",
+        "pattern": "cors-wildcard",
+        "desc": "Overly permissive CORS — Access-Control-Allow-Origin: * allows any origin"
+      },
+      {
+        "file": "functions/_middleware.js",
+        "line": 15,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/_middleware.js",
+        "line": 15,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/_middleware.js",
+        "line": 16,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 5,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 5,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 8,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 8,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 9,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 11,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 12,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 13,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 14,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 16,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 36,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 41,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 42,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 44,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 44,
+        "rule": "R37",
+        "pattern": "R37-deep-optional-chaining",
+        "desc": "R37: Optional chaining >2 levels deep.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 45,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 47,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 48,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 49,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/analytics.js",
+        "line": 57,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/config.js",
+        "line": 5,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/config.js",
+        "line": 5,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/config.js",
+        "line": 7,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/config.js",
+        "line": 7,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/config.js",
+        "line": 13,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/config.js",
+        "line": 13,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 5,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 5,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 7,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 7,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 8,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 13,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 13,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 17,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 20,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 22,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 24,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/dates.js",
+        "line": 28,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 5,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 5,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 10,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 12,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 13,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 14,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 16,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 16,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 18,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 21,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/password.js",
+        "line": 21,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 7,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 7,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 12,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 14,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 15,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 16,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 17,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 20,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 21,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 22,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 22,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 23,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 25,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 27,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 28,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 31,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 31,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 33,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 45,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 45,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 48,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 49,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 50,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 56,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 58,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 59,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 60,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 60,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/photos.js",
+        "line": 62,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 5,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 5,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 8,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 8,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 9,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 9,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 14,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 15,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 18,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 18,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 18,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 18,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 20,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 20,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 31,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 31,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 31,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 31,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 33,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/admin/seed.js",
+        "line": 33,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 7,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 9,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 10,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 12,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 12,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 13,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 15,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 15,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 16,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 18,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 18,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 19,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 19,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/auth.js",
+        "line": 21,
+        "rule": "SEC-10",
+        "pattern": "insecure-cookie",
+        "desc": "Cookie being set — verify Secure, HttpOnly, and SameSite flags are present"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 6,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 7,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 9,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 11,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 11,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 18,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 19,
+        "rule": "R12",
+        "pattern": "fetch-without-timeout",
+        "desc": "fetch() call with no options argument — verify AbortSignal/timeout is present (multi-line calls need manual review)"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 19,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 19,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 19,
+        "rule": "R12",
+        "pattern": "R12-fetch-no-timeout",
+        "desc": "R12: fetch() without AbortSignal.timeout().",
+        "source": "semgrep",
+        "confidence": "MEDIUM"
+      },
+      {
+        "file": "functions/api/content.js",
+        "line": 21,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/photos/list.js",
+        "line": 3,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/photos/list.js",
+        "line": 4,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/photos/list.js",
+        "line": 10,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/photos/list.js",
+        "line": 10,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/photos/serve.js",
+        "line": 3,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/photos/serve.js",
+        "line": 4,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/photos/serve.js",
+        "line": 8,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/photos/serve.js",
+        "line": 8,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 6,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 6,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 7,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 11,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 13,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 15,
+        "rule": "R20",
+        "pattern": "magic-number",
+        "desc": "Apparent magic number in expression — extract into a named constant"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 18,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 18,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 25,
+        "rule": "R4",
+        "pattern": "R4-no-var",
+        "desc": "R4: Use const/let instead of var.",
+        "source": "semgrep",
+        "confidence": "HIGH"
+      },
+      {
+        "file": "functions/api/setup.js",
+        "line": 25,
+        "rule": "R28",
+        "pattern": "R28-unhandled-promise",
+        "desc": "R28: Await without try/catch.",
+        "source": "semgrep",
+        "confidence": "LOW"
+      }
+    ],
+    "git": {
+      "hotspots": {
+        "index.html": {
+          "churn": 11,
+          "complexity": 137,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "MEDIUM"
+        },
+        "assets/styles.css": {
+          "churn": 11,
+          "complexity": 379,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "MEDIUM"
+        },
+        "admin/admin.js": {
+          "churn": 9,
+          "complexity": 591,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "assets/app.js": {
+          "churn": 6,
+          "complexity": 614,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "impressum.html": {
+          "churn": 4,
+          "complexity": 62,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "admin/index.html": {
+          "churn": 4,
+          "complexity": 227,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/admin/photos.js": {
+          "churn": 3,
+          "complexity": 72,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "wrangler.toml": {
+          "churn": 2,
+          "complexity": 8,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "logo/WhatsApp Image 2026-04-24 at 12.06.26.jpeg": {
+          "churn": 2,
+          "complexity": 92,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "logo/WhatsApp Image 2026-04-24 at 12.06.26 (1).jpeg": {
+          "churn": 2,
+          "complexity": 101,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/auth.js": {
+          "churn": 2,
+          "complexity": 23,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/admin/analytics.js": {
+          "churn": 2,
+          "complexity": 59,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/_auth.js": {
+          "churn": 2,
+          "complexity": 126,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "assets/logo-stammtisch.png": {
+          "churn": 2,
+          "complexity": 0,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        ".gitignore": {
+          "churn": 2,
+          "complexity": 7,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "logo/WhatsApp Image 2026-04-24 at 12.06.27.jpeg": {
+          "churn": 1,
+          "complexity": 100,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "logo/WhatsApp Image 2026-04-24 at 12.06.27 (1).jpeg": {
+          "churn": 1,
+          "complexity": 110,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/setup.js": {
+          "churn": 1,
+          "complexity": 27,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/photos/serve.js": {
+          "churn": 1,
+          "complexity": 16,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/photos/list.js": {
+          "churn": 1,
+          "complexity": 14,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/content.js": {
+          "churn": 1,
+          "complexity": 22,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/admin/seed.js": {
+          "churn": 1,
+          "complexity": 44,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/admin/password.js": {
+          "churn": 1,
+          "complexity": 24,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/admin/dates.js": {
+          "churn": 1,
+          "complexity": 33,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/api/admin/config.js": {
+          "churn": 1,
+          "complexity": 24,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "functions/_middleware.js": {
+          "churn": 1,
+          "complexity": 19,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "content/dates.json": {
+          "churn": 1,
+          "complexity": 28,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "content/config.json": {
+          "churn": 1,
+          "complexity": 34,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "assets/paper-texture.svg": {
+          "churn": 1,
+          "complexity": 6,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "assets/logo-waxelbude.png": {
+          "churn": 1,
+          "complexity": 1015,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "assets/logo-hopfmann.png": {
+          "churn": 1,
+          "complexity": 12,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "assets/logo-color.jpg": {
+          "churn": 1,
+          "complexity": 110,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "assets/logo-bw.jpg": {
+          "churn": 1,
+          "complexity": 100,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "_headers": {
+          "churn": 1,
+          "complexity": 11,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        },
+        "README.md": {
+          "churn": 1,
+          "complexity": 60,
+          "contributors": 1,
+          "bugfix_commits": 0,
+          "risk": "LOW"
+        }
+      },
+      "co_changes": [
+        {
+          "files": [
+            "assets/styles.css",
+            "index.html"
+          ],
+          "frequency": 7,
+          "correlation": 0.6364
+        },
+        {
+          "files": [
+            "assets/app.js",
+            "assets/styles.css"
+          ],
+          "frequency": 6,
+          "correlation": 0.5455
+        },
+        {
+          "files": [
+            "admin/admin.js",
+            "admin/index.html"
+          ],
+          "frequency": 4,
+          "correlation": 0.4444
+        },
+        {
+          "files": [
+            "assets/app.js",
+            "index.html"
+          ],
+          "frequency": 4,
+          "correlation": 0.3636
+        },
+        {
+          "files": [
+            "admin/admin.js",
+            "assets/app.js"
+          ],
+          "frequency": 3,
+          "correlation": 0.3333
+        },
+        {
+          "files": [
+            "admin/admin.js",
+            "assets/styles.css"
+          ],
+          "frequency": 3,
+          "correlation": 0.2727
+        },
+        {
+          "files": [
+            "admin/admin.js",
+            "index.html"
+          ],
+          "frequency": 3,
+          "correlation": 0.2727
+        },
+        {
+          "files": [
+            "admin/index.html",
+            "assets/app.js"
+          ],
+          "frequency": 3,
+          "correlation": 0.5
+        },
+        {
+          "files": [
+            "admin/index.html",
+            "assets/styles.css"
+          ],
+          "frequency": 3,
+          "correlation": 0.2727
+        },
+        {
+          "files": [
+            "admin/index.html",
+            "index.html"
+          ],
+          "frequency": 3,
+          "correlation": 0.2727
+        },
+        {
+          "files": [
+            "impressum.html",
+            "index.html"
+          ],
+          "frequency": 3,
+          "correlation": 0.2727
+        }
+      ],
+      "ownership": {
+        "index.html": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "assets/styles.css": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "admin/admin.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "assets/app.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "impressum.html": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "admin/index.html": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/admin/photos.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "wrangler.toml": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "logo/WhatsApp Image 2026-04-24 at 12.06.26.jpeg": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "logo/WhatsApp Image 2026-04-24 at 12.06.26 (1).jpeg": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/auth.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/admin/analytics.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/_auth.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "assets/logo-stammtisch.png": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        ".gitignore": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "logo/WhatsApp Image 2026-04-24 at 12.06.27.jpeg": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "logo/WhatsApp Image 2026-04-24 at 12.06.27 (1).jpeg": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/setup.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/photos/serve.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/photos/list.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/content.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/admin/seed.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/admin/password.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/admin/dates.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/api/admin/config.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "functions/_middleware.js": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "content/dates.json": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "content/config.json": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "assets/paper-texture.svg": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "assets/logo-waxelbude.png": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "assets/logo-hopfmann.png": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "assets/logo-color.jpg": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "assets/logo-bw.jpg": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "_headers": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        },
+        "README.md": {
+          "primary": "Moltbot",
+          "contributors": [
+            "Moltbot"
+          ],
+          "bus_factor": 1
+        }
+      }
+    },
+    "dependency_findings": [],
+    "dependency_scan": {
+      "tool": "trivy",
+      "version": "Version: 0.69.3",
+      "date": "2026-04-24T19:14:05Z",
+      "total": 0,
+      "by_severity": {
+        "critical": 0,
+        "high": 0,
+        "medium": 0
+      }
+    }
+  }
+}
