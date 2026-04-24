@@ -27,7 +27,7 @@ export async function onRequestGet(context) {
         daily: rumPageloadEventsAdaptiveGroups(
           filter:{siteTag:"${cfg.siteTag}", datetime_geq:"${weekAgo.toISOString()}", datetime_leq:"${now.toISOString()}"}
           limit:7
-        ) { count dimensions { date: datetimeDay } }
+        ) { count dimensions { date: date } }
       }
     }
   }`;
