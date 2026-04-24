@@ -93,8 +93,14 @@ document.getElementById("login-btn").addEventListener("click", async () => {
         body: JSON.stringify({ password: pw })
       });
       const data = await res.json();
-      if (!res.ok) { errEl.textContent = data.error; return; }
-      // Now login
+      if (!res.ok) {
+        if (data.error === "password already set") {
+          // Password was set elsewhere — switch to login mode
+          showLogin();
+          return;
+        }
+        errEl.textContent = data.error; return;
+      }
       errEl.textContent = "";
     } catch (e) { errEl.textContent = "Fehler: " + e.message; return; }
   }
