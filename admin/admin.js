@@ -554,15 +554,15 @@ async function loadAnalytics() {
     const d = await res.json();
 
     // Mini bar chart from daily data
-    const maxViews = Math.max(1, ...d.daily.map(x => x.views));
+    const dailyMap = {};
+    d.daily.forEach(x => dailyMap[x.date] = x.views);
+    const maxViews = Math.max(1, ...Object.values(dailyMap), 1);
     const bars = [];
     for (let i = 6; i >= 0; i--) {
       const date = new Date(Date.now() - i * 86400000).toISOString().split("T")[0];
-      const day = d.daily.find(x => x.date === date);
-      const v = day ? day.views : 0;
-      const h = Math.max(2, (v / maxViews) * 32);
-      const cls = v > 0 ? "mini-bar has-data" : "mini-bar";
-      bars.push(`<div class="${cls}" style="height:${h}px" title="${date}: ${v}"></div>`);
+      const v = dailyMap[date] || 0;
+      const h = v > 0 ? Math.max(4, (v / maxViews) * 32) : 2;
+      bars.push(`<div class="mini-bar${v > 0 ? " has-data" : ""}" style="height:${h}px" title="${date}: ${v}"></div>`);
     }
 
     bar.innerHTML = `
