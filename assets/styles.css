@@ -142,8 +142,8 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
 /* logo */
 .logo { display: flex; justify-content: center; margin-bottom: 40px; }
 .logo-swap { position: relative; width: 200px; height: 200px; cursor: pointer; }
-.logo-img { width: 200px; height: 200px; object-fit: contain; border-radius: 50%; }
-.logo-color { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s; }
+.logo-img { width: 200px; height: 200px; object-fit: contain; border-radius: 50%; display: block; }
+.logo-color { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.4s; }
 .logo-swap:hover .logo-color { opacity: 1; }
 
 .saison {
