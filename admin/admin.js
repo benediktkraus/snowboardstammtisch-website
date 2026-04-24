@@ -554,21 +554,12 @@ async function loadAnalytics() {
     const d = await res.json();
 
     // Mini bar chart from daily data
-    const dailyMap = {};
-    d.daily.forEach(x => dailyMap[x.date] = x.views);
-    const maxViews = Math.max(1, ...Object.values(dailyMap), 1);
-    const bars = [];
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(Date.now() - i * 86400000).toISOString().split("T")[0];
-      const v = dailyMap[date] || 0;
-      const h = v > 0 ? Math.max(4, (v / maxViews) * 32) : 2;
-      bars.push(`<div class="mini-bar${v > 0 ? " has-data" : ""}" style="height:${h}px" title="${date}: ${v}"></div>`);
-    }
+    const todayViews = d.daily.find(x => x.date === new Date().toISOString().split("T")[0]);
 
     bar.innerHTML = `
       <div class="stat-box"><div class="stat-num">${d.week.views}</div><div class="stat-label">Views / 7d</div></div>
       <div class="stat-box"><div class="stat-num">${d.week.visits}</div><div class="stat-label">Besucher / 7d</div></div>
-      <div class="stat-box"><div class="mini-chart">${bars.join("")}</div><div class="stat-label">Letzte 7 Tage</div></div>
+      <div class="stat-box"><div class="stat-num">${todayViews ? todayViews.views : 0}</div><div class="stat-label">Heute</div></div>
       <div class="stat-box"><div class="stat-num">${d.month.views}</div><div class="stat-label">Views / 30d</div></div>
     `;
   } catch { bar.innerHTML = ""; }
