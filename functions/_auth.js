@@ -70,12 +70,28 @@ export function getCookie(request, name) {
   return match ? match[1] : null;
 }
 
+// --- JWT secret management ---
+// Stored in KV, auto-generated on first use. No external config needed.
+
+export async function getJWTSecret(env) {
+  let secret = env.JWT_SECRET; // try Pages secret first
+  if (secret) return secret;
+  // Fallback: KV-stored secret
+  secret = await env.SBI.get("jwt:secret");
+  if (secret) return secret;
+  // Auto-generate and store
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  secret = b64encode(bytes);
+  await env.SBI.put("jwt:secret", secret);
+  return secret;
+}
+
 // --- Auth middleware helper ---
 
 export async function requireAuth(request, env) {
   const token = getCookie(request, "sbi-admin");
-  const secret = env.JWT_SECRET;
-  if (!secret || !await verifyJWT(token, secret)) {
+  const secret = await getJWTSecret(env);
+  if (!await verifyJWT(token, secret)) {
     return new Response(JSON.stringify({ error: "unauthorized" }), { status: 401, headers: { "Content-Type": "application/json" } });
   }
   return null; // authenticated

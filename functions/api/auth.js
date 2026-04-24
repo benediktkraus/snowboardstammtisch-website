@@ -1,5 +1,5 @@
 // POST /api/auth — login with password, returns JWT cookie
-import { verifyPassword, createJWT, json } from "../_auth.js";
+import { verifyPassword, createJWT, getJWTSecret, json } from "../_auth.js";
 
 export async function onRequestPost(context) {
   let body;
@@ -15,7 +15,8 @@ export async function onRequestPost(context) {
   const valid = await verifyPassword(password, stored);
   if (!valid) return json({ error: "wrong password" }, 401);
 
-  const token = await createJWT(context.env.JWT_SECRET);
+  const secret = await getJWTSecret(context.env);
+  const token = await createJWT(secret);
   return json({ ok: true }, 200, {
     "Set-Cookie": `sbi-admin=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400`
   });
