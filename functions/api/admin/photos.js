@@ -17,9 +17,13 @@ export async function onRequestPost(context) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return json({ error: "invalid date format" }, 400);
 
   // Read photo index for this date
+  const MAX_PHOTOS = 10;
   const indexKey = `photos:${date}`;
   const existing = await context.env.SBI.get(indexKey);
   const index = existing ? JSON.parse(existing) : [];
+  if (index.length >= MAX_PHOTOS) {
+    return json({ error: `max ${MAX_PHOTOS} Fotos pro Termin` }, 400);
+  }
   const nextIdx = index.length;
   const photoKey = `photo:${date}:${nextIdx}`;
 

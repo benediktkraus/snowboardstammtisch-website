@@ -393,7 +393,17 @@ async function loadPhotos(date) {
   grid.innerHTML = "";
   try {
     const keys = await fetch(`/api/photos/list?date=${date}&_=${Date.now()}`).then(r => r.json());
-    document.getElementById("photo-count").textContent = `${keys.length} Fotos`;
+    const MAX_PHOTOS = 10;
+    const remaining = MAX_PHOTOS - keys.length;
+    document.getElementById("photo-count").textContent = `${keys.length} / ${MAX_PHOTOS} Fotos`;
+    const uploadZoneEl = document.getElementById("upload-zone");
+    if (remaining <= 0) {
+      uploadZoneEl.classList.add("disabled");
+      uploadZoneEl.title = "Maximum erreicht";
+    } else {
+      uploadZoneEl.classList.remove("disabled");
+      uploadZoneEl.title = `Noch ${remaining} Fotos moeglich`;
+    }
     keys.forEach(key => {
       const thumb = document.createElement("div");
       thumb.className = "photo-thumb";
@@ -411,7 +421,10 @@ async function loadPhotos(date) {
         } catch (e) { showStatus("Fehler: " + e.message, "err"); }
       });
     });
-  } catch { document.getElementById("photo-count").textContent = "0 Fotos"; }
+  } catch (e) {
+    document.getElementById("photo-count").textContent = "0 Fotos";
+    showStatus("Fotos laden fehlgeschlagen: " + e.message, "err");
+  }
 }
 
 // Upload zone
@@ -428,6 +441,10 @@ uploadZone.addEventListener("drop", e => {
 photoInput.addEventListener("change", () => handleFiles(photoInput.files));
 
 async function handleFiles(fileList) {
+  if (document.getElementById("upload-zone").classList.contains("disabled")) {
+    showStatus("Maximum 10 Fotos pro Termin erreicht", "err");
+    return;
+  }
   const files = Array.from(fileList).filter(f => f.type.startsWith("image/"));
   if (!files.length) return;
 
@@ -487,7 +504,12 @@ document.getElementById("btn-upload").addEventListener("click", async () => {
     fd.append("date", date);
     fd.append("file", blob, `photo-${date}-${uploaded}.jpg`);
     try {
-      await api("/api/admin/photos", { method: "POST", body: fd });
+      const res = await api("/api/admin/photos", { method: "POST", body: fd });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: res.statusText }));
+        showStatus(`Fehler bei Foto ${uploaded + 1}: ${err.error || res.statusText}`, "err");
+        break;
+      }
       uploaded++;
     } catch (e) {
       showStatus(`Fehler bei Foto ${uploaded + 1}: ${e.message}`, "err");

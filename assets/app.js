@@ -483,12 +483,11 @@ async function loadPhotoStrip(container, date) {
     const keys = await fetch(`/api/photos/list?date=${date}`).then(r => r.json());
     if (!keys.length) {
       // Empty state: stack of blank polaroids
-      for (let j = 0; j < 3; j++) {
+      for (let j = 0; j < 2; j++) {
         const p = document.createElement("div");
         p.className = "polaroid polaroid-empty";
-        const rot = [-6, 2, -1][j];
+        const rot = [-2, 1.5][j];
         p.style.transform = `rotate(${rot}deg)`;
-        if (j > 0) p.style.marginLeft = "-32px";
         p.innerHTML = '<div class="polaroid-blank"></div>';
         container.appendChild(p);
       }
@@ -499,7 +498,7 @@ async function loadPhotoStrip(container, date) {
       const polaroid = document.createElement("div");
       polaroid.className = "polaroid";
       // Random slight rotation for organic feel
-      const rot = (Math.random() - 0.5) * 8;
+      const rot = (Math.random() - 0.5) * 3;
       polaroid.style.transform = `rotate(${rot.toFixed(1)}deg)`;
       const img = document.createElement("img");
       img.src = `/api/photos/serve?key=${encodeURIComponent(key)}`;
