@@ -188,8 +188,8 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
 }
 .date.next .date-text-btn:hover { transform: scale(1.04); }
 .date-text-btn:hover { color: var(--marker-blue); }
-.date.past .date-text-btn { cursor: default; }
-.date.past .date-text-btn:hover { color: inherit; transform: none; }
+.date.past .date-text-btn { cursor: pointer; }
+.date.past .date-text-btn:hover { color: var(--fg-soft); transform: none; }
 .date-text-wrap .marker {
   position: absolute; inset: 0; width: 100%; height: 100%;
   pointer-events: none; overflow: visible;
@@ -358,9 +358,6 @@ html[data-theme="dark"] .polaroid { background: #1a1816; box-shadow: 1px 2px 8px
 .polaroid-blank { width: 88px; height: 88px; background: #1a1816; }
 html[data-theme="dark"] .polaroid-blank { background: #2a2520; }
 @media (max-width: 520px) { .polaroid-blank { width: 68px; height: 68px; } }
-.date.past .date-text-btn { cursor: pointer; }
-.date.past .date-text-btn:hover { color: var(--fg-soft); }
-
 /* photo gallery in archive */
 .archive-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; margin: 12px 0; }
 .archive-photos img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 2px; cursor: pointer; transition: opacity 0.2s; }
