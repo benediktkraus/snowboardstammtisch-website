@@ -286,6 +286,7 @@ function renderConfig() {
   document.getElementById("cfg-season").value = CONFIG.season || "";
   document.getElementById("cfg-wa").value = CONFIG.links?.whatsapp || "";
   document.getElementById("cfg-boards").value = CONFIG.links?.boardSwap || "";
+  document.getElementById("cfg-imprint").value = CONFIG.imprint || "";
   renderPartners();
 }
 
@@ -333,6 +334,7 @@ function collectConfig() {
   CONFIG.time = document.getElementById("cfg-time").value;
   CONFIG.season = document.getElementById("cfg-season").value;
   CONFIG.links = { whatsapp: document.getElementById("cfg-wa").value, boardSwap: document.getElementById("cfg-boards").value };
+  CONFIG.imprint = document.getElementById("cfg-imprint").value;
 }
 
 document.getElementById("btn-save-config").addEventListener("click", async () => {

@@ -286,20 +286,28 @@ function renderDates(t) {
     const wrap = document.createElement("span");
     wrap.className = "date-text-wrap";
 
-    // clickable text → triggers single ics
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "date-text-btn";
-    btn.title = t.ics_one;
-    btn.setAttribute("aria-label", `${fmtDate(iso)} — ${t.ics_one}`);
     const text = document.createElement("span");
     text.className = "date-text";
     text.textContent = fmtDate(iso);
     btn.appendChild(text);
-    btn.addEventListener("click", () => {
-      const ics = buildICS([iso], CONFIG);
-      downloadICS(`stammtisch-${iso}.ics`, ics);
-    });
+
+    if (isPast) {
+      // Past dates: no ICS, click toggles photo strip
+      btn.title = "";
+      btn.setAttribute("aria-label", fmtDate(iso));
+      btn.addEventListener("click", () => togglePhotoStrip(li, iso));
+    } else {
+      // Future/next dates: ICS download
+      btn.title = t.ics_one;
+      btn.setAttribute("aria-label", `${fmtDate(iso)} — ${t.ics_one}`);
+      btn.addEventListener("click", () => {
+        const ics = buildICS([iso], CONFIG);
+        downloadICS(`stammtisch-${iso}.ics`, ics);
+      });
+    }
     wrap.appendChild(btn);
 
     if (isPast) wrap.insertAdjacentHTML("beforeend", strikeSvg(i + 1));
@@ -313,7 +321,17 @@ function renderDates(t) {
 
     li.appendChild(wrap);
     li.appendChild(meta);
+    // Polaroid strip placeholder (loaded on click or auto for most recent past)
+    const strip = document.createElement("div");
+    strip.className = "photo-strip";
+    strip.id = `strip-${iso}`;
+    li.appendChild(strip);
     datesEl.appendChild(li);
+
+    // Auto-load + auto-open photos for the most recent past date
+    if (isPast && i === (nextIdx === -1 ? current.dates.length - 1 : nextIdx - 1)) {
+      loadPhotoStrip(strip, iso).then(() => strip.classList.add("open"));
+    }
   });
 
   // "Alle Termine" button
@@ -455,6 +473,43 @@ document.addEventListener("click", (e) => {
   localStorage.setItem("sbi-theme", currentTheme);
   applyTheme();
 });
+
+// ---- photo strips (polaroid thumbnails inline) ----
+
+async function loadPhotoStrip(container, date) {
+  if (container.dataset.loaded) return;
+  container.dataset.loaded = "1";
+  try {
+    const keys = await fetch(`/api/photos/list?date=${date}`).then(r => r.json());
+    if (!keys.length) return;
+    keys.forEach((key, i) => {
+      const polaroid = document.createElement("div");
+      polaroid.className = "polaroid";
+      // Random slight rotation for organic feel
+      const rot = (Math.random() - 0.5) * 8;
+      polaroid.style.transform = `rotate(${rot.toFixed(1)}deg)`;
+      const img = document.createElement("img");
+      img.src = `/api/photos/serve?key=${encodeURIComponent(key)}`;
+      img.loading = "lazy";
+      img.alt = "";
+      img.addEventListener("click", () => openLightbox(keys, i));
+      polaroid.appendChild(img);
+      container.appendChild(polaroid);
+    });
+    container.classList.add("has-photos");
+  } catch {}
+}
+
+function togglePhotoStrip(li, date) {
+  const strip = li.querySelector(".photo-strip");
+  if (!strip) return;
+  if (strip.classList.contains("open")) {
+    strip.classList.remove("open");
+  } else {
+    loadPhotoStrip(strip, date);
+    strip.classList.add("open");
+  }
+}
 
 // ---- data load ----
 function loadInlineFallback() {
