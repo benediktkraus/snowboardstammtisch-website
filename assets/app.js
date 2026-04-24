@@ -358,6 +358,10 @@ function renderArchive(t) {
       ul.appendChild(li);
     });
     details.appendChild(ul);
+    // Load photos lazily on open
+    details.addEventListener("toggle", () => {
+      if (details.open) loadArchivePhotos(details, season.dates);
+    });
     archiveList.appendChild(details);
   });
 }
@@ -463,16 +467,81 @@ function loadInlineFallback() {
 async function load() {
   try {
     const [cfg, dates] = await Promise.all([
-      fetch("content/config.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }),
-      fetch("content/dates.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      fetch("/api/content?type=config").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+      fetch("/api/content?type=dates").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     ]);
     CONFIG = cfg; DATES = dates;
   } catch (err) {
-    console.warn("fetch failed, using inline fallback:", err.message);
+    console.warn("API fetch failed, using inline fallback:", err.message);
     const fb = loadInlineFallback();
     CONFIG = fb.cfg; DATES = fb.dates;
   }
   render();
 }
+
+// ---- photo gallery in archive ----
+
+async function loadArchivePhotos(details, dates) {
+  // Load photos for each date when <details> is opened
+  if (details.dataset.photosLoaded) return;
+  details.dataset.photosLoaded = "1";
+  for (const iso of dates) {
+    try {
+      const keys = await fetch(`/api/photos/list?date=${iso}`).then(r => r.json());
+      if (!keys.length) continue;
+      const grid = document.createElement("div");
+      grid.className = "archive-photos";
+      keys.forEach(key => {
+        const img = document.createElement("img");
+        img.src = `/api/photos/serve?key=${encodeURIComponent(key)}`;
+        img.loading = "lazy";
+        img.alt = "";
+        img.dataset.key = key;
+        img.addEventListener("click", () => openLightbox(keys, keys.indexOf(key)));
+        grid.appendChild(img);
+      });
+      // Insert after the date list
+      details.appendChild(grid);
+    } catch {}
+  }
+}
+
+// ---- lightbox ----
+
+let lightboxKeys = [];
+let lightboxIdx = 0;
+
+function openLightbox(keys, idx) {
+  lightboxKeys = keys;
+  lightboxIdx = idx;
+  const lb = document.getElementById("lightbox");
+  const img = document.getElementById("lightbox-img");
+  img.src = `/api/photos/serve?key=${encodeURIComponent(keys[idx])}`;
+  lb.hidden = false;
+}
+
+function closeLightbox() {
+  document.getElementById("lightbox").hidden = true;
+  document.getElementById("lightbox-img").src = "";
+}
+
+function lightboxNav(dir) {
+  lightboxIdx = (lightboxIdx + dir + lightboxKeys.length) % lightboxKeys.length;
+  document.getElementById("lightbox-img").src = `/api/photos/serve?key=${encodeURIComponent(lightboxKeys[lightboxIdx])}`;
+}
+
+document.getElementById("lightbox-close")?.addEventListener("click", closeLightbox);
+document.getElementById("lightbox-prev")?.addEventListener("click", () => lightboxNav(-1));
+document.getElementById("lightbox-next")?.addEventListener("click", () => lightboxNav(1));
+document.getElementById("lightbox")?.addEventListener("click", e => {
+  if (e.target.id === "lightbox") closeLightbox();
+});
+document.addEventListener("keydown", e => {
+  const lb = document.getElementById("lightbox");
+  if (!lb || lb.hidden) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") lightboxNav(-1);
+  if (e.key === "ArrowRight") lightboxNav(1);
+});
 
 load();

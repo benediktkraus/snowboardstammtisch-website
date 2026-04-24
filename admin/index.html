@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · Snowboard Stammtisch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #f6ecd8; --fg: #111; --fg-soft: #2a2520; --accent: #e84a2a; --blue: #3a7ed1; --rule: rgba(17,17,17,0.12); --card: rgba(255,255,255,0.5); --f: "Archivo", system-ui, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--f); background: var(--bg); color: var(--fg); min-height: 100vh; }
+    /* --- Login --- */
+    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+    .login-box { max-width: 360px; width: 100%; text-align: center; }
+    .login-box h1 { font-weight: 900; font-size: 22px; text-transform: uppercase; margin-bottom: 8px; }
+    .login-box p { font-size: 13px; color: var(--fg-soft); margin-bottom: 24px; }
+    .login-box .error { color: var(--accent); font-size: 13px; font-weight: 600; margin-bottom: 12px; min-height: 20px; }
+    /* --- Forms --- */
+    input, textarea, select { font-family: var(--f); font-size: 14px; border: 1px solid var(--rule); background: rgba(255,255,255,0.6); padding: 10px 12px; border-radius: 4px; width: 100%; color: var(--fg); }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--blue); }
+    textarea { resize: vertical; min-height: 60px; }
+    select { cursor: pointer; }
+    .btn { font-family: var(--f); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: var(--fg); color: var(--bg); }
+    .btn-danger { background: var(--accent); color: #fff; }
+    .btn-ghost { background: transparent; border: 1px solid var(--rule); color: var(--fg-soft); }
+    .btn-sm { padding: 6px 12px; font-size: 11px; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    /* --- Dashboard --- */
+    .dashboard { max-width: 720px; margin: 0 auto; padding: 24px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .header h1 { font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin-bottom: 24px; }
+    .tab { font-family: var(--f); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 18px; background: none; border: none; cursor: pointer; color: var(--fg-soft); opacity: 0.5; border-bottom: 2px solid transparent; transition: opacity 0.2s; }
+    .tab.active { opacity: 1; border-bottom-color: var(--fg); color: var(--fg); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    /* --- Cards --- */
+    .card { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 20px; margin-bottom: 16px; }
+    .card h3 { font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-soft); margin-bottom: 12px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-weight: 500; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-soft); margin-bottom: 4px; }
+    .field-row { display: flex; gap: 10px; align-items: center; }
+    .field-row > * { flex: 1; }
+    /* --- Dates --- */
+    .date-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .date-row input { flex: 1; }
+    .date-row .btn-remove { flex-shrink: 0; width: 32px; height: 32px; padding: 0; font-size: 16px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; }
+    .season-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .season-header select { max-width: 200px; }
+    .season-actions { display: flex; gap: 8px; margin-top: 16px; }
+    /* --- Partners --- */
+    .partner-card { border: 1px solid var(--rule); border-radius: 4px; padding: 12px; margin-bottom: 10px; }
+    .partner-card .field-row { margin-bottom: 8px; }
+    .partner-remove { margin-top: 4px; }
+    /* --- Photos --- */
+    .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin: 16px 0; }
+    .photo-thumb { position: relative; aspect-ratio: 1; border-radius: 4px; overflow: hidden; }
+    .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-thumb .delete-overlay { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+    .photo-thumb:hover .delete-overlay { opacity: 1; }
+    .upload-zone { border: 2px dashed var(--rule); border-radius: 6px; padding: 32px; text-align: center; cursor: pointer; transition: border-color 0.2s; margin-bottom: 16px; }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--blue); }
+    .upload-zone p { font-size: 13px; color: var(--fg-soft); }
+    .upload-previews { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+    .upload-previews img { width: 64px; height: 64px; object-fit: cover; border-radius: 4px; }
+    .progress-bar { height: 4px; background: var(--rule); border-radius: 2px; overflow: hidden; margin: 8px 0; }
+    .progress-bar .fill { height: 100%; background: var(--blue); transition: width 0.3s; }
+    /* --- Status --- */
+    .status { font-size: 12px; font-weight: 500; padding: 8px 14px; border-radius: 4px; margin-bottom: 16px; }
+    .status-ok { background: rgba(34,139,34,0.12); color: #1a6b1a; }
+    .status-err { background: rgba(232,74,42,0.12); color: var(--accent); }
+    .status-info { background: rgba(58,126,209,0.12); color: var(--blue); }
+    /* --- Modal --- */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 100; padding: 24px; }
+    .modal-bg.show { display: flex; }
+    .modal { background: var(--bg); border-radius: 8px; padding: 24px; max-width: 400px; width: 100%; }
+    .modal h2 { font-weight: 900; font-size: 16px; text-transform: uppercase; margin-bottom: 16px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <!-- Login -->
+  <div id="view-login" class="login-wrap">
+    <div class="login-box">
+      <h1>Snowboard Stammtisch</h1>
+      <p id="login-subtitle">Admin Login</p>
+      <div id="login-error" class="error"></div>
+      <div class="field"><input type="password" id="login-pw" placeholder="Passwort" autocomplete="current-password"></div>
+      <div id="setup-confirm" class="field hidden"><input type="password" id="login-pw2" placeholder="Passwort wiederholen"></div>
+      <button id="login-btn" class="btn btn-primary" style="width:100%;margin-top:8px">Login</button>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="view-dashboard" class="dashboard hidden">
+    <div class="header">
+      <h1>Admin</h1>
+      <div style="display:flex;gap:8px">
+        <button id="btn-pw-change" class="btn btn-ghost btn-sm">Passwort</button>
+        <button id="btn-logout" class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </div>
+    <div id="status-bar"></div>
+    <div class="tabs">
+      <button class="tab active" data-tab="dates">Termine</button>
+      <button class="tab" data-tab="config">Config</button>
+      <button class="tab" data-tab="photos">Fotos</button>
+    </div>
+
+    <!-- Tab: Dates -->
+    <div id="tab-dates" class="tab-content active">
+      <div class="card">
+        <div class="season-header">
+          <select id="season-select"></select>
+          <button id="btn-new-season" class="btn btn-ghost btn-sm">+ Saison</button>
+        </div>
+        <div class="field">
+          <label>Label</label>
+          <input type="text" id="season-label" placeholder="z.B. 2025/26">
+        </div>
+        <div class="field">
+          <label><input type="checkbox" id="season-current" style="width:auto;margin-right:6px"> Aktuelle Saison</label>
+        </div>
+        <h3>Termine</h3>
+        <div id="dates-list"></div>
+        <button id="btn-add-date" class="btn btn-ghost btn-sm" style="margin-top:8px">+ Termin</button>
+        <div class="season-actions">
+          <button id="btn-save-dates" class="btn btn-primary">Speichern</button>
+          <button id="btn-delete-season" class="btn btn-danger btn-sm">Saison loeschen</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Config -->
+    <div id="tab-config" class="tab-content">
+      <div class="card">
+        <h3>Intro-Text</h3>
+        <div class="field"><label>Deutsch</label><textarea id="cfg-intro-de" rows="2"></textarea></div>
+        <div class="field"><label>English</label><textarea id="cfg-intro-en" rows="2"></textarea></div>
+      </div>
+      <div class="card">
+        <h3>Location</h3>
+        <div class="field"><label>Name</label><input type="text" id="cfg-loc-name"></div>
+        <div class="field"><label>Adresse</label><input type="text" id="cfg-loc-address"></div>
+        <div class="field"><label>Maps URL</label><input type="url" id="cfg-loc-maps"></div>
+      </div>
+      <div class="card">
+        <h3>Details</h3>
+        <div class="field-row">
+          <div class="field"><label>Uhrzeit</label><input type="time" id="cfg-time"></div>
+          <div class="field"><label>Saison</label><input type="text" id="cfg-season" placeholder="2025/26"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Links</h3>
+        <div class="field"><label>WhatsApp Gruppe</label><input type="url" id="cfg-wa" placeholder="https://chat.whatsapp.com/..."></div>
+        <div class="field"><label>Boards tauschen</label><input type="url" id="cfg-boards" placeholder="https://chat.whatsapp.com/..."></div>
+      </div>
+      <div class="card">
+        <h3>Partner</h3>
+        <div id="partners-list"></div>
+        <button id="btn-add-partner" class="btn btn-ghost btn-sm" style="margin-top:8px">+ Partner</button>
+      </div>
+      <button id="btn-save-config" class="btn btn-primary" style="margin-top:8px">Speichern</button>
+    </div>
+
+    <!-- Tab: Photos -->
+    <div id="tab-photos" class="tab-content">
+      <div class="card">
+        <div class="field">
+          <label>Termin</label>
+          <select id="photo-date-select"><option value="">Datum waehlen...</option></select>
+        </div>
+        <div id="photo-area" class="hidden">
+          <h3 id="photo-count">0 Fotos</h3>
+          <div id="photo-grid" class="photo-grid"></div>
+          <div id="upload-zone" class="upload-zone">
+            <p>Bilder hierher ziehen oder klicken</p>
+            <input type="file" id="photo-input" multiple accept="image/*" style="display:none">
+          </div>
+          <div id="upload-previews" class="upload-previews"></div>
+          <div id="upload-progress" class="hidden">
+            <div class="progress-bar"><div id="progress-fill" class="fill" style="width:0%"></div></div>
+            <p id="upload-status" style="font-size:12px;color:var(--fg-soft);margin-top:4px"></p>
+          </div>
+          <button id="btn-upload" class="btn btn-primary hidden">Hochladen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password change modal -->
+  <div id="modal-pw" class="modal-bg">
+    <div class="modal">
+      <h2>Passwort aendern</h2>
+      <div id="pw-error" class="error"></div>
+      <div class="field"><label>Aktuelles Passwort</label><input type="password" id="pw-current"></div>
+      <div class="field"><label>Neues Passwort</label><input type="password" id="pw-new"></div>
+      <div class="field"><label>Wiederholen</label><input type="password" id="pw-confirm"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button id="btn-pw-save" class="btn btn-primary">Speichern</button>
+        <button id="btn-pw-cancel" class="btn btn-ghost">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
