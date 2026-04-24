@@ -122,6 +122,16 @@ document.getElementById("login-btn").addEventListener("click", async () => {
 });
 
 document.getElementById("login-pw").addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    const pw2 = document.getElementById("login-pw2");
+    if (!document.getElementById("setup-confirm").classList.contains("hidden") && !pw2.value) {
+      pw2.focus();
+    } else {
+      document.getElementById("login-btn").click();
+    }
+  }
+});
+document.getElementById("login-pw2").addEventListener("keydown", e => {
   if (e.key === "Enter") document.getElementById("login-btn").click();
 });
 
