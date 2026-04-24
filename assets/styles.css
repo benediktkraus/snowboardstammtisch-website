@@ -360,6 +360,7 @@ html[data-theme="dark"] .footer::before { display: none; }
 .polaroid img { width: 72px; height: 72px; object-fit: cover; display: block; cursor: pointer; }
 @media (max-width: 520px) { .polaroid img { width: 56px; height: 56px; } }
 html[data-theme="dark"] .polaroid { background: #1a1816; box-shadow: 1px 2px 6px rgba(0,0,0,0.3); }
+.strip-empty { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-soft); opacity: 0.4; padding: 8px 0; }
 
 /* photo gallery in archive */
 .archive-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; margin: 12px 0; }

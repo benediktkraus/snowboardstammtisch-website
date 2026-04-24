@@ -481,7 +481,10 @@ async function loadPhotoStrip(container, date) {
   container.dataset.loaded = "1";
   try {
     const keys = await fetch(`/api/photos/list?date=${date}`).then(r => r.json());
-    if (!keys.length) return;
+    if (!keys.length) {
+      container.innerHTML = `<span class="strip-empty">${currentLang === "de" ? "Noch keine Fotos" : "No photos yet"}</span>`;
+      return;
+    }
     keys.forEach((key, i) => {
       const polaroid = document.createElement("div");
       polaroid.className = "polaroid";
