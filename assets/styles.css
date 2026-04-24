@@ -358,7 +358,8 @@ html[data-theme="dark"] .footer::before { display: none; }
 .archive-photos img:hover { opacity: 0.75; }
 
 /* lightbox */
-.lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; }
+.lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; display: none; }
+.lightbox:not([hidden]) { display: flex; }
 .lightbox-img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 2px; }
 .lightbox-close, .lightbox-prev, .lightbox-next { position: absolute; background: transparent; border: none; color: #fff; font-size: 28px; cursor: pointer; padding: 16px; opacity: 0.6; transition: opacity 0.2s; }
 .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
