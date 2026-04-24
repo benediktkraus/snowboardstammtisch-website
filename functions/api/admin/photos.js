@@ -7,7 +7,10 @@ export async function onRequestPost(context) {
   const denied = await requireAuth(context.request, context.env);
   if (denied) return denied;
 
-  const formData = await context.request.formData();
+  let formData;
+  try { formData = await context.request.formData(); } catch {
+    return json({ error: "multipart form data required" }, 400);
+  }
   const date = formData.get("date");
   const file = formData.get("file");
   if (!date || !file) return json({ error: "date and file required" }, 400);
