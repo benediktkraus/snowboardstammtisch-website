@@ -392,12 +392,12 @@ async function loadPhotos(date) {
   const grid = document.getElementById("photo-grid");
   grid.innerHTML = "";
   try {
-    const keys = await fetch(`/api/photos/list?date=${date}`).then(r => r.json());
+    const keys = await fetch(`/api/photos/list?date=${date}&_=${Date.now()}`).then(r => r.json());
     document.getElementById("photo-count").textContent = `${keys.length} Fotos`;
     keys.forEach(key => {
       const thumb = document.createElement("div");
       thumb.className = "photo-thumb";
-      thumb.innerHTML = `<img src="/api/photos/serve?key=${encodeURIComponent(key)}" loading="lazy" alt="">
+      thumb.innerHTML = `<img src="/api/photos/serve?key=${encodeURIComponent(key)}&_=${Date.now()}" loading="lazy" alt="">
         <button class="delete-overlay" data-key="${esc(key)}" title="Loeschen">&times;</button>`;
       grid.appendChild(thumb);
     });
