@@ -24,7 +24,7 @@ export async function onRequestPost(context) {
   if (index.length >= MAX_PHOTOS) {
     return json({ error: `max ${MAX_PHOTOS} Fotos pro Termin` }, 400);
   }
-  const nextIdx = index.length;
+  const nextIdx = index.length === 0 ? 0 : Math.max(...index.map(k => parseInt(k.split(":")[2]))) + 1;
   const photoKey = `photo:${date}:${nextIdx}`;
 
   // Store binary
