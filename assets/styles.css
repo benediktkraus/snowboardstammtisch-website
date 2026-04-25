@@ -215,6 +215,7 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
   color: var(--fg-soft); opacity: 0.5; margin-top: 8px;
 }
 .date.next .date-meta { opacity: 0.95; color: var(--marker-blue); font-weight: 600; }
+.photo-badge { opacity: 0.7; font-size: 0.9em; }
 
 /* ics button row */
 .ics-row { text-align: center; margin-bottom: 40px; }

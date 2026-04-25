@@ -245,6 +245,11 @@ function renderPastDate(iso, i) {
   meta.className = "date-meta";
   meta.textContent = weekdayLabel(iso, currentLang);
 
+  const badge = document.createElement("span");
+  badge.className = "photo-badge";
+  badge.hidden = true;
+  meta.appendChild(badge);
+
   li.appendChild(wrap);
   li.appendChild(meta);
 
@@ -252,6 +257,14 @@ function renderPastDate(iso, i) {
   strip.className = "photo-strip";
   strip.id = `strip-${iso}`;
   li.appendChild(strip);
+
+  // Check photo availability async
+  fetch(`/api/photos/list?date=${iso}`).then(r => r.json()).then(keys => {
+    if (keys.length) {
+      badge.textContent = ` · ${keys.length} 📷`;
+      badge.hidden = false;
+    }
+  }).catch(() => {});
 
   return li;
 }
