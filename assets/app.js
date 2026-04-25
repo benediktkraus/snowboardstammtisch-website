@@ -220,6 +220,42 @@ function applyTheme() {
   if (btn) btn.dataset.state = currentTheme;
 }
 
+// ---- shared date rendering ----
+function renderPastDate(iso, i) {
+  const li = document.createElement("li");
+  li.className = "date past";
+  li.style.setProperty("--delay", `${0.15 + i * 0.12}s`);
+
+  const wrap = document.createElement("span");
+  wrap.className = "date-text-wrap";
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "date-text-btn";
+  const text = document.createElement("span");
+  text.className = "date-text";
+  text.textContent = fmtDate(iso);
+  btn.appendChild(text);
+  btn.setAttribute("aria-label", fmtDate(iso));
+  btn.addEventListener("click", () => togglePhotoStrip(li, iso));
+  wrap.appendChild(btn);
+  wrap.insertAdjacentHTML("beforeend", strikeSvg(i + 1));
+
+  const meta = document.createElement("span");
+  meta.className = "date-meta";
+  meta.textContent = weekdayLabel(iso, currentLang);
+
+  li.appendChild(wrap);
+  li.appendChild(meta);
+
+  const strip = document.createElement("div");
+  strip.className = "photo-strip";
+  strip.id = `strip-${iso}`;
+  li.appendChild(strip);
+
+  return li;
+}
+
 // ---- render sections ----
 function renderI18nLabels(t) {
   document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -279,8 +315,20 @@ function renderDates(t) {
   current.dates.forEach((iso, i) => {
     const isPast = nextIdx === -1 ? true : i < nextIdx;
     const isNext = i === nextIdx;
+
+    if (isPast) {
+      const li = renderPastDate(iso, i);
+      datesEl.appendChild(li);
+      // Auto-load + auto-open photos for the most recent past date
+      if (i === (nextIdx === -1 ? current.dates.length - 1 : nextIdx - 1)) {
+        const strip = li.querySelector(".photo-strip");
+        loadPhotoStrip(strip, iso).then(() => strip.classList.add("open"));
+      }
+      return;
+    }
+
     const li = document.createElement("li");
-    li.className = "date" + (isPast ? " past" : "") + (isNext ? " next" : "");
+    li.className = "date" + (isNext ? " next" : "");
     li.style.setProperty("--delay", `${0.15 + i * 0.12}s`);
 
     const wrap = document.createElement("span");
@@ -293,24 +341,14 @@ function renderDates(t) {
     text.className = "date-text";
     text.textContent = fmtDate(iso);
     btn.appendChild(text);
-
-    if (isPast) {
-      // Past dates: no ICS, click toggles photo strip
-      btn.title = "";
-      btn.setAttribute("aria-label", fmtDate(iso));
-      btn.addEventListener("click", () => togglePhotoStrip(li, iso));
-    } else {
-      // Future/next dates: ICS download
-      btn.title = t.ics_one;
-      btn.setAttribute("aria-label", `${fmtDate(iso)} — ${t.ics_one}`);
-      btn.addEventListener("click", () => {
-        const ics = buildICS([iso], CONFIG);
-        downloadICS(`stammtisch-${iso}.ics`, ics);
-      });
-    }
+    btn.title = t.ics_one;
+    btn.setAttribute("aria-label", `${fmtDate(iso)} — ${t.ics_one}`);
+    btn.addEventListener("click", () => {
+      const ics = buildICS([iso], CONFIG);
+      downloadICS(`stammtisch-${iso}.ics`, ics);
+    });
     wrap.appendChild(btn);
 
-    if (isPast) wrap.insertAdjacentHTML("beforeend", strikeSvg(i + 1));
     if (isNext) wrap.insertAdjacentHTML("beforeend", circleSvg(i + 7));
 
     const meta = document.createElement("span");
@@ -321,17 +359,7 @@ function renderDates(t) {
 
     li.appendChild(wrap);
     li.appendChild(meta);
-    // Polaroid strip placeholder (loaded on click or auto for most recent past)
-    const strip = document.createElement("div");
-    strip.className = "photo-strip";
-    strip.id = `strip-${iso}`;
-    li.appendChild(strip);
     datesEl.appendChild(li);
-
-    // Auto-load + auto-open photos for the most recent past date
-    if (isPast && i === (nextIdx === -1 ? current.dates.length - 1 : nextIdx - 1)) {
-      loadPhotoStrip(strip, iso).then(() => strip.classList.add("open"));
-    }
   });
 
   // "Alle Termine" button
@@ -370,16 +398,8 @@ function renderArchive(t) {
     details.appendChild(summary);
     const ul = document.createElement("ul");
     ul.className = "archive-dates";
-    season.dates.forEach((iso, i) => {
-      const li = document.createElement("li");
-      li.innerHTML = `${fmtDate(iso)}${strikeSvg(i+3)}`;
-      ul.appendChild(li);
-    });
+    season.dates.forEach((iso, i) => ul.appendChild(renderPastDate(iso, i)));
     details.appendChild(ul);
-    // Load photos lazily on open
-    details.addEventListener("toggle", () => {
-      if (details.open) loadArchivePhotos(details, season.dates);
-    });
     archiveList.appendChild(details);
   });
 }
@@ -546,32 +566,6 @@ async function load() {
   render();
 }
 
-// ---- photo gallery in archive ----
-
-async function loadArchivePhotos(details, dates) {
-  // Load photos for each date when <details> is opened
-  if (details.dataset.photosLoaded) return;
-  details.dataset.photosLoaded = "1";
-  for (const iso of dates) {
-    try {
-      const keys = await fetch(`/api/photos/list?date=${iso}`).then(r => r.json());
-      if (!keys.length) continue;
-      const grid = document.createElement("div");
-      grid.className = "archive-photos";
-      keys.forEach(key => {
-        const img = document.createElement("img");
-        img.src = `/api/photos/serve?key=${encodeURIComponent(key)}`;
-        img.loading = "lazy";
-        img.alt = "";
-        img.dataset.key = key;
-        img.addEventListener("click", () => openLightbox(keys, keys.indexOf(key)));
-        grid.appendChild(img);
-      });
-      // Insert after the date list
-      details.appendChild(grid);
-    } catch {}
-  }
-}
 
 // ---- lightbox ----
 

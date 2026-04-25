@@ -294,12 +294,12 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
 .archive-dates {
   display: flex; flex-direction: column; gap: 8px;
   align-items: center; margin-top: 12px;
-  font-weight: 900; font-size: 18px;
-  color: var(--fg-soft); opacity: 0.7;
+  list-style: none; padding: 0;
 }
-.archive-dates li { list-style: none; position: relative; padding: 4px 16px; }
-.archive-dates li .marker { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.archive-dates li .stroke { stroke: var(--marker-red); stroke-linecap: round; fill: none; opacity: 0.6; }
+.archive-dates .date {
+  font-size: 18px; color: var(--fg-soft); opacity: 0.7;
+}
+.archive-dates .date .stroke { opacity: 0.6; }
 
 /* footer — always same dark tone; seamless in dark mode */
 .footer {
@@ -358,10 +358,6 @@ html[data-theme="dark"] .polaroid { background: #1a1816; box-shadow: 1px 2px 8px
 .polaroid-blank { width: 88px; height: 88px; background: #1a1816; }
 html[data-theme="dark"] .polaroid-blank { background: #2a2520; }
 @media (max-width: 520px) { .polaroid-blank { width: 68px; height: 68px; } }
-/* photo gallery in archive */
-.archive-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; margin: 12px 0; }
-.archive-photos img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 2px; cursor: pointer; transition: opacity 0.2s; }
-.archive-photos img:hover { opacity: 0.75; }
 
 /* lightbox */
 .lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; display: none; }
