@@ -111,15 +111,10 @@ _headers                      Caching-Rules
 - Cloudflare-Account mit Pages-Zugang
 - KV-Namespace erstellen (ID in `wrangler.toml` eintragen)
 
-### Deployment
+### Deploy
 
-```bash
-# Option A: wrangler CLI
-wrangler pages deploy . --project-name=snowboardstammtisch-website
-
-# Option B: GitHub-Integration (wenn verbunden)
-git push origin main
-```
+Automatisch bei `git push origin main` via GitHub Actions.
+Manuell: `CLOUDFLARE_API_TOKEN=... npx wrangler pages deploy . --project-name snowboardstammtisch-website`
 
 ### Ersteinrichtung
 
@@ -131,12 +126,31 @@ git push origin main
 ### Lokal testen
 
 ```bash
-python3 -m http.server 8000
-# oder
-npx serve
+npx wrangler pages dev . --kv SBI
 ```
 
-Hinweis: API-Endpoints (KV) funktionieren nur deployed. Lokal greift der Inline-JSON-Fallback.
+## Backup & Restore
+
+Alle Daten (Fotos, Config, Termine, Passwort) liegen in Cloudflare KV. Backup-Scripts liegen in `scripts/`.
+
+**Backup ausfuehren:**
+```bash
+./scripts/backup.sh
+```
+Sichert alle KV-Keys nach `/mnt/onedrive/Workspace/backups/sbi-kv/YYYY-MM-DD/`. Laeuft automatisch Sonntags 03:17 via Cron.
+
+**Restore (nach Datenverlust):**
+```bash
+./scripts/restore.sh                                          # letztes Backup
+./scripts/restore.sh /mnt/onedrive/Workspace/backups/sbi-kv/2026-04-25  # bestimmtes Backup
+```
+Fragt Bestaetigung, dann schreibt es alle Keys zurueck ins KV.
+
+**Backup pruefen:**
+```bash
+ls /mnt/onedrive/Workspace/backups/sbi-kv/
+cat /var/log/sbi-kv-backup.log
+```
 
 ## Architecture
 
