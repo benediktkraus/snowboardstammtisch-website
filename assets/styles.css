@@ -294,6 +294,8 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
 .archive-dates .date .date-text-wrap { opacity: 0.7; }
 .archive-dates .date .date-meta { opacity: 0.7; }
 .archive-dates .date .stroke { opacity: 0.6; }
+.archive-dates .photo-strip { opacity: 1; }
+.archive-dates .polaroid { opacity: 1; }
 
 /* footer — always same dark tone; seamless in dark mode */
 .footer {
@@ -348,10 +350,6 @@ html[data-theme="dark"] .footer::before { display: none; }
 .polaroid img { width: 88px; height: 88px; object-fit: cover; display: block; cursor: pointer; }
 @media (max-width: 520px) { .polaroid img { width: 68px; height: 68px; } .polaroid { padding: 4px 4px 12px; } }
 html[data-theme="dark"] .polaroid { background: #1a1816; box-shadow: 1px 2px 8px rgba(0,0,0,0.35); }
-.polaroid-empty { opacity: 0.4; }
-.polaroid-blank { width: 88px; height: 88px; background: #1a1816; }
-html[data-theme="dark"] .polaroid-blank { background: #2a2520; }
-@media (max-width: 520px) { .polaroid-blank { width: 68px; height: 68px; } }
 
 /* lightbox */
 .lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; display: none; }

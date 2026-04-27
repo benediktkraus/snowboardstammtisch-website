@@ -326,10 +326,12 @@ function renderDates(t) {
     if (isPast) {
       const li = renderPastDate(iso, i);
       datesEl.appendChild(li);
-      // Auto-load + auto-open photos for the most recent past date
+      // Auto-load + auto-open photos for the most recent past date (only if it has photos)
       if (i === (nextIdx === -1 ? current.dates.length - 1 : nextIdx - 1)) {
         const strip = li.querySelector(".photo-strip");
-        loadPhotoStrip(strip, iso).then(() => strip.classList.add("open"));
+        loadPhotoStrip(strip, iso).then(() => {
+          if (strip.children.length > 0) strip.classList.add("open");
+        });
       }
       return;
     }
@@ -524,19 +526,7 @@ async function loadPhotoStrip(container, date) {
   container.dataset.loaded = "1";
   try {
     const keys = await fetch(`/api/photos/list?date=${date}`).then(r => r.json());
-    if (!keys.length) {
-      // Empty state: stack of blank polaroids
-      for (let j = 0; j < 2; j++) {
-        const p = document.createElement("div");
-        p.className = "polaroid polaroid-empty";
-        const rot = [-2, 1.5][j];
-        p.style.transform = `rotate(${rot}deg)`;
-        p.innerHTML = '<div class="polaroid-blank"></div>';
-        container.appendChild(p);
-      }
-      container.classList.add("open");
-      return;
-    }
+    if (!keys.length) return;
     keys.forEach((key, i) => {
       const polaroid = document.createElement("div");
       polaroid.className = "polaroid";
@@ -561,8 +551,9 @@ function togglePhotoStrip(li, date) {
   if (strip.classList.contains("open")) {
     strip.classList.remove("open");
   } else {
-    loadPhotoStrip(strip, date);
-    strip.classList.add("open");
+    loadPhotoStrip(strip, date).then(() => {
+      if (strip.children.length > 0) strip.classList.add("open");
+    });
   }
 }
 
