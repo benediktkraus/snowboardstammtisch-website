@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,900;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=19">
+  <link rel="stylesheet" href="assets/styles.css?v=22">
   <style>
     .imprint { max-width: 560px; margin: 0 auto; padding-bottom: 60px; font-size: 17px; line-height: 1.55; color: var(--fg-soft); }
     .imprint h1 { font-weight: 900; font-size: 32px; margin-bottom: 32px; color: var(--fg); text-transform: uppercase; }
@@ -44,14 +44,29 @@
       </div>
     </article>
     <footer class="footer">
-      <div class="powered-by">Snowboard Stammtisch Innsbruck</div>
       <div class="footer-meta">
-        <a href="index.html">Zur Startseite</a>
+        <a href="index.html">Startseite</a>
+        <span>&copy; <span id="year"></span> Snowboard Stammtisch Innsbruck</span>
+      </div>
+      <div class="footer-meta" style="margin-top:12px">
+        <span>Logo Design: Lisa Rasch</span>
+        <span>Website: Benedikt Kraus</span>
       </div>
     </footer>
   </main>
   <div class="grain" aria-hidden="true"></div>
   <script>
+    // Theme persistence (match index.html behavior)
+    (function() {
+      var theme = localStorage.getItem("sbi-theme") || "auto";
+      var eff = theme;
+      if (eff === "auto") {
+        var h = new Date().getHours();
+        eff = (h >= 20 || h < 6) ? "dark" : "light";
+      }
+      document.documentElement.dataset.theme = eff;
+      document.getElementById("year").textContent = new Date().getFullYear();
+    })();
     // Load imprint from KV if available (sanitized)
     function sanitizeHTML(html) {
       const doc = new DOMParser().parseFromString(html, "text/html");

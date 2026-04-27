@@ -221,9 +221,10 @@ function applyTheme() {
 }
 
 // ---- shared date rendering ----
-function renderPastDate(iso, i) {
+function renderPastDate(iso, i, fetchBadge = true) {
   const li = document.createElement("li");
   li.className = "date past";
+  li.dataset.date = iso;
   li.style.setProperty("--delay", `${0.15 + i * 0.12}s`);
 
   const wrap = document.createElement("span");
@@ -258,13 +259,15 @@ function renderPastDate(iso, i) {
   strip.id = `strip-${iso}`;
   li.appendChild(strip);
 
-  // Check photo availability async
-  fetch(`/api/photos/list?date=${iso}`).then(r => r.json()).then(keys => {
-    if (keys.length) {
-      badge.textContent = ` · ${keys.length} 📷`;
-      badge.hidden = false;
-    }
-  }).catch(() => {});
+  // Check photo availability async (skip for archive — loaded on details toggle)
+  if (fetchBadge) {
+    fetch(`/api/photos/list?date=${iso}`).then(r => r.json()).then(keys => {
+      if (keys.length) {
+        badge.textContent = ` · ${keys.length} 📷`;
+        badge.hidden = false;
+      }
+    }).catch(() => {});
+  }
 
   return li;
 }
@@ -411,8 +414,24 @@ function renderArchive(t) {
     details.appendChild(summary);
     const ul = document.createElement("ul");
     ul.className = "archive-dates";
-    season.dates.forEach((iso, i) => ul.appendChild(renderPastDate(iso, i)));
+    season.dates.forEach((iso, i) => ul.appendChild(renderPastDate(iso, i, false)));
     details.appendChild(ul);
+    // Lazy-load photo badges on first open
+    details.addEventListener("toggle", () => {
+      if (!details.open || details.dataset.badgesLoaded) return;
+      details.dataset.badgesLoaded = "1";
+      ul.querySelectorAll("li[data-date]").forEach(li => {
+        const iso = li.dataset.date;
+        const badge = li.querySelector(".photo-badge");
+        if (!badge) return;
+        fetch(`/api/photos/list?date=${iso}`).then(r => r.json()).then(keys => {
+          if (keys.length) {
+            badge.textContent = ` · ${keys.length} 📷`;
+            badge.hidden = false;
+          }
+        }).catch(() => {});
+      });
+    });
     archiveList.appendChild(details);
   });
 }
@@ -616,6 +635,23 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") closeLightbox();
   if (e.key === "ArrowLeft") lightboxNav(-1);
   if (e.key === "ArrowRight") lightboxNav(1);
+});
+
+// Touch swipe for lightbox
+let lbTouchX = 0;
+let lbTouchY = 0;
+const lbEl = document.getElementById("lightbox");
+lbEl?.addEventListener("touchstart", e => {
+  lbTouchX = e.touches[0].clientX;
+  lbTouchY = e.touches[0].clientY;
+}, { passive: true });
+lbEl?.addEventListener("touchend", e => {
+  const dx = e.changedTouches[0].clientX - lbTouchX;
+  const dy = e.changedTouches[0].clientY - lbTouchY;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 0) lightboxNav(-1);
+    else lightboxNav(1);
+  }
 });
 
 load();

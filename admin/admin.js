@@ -452,8 +452,22 @@ async function handleFiles(fileList) {
   const files = Array.from(fileList).filter(f => f.type.startsWith("image/"));
   if (!files.length) return;
 
+  // Check remaining slots (server count + already pending)
+  const MAX_PHOTOS = 10;
+  const grid = document.getElementById("photo-grid");
+  const serverCount = grid.querySelectorAll(".photo-thumb").length;
+  const remaining = MAX_PHOTOS - serverCount - pendingFiles.length;
+  if (remaining <= 0) {
+    showStatus("Maximum 10 Fotos pro Termin erreicht", "err");
+    return;
+  }
+  const allowed = files.slice(0, remaining);
+  if (allowed.length < files.length) {
+    showStatus(`Nur ${allowed.length} von ${files.length} Fotos moeglich (Limit: ${MAX_PHOTOS})`, "info");
+  }
+
   const previews = document.getElementById("upload-previews");
-  for (const file of files) {
+  for (const file of allowed) {
     const compressed = await compressImage(file);
     pendingFiles.push(compressed);
     const img = document.createElement("img");
