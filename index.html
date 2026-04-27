@@ -9,13 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,900;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=22">
+  <link rel="stylesheet" href="assets/styles.css?v=23">
 </head>
 <body>
   <main class="page">
 
     <div class="topbar">
-      <span id="status-pill"><span class="dot"></span><span id="status-label" data-i18n="tag">Saison läuft</span></span>
+      <span id="status-pill"><span class="dot"></span><span id="status-label">—</span></span>
       <div class="topbar-right">
         <button id="theme-toggle" class="theme-toggle" aria-label="Theme" title="Theme">
           <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.9-.1-1.35A5.5 5.5 0 0 1 13 4c-.03-.34-.03-.68 0-1A9 9 0 0 0 12 3z"/></svg>
@@ -36,10 +36,6 @@
     </header>
 
     <h1 class="saison"><span data-i18n="season">Saison</span> <span id="season-label">2025/26</span></h1>
-
-    <div class="countdown-wrap">
-      <span id="countdown" class="countdown" hidden></span>
-    </div>
 
     <ul class="dates" id="dates"></ul>
 
@@ -102,7 +98,6 @@
   <script type="application/json" id="config-fallback">
   {
     "season": "2025/26",
-    "seasonActive": true,
     "time": "20:00",
     "startedInYear": 2022,
     "location": {
@@ -132,7 +127,7 @@
     ]
   }
   </script>
-  <script src="assets/app.js?v=14"></script>
+  <script src="assets/app.js?v=15"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"40b04dce0e2b44f3be7a99eca1667bcb"}'></script>
 </body>
 </html>

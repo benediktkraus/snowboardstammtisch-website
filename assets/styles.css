@@ -152,21 +152,8 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
   text-transform: uppercase; margin-bottom: 18px; line-height: 1;
 }
 
-/* countdown */
-.countdown-wrap { text-align: center; margin-bottom: 28px; min-height: 28px; }
-.countdown {
-  display: inline-block;
-  font-weight: 900; font-size: 13px; letter-spacing: 0.24em;
-  text-transform: uppercase;
-  background: var(--fg); color: var(--bg);
-  padding: 6px 14px; border-radius: 2px;
-  transform: rotate(-1.5deg);
-}
-.countdown.urgent { background: var(--marker-red); color: #fff; animation: wiggle 2s ease-in-out infinite; }
-@keyframes wiggle {
-  0%, 100% { transform: rotate(-1.5deg); }
-  50% { transform: rotate(1deg); }
-}
+/* status pill urgent state (3 days or less) */
+.status-urgent #status-label { color: var(--marker-red); font-weight: 600; }
 
 /* dates */
 .dates {
@@ -378,5 +365,5 @@ html[data-theme="dark"] .polaroid-blank { background: #2a2520; }
 
 @media (prefers-reduced-motion: reduce) {
   .date.past .stroke, .date.next .circle { animation: none; stroke-dashoffset: 0 !important; }
-  .countdown.urgent, .pill-dot, .topbar .dot { animation: none; }
+  .pill-dot, .topbar .dot { animation: none; }
 }

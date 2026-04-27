@@ -4,8 +4,8 @@
 
 const I18N = {
   de: {
-    tag: "Saison läuft",
     tagOver: "Saison vorbei",
+    countdownPrefix: "noch",
     season: "Saison",
     where: "Wo",
     when: "Wann",
@@ -31,8 +31,8 @@ const I18N = {
     htmlLang: "de"
   },
   en: {
-    tag: "Season is on",
     tagOver: "Season is over",
+    countdownPrefix: "in",
     season: "Season",
     where: "Where",
     when: "When",
@@ -299,34 +299,23 @@ function renderDates(t) {
   datesEl.innerHTML = "";
   const nextIdx = findNextIndex(current.dates);
 
+  // Status pill = countdown to next Stammtisch
   const statusLabel = document.getElementById("status-label");
   const statusPill = document.getElementById("status-pill");
   if (statusLabel && statusPill) {
-    const seasonActive = CONFIG.seasonActive !== false;
-    if (seasonActive) {
-      statusLabel.textContent = t.tag;
-      statusPill.classList.remove("status-over");
-    } else {
+    if (nextIdx === -1) {
       statusLabel.textContent = t.tagOver;
       statusPill.classList.add("status-over");
-    }
-  }
-
-  // countdown ribbon
-  const countdown = document.getElementById("countdown");
-  if (countdown) {
-    const seasonActive = CONFIG.seasonActive !== false;
-    if (!seasonActive || nextIdx === -1) {
-      countdown.hidden = true;
+      statusPill.classList.remove("status-urgent");
     } else {
       const days = daysUntil(current.dates[nextIdx]);
       let msg;
       if (days === 0) msg = t.today_short;
       else if (days === 1) msg = t.tomorrow.toUpperCase();
-      else msg = `${days} ${t.daysLeft.toUpperCase()}`;
-      countdown.textContent = msg;
-      countdown.hidden = false;
-      countdown.classList.toggle("urgent", days <= 3);
+      else msg = `${t.countdownPrefix} ${days} ${t.daysLeft}`.toUpperCase();
+      statusLabel.textContent = msg;
+      statusPill.classList.remove("status-over");
+      statusPill.classList.toggle("status-urgent", days <= 3);
     }
   }
 
