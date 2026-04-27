@@ -290,6 +290,7 @@ function renderConfig() {
   document.getElementById("cfg-loc-maps").value = CONFIG.location?.mapsUrl || "";
   document.getElementById("cfg-time").value = CONFIG.time || "20:00";
   document.getElementById("cfg-season").value = CONFIG.season || "";
+  document.getElementById("cfg-season-active").checked = CONFIG.seasonActive !== false;
   document.getElementById("cfg-wa").value = CONFIG.links?.whatsapp || "";
   document.getElementById("cfg-boards").value = CONFIG.links?.boardSwap || "";
   document.getElementById("cfg-imprint").value = CONFIG.imprint || "";
@@ -339,6 +340,7 @@ function collectConfig() {
   CONFIG.location = { name: document.getElementById("cfg-loc-name").value, address: document.getElementById("cfg-loc-address").value, mapsUrl: document.getElementById("cfg-loc-maps").value };
   CONFIG.time = document.getElementById("cfg-time").value;
   CONFIG.season = document.getElementById("cfg-season").value;
+  CONFIG.seasonActive = document.getElementById("cfg-season-active").checked;
   CONFIG.links = { whatsapp: document.getElementById("cfg-wa").value, boardSwap: document.getElementById("cfg-boards").value };
   CONFIG.imprint = document.getElementById("cfg-imprint").value;
 }

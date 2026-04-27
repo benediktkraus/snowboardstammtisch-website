@@ -270,10 +270,11 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
   100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
 }
 
-/* stats */
+/* stats (in footer) */
 .stats {
   font-weight: 500; font-size: 10px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--fg-soft); opacity: 0.5;
+  text-transform: uppercase; color: #f6ecd8; opacity: 0.3;
+  margin-top: 20px;
 }
 
 /* archive */

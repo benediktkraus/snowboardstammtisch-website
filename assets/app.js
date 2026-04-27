@@ -302,19 +302,21 @@ function renderDates(t) {
   const statusLabel = document.getElementById("status-label");
   const statusPill = document.getElementById("status-pill");
   if (statusLabel && statusPill) {
-    if (nextIdx === -1) {
-      statusLabel.textContent = t.tagOver;
-      statusPill.classList.add("status-over");
-    } else {
+    const seasonActive = CONFIG.seasonActive !== false;
+    if (seasonActive) {
       statusLabel.textContent = t.tag;
       statusPill.classList.remove("status-over");
+    } else {
+      statusLabel.textContent = t.tagOver;
+      statusPill.classList.add("status-over");
     }
   }
 
   // countdown ribbon
   const countdown = document.getElementById("countdown");
   if (countdown) {
-    if (nextIdx === -1) {
+    const seasonActive = CONFIG.seasonActive !== false;
+    if (!seasonActive || nextIdx === -1) {
       countdown.hidden = true;
     } else {
       const days = daysUntil(current.dates[nextIdx]);
@@ -390,7 +392,7 @@ function renderDates(t) {
     };
   }
 
-  // stats line: since year · X sessions total across all seasons
+  // stats line — rendered in footer
   const statsEl = document.getElementById("stats");
   if (statsEl) {
     const totalEvents = DATES.seasons.reduce((a,s) => a + (s.dates?.length || 0), 0);
