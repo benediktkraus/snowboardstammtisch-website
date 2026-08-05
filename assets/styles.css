@@ -141,10 +141,7 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
 
 /* logo */
 .logo { display: flex; justify-content: center; margin-bottom: 40px; }
-.logo-swap { position: relative; width: 200px; height: 200px; cursor: pointer; }
 .logo-img { width: 200px; height: 200px; object-fit: contain; border-radius: 50%; display: block; }
-.logo-color { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.4s; filter: invert(1); }
-.logo-swap:hover .logo-color { opacity: 1; }
 
 .saison {
   text-align: center; font-weight: 900;
@@ -351,7 +348,6 @@ html[data-theme="dark"] .footer::before { display: none; }
 .footer-meta a:hover { border-color: rgba(246,236,216,0.5); }
 
 @media (max-width: 520px) {
-  .logo-swap { width: 170px; height: 170px; }
   .logo-img { width: 170px; height: 170px; }
   .partner--badge img { width: 96px; height: 96px; }
   .partner--wordmark img { height: 28px; max-width: 200px; }
