@@ -141,7 +141,8 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
 
 /* logo */
 .logo { display: flex; justify-content: center; margin-bottom: 40px; }
-.logo-img { width: 200px; height: 200px; object-fit: contain; border-radius: 50%; display: block; }
+.logo-img { width: 200px; height: 200px; object-fit: contain; display: block; }
+html[data-theme="dark"] .logo-img { background: var(--paper); border-radius: 12px; padding: 14px; }
 
 .saison {
   text-align: center; font-weight: 900;
