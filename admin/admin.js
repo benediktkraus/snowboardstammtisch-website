@@ -176,6 +176,10 @@ function renderDates() {
   renderSeasonDetail();
 }
 
+function normDate(d) {
+  return typeof d === "string" ? { date: d, special: "" } : { date: d.date, special: d.special || "" };
+}
+
 function renderSeasonDetail() {
   const season = DATES.seasons[currentSeasonIdx];
   if (!season) return;
@@ -183,10 +187,32 @@ function renderSeasonDetail() {
   document.getElementById("season-current").checked = !!season.current;
   const list = document.getElementById("dates-list");
   list.innerHTML = "";
-  (season.dates || []).forEach((d, i) => {
+  // Normalize dates to objects in place so specials travel with their date
+  season.dates = (season.dates || []).map(normDate);
+  season.dates.forEach((d, i) => {
     const row = document.createElement("div");
     row.className = "date-row";
-    row.innerHTML = `<input type="date" value="${d}" data-idx="${i}"><button class="btn btn-danger btn-remove" data-idx="${i}">&times;</button>`;
+
+    const dateInp = document.createElement("input");
+    dateInp.type = "date";
+    dateInp.value = d.date;
+    dateInp.dataset.idx = i;
+
+    const specInp = document.createElement("input");
+    specInp.type = "text";
+    specInp.className = "special-input";
+    specInp.placeholder = "Sonderaktion (optional)";
+    specInp.value = d.special || "";
+    specInp.dataset.idx = i;
+
+    const rm = document.createElement("button");
+    rm.className = "btn btn-danger btn-remove";
+    rm.dataset.idx = i;
+    rm.innerHTML = "&times;";
+
+    row.appendChild(dateInp);
+    row.appendChild(specInp);
+    row.appendChild(rm);
     list.appendChild(row);
   });
   // Bind remove buttons
@@ -200,7 +226,13 @@ function renderSeasonDetail() {
   // Bind date inputs
   list.querySelectorAll("input[type=date]").forEach(inp => {
     inp.addEventListener("change", () => {
-      season.dates[parseInt(inp.dataset.idx)] = inp.value;
+      season.dates[parseInt(inp.dataset.idx)].date = inp.value;
+    });
+  });
+  // Bind special inputs
+  list.querySelectorAll(".special-input").forEach(inp => {
+    inp.addEventListener("input", () => {
+      season.dates[parseInt(inp.dataset.idx)].special = inp.value;
     });
   });
 }
@@ -237,13 +269,13 @@ document.getElementById("btn-add-date").addEventListener("click", () => {
   // Default: next month from last date, or today
   let next;
   if (last) {
-    const d = new Date(last);
+    const d = new Date(last.date);
     d.setMonth(d.getMonth() + 1);
     next = d.toISOString().split("T")[0];
   } else {
     next = new Date().toISOString().split("T")[0];
   }
-  season.dates.push(next);
+  season.dates.push({ date: next, special: "" });
   renderSeasonDetail();
 });
 
@@ -366,7 +398,7 @@ function populatePhotoDateSelect() {
   const today = new Date().toISOString().split("T")[0];
   const allDates = [];
   DATES.seasons.forEach(s => {
-    (s.dates || []).forEach(d => { if (d <= today) allDates.push(d); });
+    (s.dates || []).forEach(d => { const iso = normDate(d).date; if (iso <= today) allDates.push(iso); });
   });
   allDates.sort().reverse();
   allDates.forEach(d => {

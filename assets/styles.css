@@ -143,7 +143,7 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
 .logo { display: flex; justify-content: center; margin-bottom: 40px; }
 .logo-swap { position: relative; width: 200px; height: 200px; cursor: pointer; }
 .logo-img { width: 200px; height: 200px; object-fit: contain; border-radius: 50%; display: block; }
-.logo-color { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.4s; }
+.logo-color { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.4s; filter: invert(1); }
 .logo-swap:hover .logo-color { opacity: 1; }
 
 .saison {
@@ -197,6 +197,23 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
   animation-delay: var(--delay, 0s);
 }
 @keyframes drawStroke { to { stroke-dashoffset: 0; } }
+
+/* special event tag */
+.date-special {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--marker-red);
+  background: rgba(232,74,42,0.08);
+  border: 1px solid rgba(232,74,42,0.28);
+  border-radius: 999px;
+  padding: 3px 12px;
+  line-height: 1.4;
+  max-width: 90%;
+}
 
 .date-meta {
   display: block; font-weight: 500; font-size: 11px;

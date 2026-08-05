@@ -139,9 +139,13 @@ function circleSvg(seed) {
   return `<svg class="marker" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="circle" d="${d}" /></svg>`;
 }
 
+function normDate(d) {
+  return typeof d === "string" ? { date: d, special: "" } : { date: d.date, special: d.special || "" };
+}
+
 function findNextIndex(dates) {
   const today = new Date(); today.setHours(0,0,0,0);
-  for (let i = 0; i < dates.length; i++) if (parseISO(dates[i]) >= today) return i;
+  for (let i = 0; i < dates.length; i++) if (parseISO(normDate(dates[i]).date) >= today) return i;
   return -1;
 }
 
@@ -151,27 +155,28 @@ function toICSDate(iso, time) {
   const [h,min] = (time || "20:00").split(":");
   return `${y}${m}${d}T${h.padStart(2,"0")}${min.padStart(2,"0")}00`;
 }
-function icsEvent(iso, cfg) {
+function icsEvent(iso, special, cfg) {
   const start = toICSDate(iso, cfg.time);
   const [y,m,d] = iso.split("-").map(Number);
   const endDate = new Date(y, m-1, d, parseInt(cfg.time?.split(":")[0] || 20) + 4);
   const end = `${endDate.getFullYear()}${String(endDate.getMonth()+1).padStart(2,"0")}${String(endDate.getDate()).padStart(2,"0")}T${String(endDate.getHours()).padStart(2,"0")}${String(endDate.getMinutes()).padStart(2,"0")}00`;
   const loc = `${cfg.location?.name || ""}, ${cfg.location?.address || ""}`.replace(/,\s*$/, "");
   const uid = `sbi-${iso}@snowboard-stammtisch-innsbruck`;
+  const summary = special ? `Snowboard Stammtisch: ${special.replace(/[\\,;]/g, c => "\\" + c)}` : "Snowboard Stammtisch Innsbruck";
   return [
     "BEGIN:VEVENT",
     `UID:${uid}`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,"").split(".")[0]}Z`,
     `DTSTART;TZID=Europe/Vienna:${start}`,
     `DTEND;TZID=Europe/Vienna:${end}`,
-    "SUMMARY:Snowboard Stammtisch Innsbruck",
+    `SUMMARY:${summary}`,
     `LOCATION:${loc}`,
     "DESCRIPTION:Einmal im Monat. Bier\\, Boards\\, Leute. Kommt vorbei.",
     "END:VEVENT"
   ].join("\r\n");
 }
 function buildICS(events, cfg) {
-  const body = events.map(iso => icsEvent(iso, cfg)).join("\r\n");
+  const body = events.map(e => { const n = normDate(e); return icsEvent(n.date, n.special, cfg); }).join("\r\n");
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -221,7 +226,9 @@ function applyTheme() {
 }
 
 // ---- shared date rendering ----
-function renderPastDate(iso, i, fetchBadge = true) {
+function renderPastDate(entry, i, fetchBadge = true) {
+  const iso = entry.date;
+  const special = entry.special;
   const li = document.createElement("li");
   li.className = "date past";
   li.dataset.date = iso;
@@ -253,6 +260,13 @@ function renderPastDate(iso, i, fetchBadge = true) {
 
   li.appendChild(wrap);
   li.appendChild(meta);
+
+  if (special) {
+    const sp = document.createElement("span");
+    sp.className = "date-special";
+    sp.textContent = special;
+    li.appendChild(sp);
+  }
 
   const strip = document.createElement("div");
   strip.className = "photo-strip";
@@ -308,7 +322,7 @@ function renderDates(t) {
       statusPill.classList.add("status-over");
       statusPill.classList.remove("status-urgent");
     } else {
-      const days = daysUntil(current.dates[nextIdx]);
+      const days = daysUntil(normDate(current.dates[nextIdx]).date);
       let msg;
       if (days === 0) msg = t.today_short;
       else if (days === 1) msg = t.tomorrow.toUpperCase();
@@ -319,12 +333,15 @@ function renderDates(t) {
     }
   }
 
-  current.dates.forEach((iso, i) => {
+  current.dates.forEach((d, i) => {
+    const entry = normDate(d);
+    const iso = entry.date;
+    const special = entry.special;
     const isPast = nextIdx === -1 ? true : i < nextIdx;
     const isNext = i === nextIdx;
 
     if (isPast) {
-      const li = renderPastDate(iso, i);
+      const li = renderPastDate(entry, i);
       datesEl.appendChild(li);
       // Auto-load + auto-open photos for the most recent past date (only if it has photos)
       if (i === (nextIdx === -1 ? current.dates.length - 1 : nextIdx - 1)) {
@@ -353,7 +370,7 @@ function renderDates(t) {
     btn.title = t.ics_one;
     btn.setAttribute("aria-label", `${fmtDate(iso)} — ${t.ics_one}`);
     btn.addEventListener("click", () => {
-      const ics = buildICS([iso], CONFIG);
+      const ics = buildICS([entry], CONFIG);
       downloadICS(`stammtisch-${iso}.ics`, ics);
     });
     wrap.appendChild(btn);
@@ -368,6 +385,14 @@ function renderDates(t) {
 
     li.appendChild(wrap);
     li.appendChild(meta);
+
+    if (special) {
+      const sp = document.createElement("span");
+      sp.className = "date-special";
+      sp.textContent = special;
+      li.appendChild(sp);
+    }
+
     datesEl.appendChild(li);
   });
 
@@ -407,7 +432,7 @@ function renderArchive(t) {
     details.appendChild(summary);
     const ul = document.createElement("ul");
     ul.className = "archive-dates";
-    season.dates.forEach((iso, i) => ul.appendChild(renderPastDate(iso, i, false)));
+    season.dates.forEach((d, i) => ul.appendChild(renderPastDate(normDate(d), i, false)));
     details.appendChild(ul);
     // Lazy-load photo badges on first open
     details.addEventListener("toggle", () => {
