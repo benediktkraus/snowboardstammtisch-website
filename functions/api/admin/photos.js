@@ -22,11 +22,11 @@ export async function onRequestPost(context) {
   const indexKey = `photos:${date}`;
   const existing = await context.env.SBI.get(indexKey);
   const index = existing ? JSON.parse(existing) : [];
-  if (index.length >= MAX_PHOTOS) {
+  if (!isFlyer && index.length >= MAX_PHOTOS) {
     return json({ error: `max ${MAX_PHOTOS} ${isFlyer ? "Flyer" : "Fotos pro Termin"}` }, 400);
   }
   const nextIdx = index.length === 0 ? 0 : Math.max(...index.map(k => parseInt(k.split(":")[2]))) + 1;
-  const photoKey = `photo:${date}:${nextIdx}`;
+  const photoKey = isFlyer && index.length ? index[0] : `photo:${date}:${nextIdx}`;
 
   // Store binary
   const arrayBuffer = await file.arrayBuffer();
@@ -36,7 +36,7 @@ export async function onRequestPost(context) {
   await context.env.SBI.put(photoKey, arrayBuffer);
 
   // Update index
-  index.push(photoKey);
+  if (!index.includes(photoKey)) index.push(photoKey);
   await context.env.SBI.put(indexKey, JSON.stringify(index));
 
   return json({ ok: true, key: photoKey, count: index.length });

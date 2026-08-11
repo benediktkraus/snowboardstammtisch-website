@@ -123,6 +123,7 @@
       <button class="tab active" data-tab="dates">Termine</button>
       <button class="tab" data-tab="config">Config</button>
       <button class="tab" data-tab="photos">Fotos</button>
+      <button class="tab" data-tab="flyer">Flyer</button>
     </div>
 
     <!-- Tab: Dates -->
@@ -195,7 +196,6 @@
           <select id="photo-date-select"><option value="">Datum waehlen...</option></select>
         </div>
         <div id="photo-area" class="hidden">
-          <label id="flyer-enabled-row" class="hidden" style="display:block;font-size:13px;margin-bottom:14px"><input type="checkbox" id="flyer-enabled" style="width:auto;margin-right:6px"> Flyer auf Website anzeigen</label>
           <div class="photo-counts">
             <h3 id="photo-count">0 Fotos</h3>
             <span id="photo-remaining-count" class="photo-remaining-count">Noch 20 Fotos frei</span>
@@ -212,6 +212,21 @@
           </div>
           <button id="btn-upload" class="btn btn-primary hidden">Hochladen</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Tab: Flyer -->
+    <div id="tab-flyer" class="tab-content">
+      <div class="card">
+        <h3>Flyer-Popup</h3>
+        <label style="display:block;font-size:13px;margin-bottom:14px"><input type="checkbox" id="flyer-enabled" style="width:auto;margin-right:6px"> Flyer auf Website anzeigen</label>
+        <div id="flyer-grid" class="photo-grid"></div>
+        <div id="flyer-upload-zone" class="upload-zone">
+          <p>Flyer hierher ziehen oder klicken</p>
+          <input type="file" id="flyer-input" accept="image/*" style="display:none">
+        </div>
+        <div id="flyer-upload-preview" class="upload-previews"></div>
+        <button id="btn-upload-flyer" class="btn btn-primary hidden">Flyer hochladen</button>
       </div>
     </div>
   </div>
@@ -231,6 +246,6 @@
     </div>
   </div>
 
-  <script src="admin.js?v=2"></script>
+  <script src="admin.js?v=3"></script>
 </body>
 </html>
