@@ -5,6 +5,7 @@ let CONFIG = null;
 let DATES = null;
 let currentSeasonIdx = 0;
 let pendingFiles = []; // compressed blobs ready for upload
+const MAX_PHOTOS = 20;
 
 // --- API helpers ---
 
@@ -394,6 +395,10 @@ document.getElementById("btn-save-config").addEventListener("click", async () =>
 function populatePhotoDateSelect() {
   const sel = document.getElementById("photo-date-select");
   sel.innerHTML = '<option value="">Datum waehlen...</option>';
+  const flyer = document.createElement("option");
+  flyer.value = "flyer";
+  flyer.textContent = "Flyer (Popup)";
+  sel.appendChild(flyer);
   if (!DATES) return;
   const today = new Date().toISOString().split("T")[0];
   const allDates = [];
@@ -413,6 +418,17 @@ function formatDate(iso) {
   return `${d}.${m}.${y}`;
 }
 
+function photoLimit() {
+  return document.getElementById("photo-date-select").value === "flyer" ? 1 : MAX_PHOTOS;
+}
+
+function updatePhotoCounts(count) {
+  const flyer = document.getElementById("photo-date-select").value === "flyer";
+  const remaining = Math.max(0, photoLimit() - count - pendingFiles.length);
+  document.getElementById("photo-count").textContent = `${count} / ${photoLimit()} ${flyer ? "Flyer" : "Fotos"}`;
+  document.getElementById("photo-remaining-count").textContent = flyer ? (remaining ? "Noch kein Flyer hochgeladen" : "Flyer gespeichert") : `Noch ${remaining} Fotos frei`;
+}
+
 document.getElementById("photo-date-select").addEventListener("change", async e => {
   const date = e.target.value;
   const area = document.getElementById("photo-area");
@@ -421,6 +437,8 @@ document.getElementById("photo-date-select").addEventListener("change", async e 
   pendingFiles = [];
   document.getElementById("upload-previews").innerHTML = "";
   document.getElementById("btn-upload").classList.add("hidden");
+  document.getElementById("flyer-enabled-row").classList.toggle("hidden", date !== "flyer");
+  document.querySelector("#upload-zone p").textContent = date === "flyer" ? "Flyer hierher ziehen oder klicken" : "Bilder hierher ziehen oder klicken";
   await loadPhotos(date);
 });
 
@@ -428,17 +446,18 @@ async function loadPhotos(date) {
   const grid = document.getElementById("photo-grid");
   grid.innerHTML = "";
   try {
-    const keys = await fetch(`/api/photos/list?date=${date}&_=${Date.now()}`).then(r => r.json());
-    const MAX_PHOTOS = 10;
-    const remaining = MAX_PHOTOS - keys.length;
-    document.getElementById("photo-count").textContent = `${keys.length} / ${MAX_PHOTOS} Fotos`;
+    const data = await fetch(`/api/photos/list?date=${date}${date === "flyer" ? "&meta=1" : ""}&_=${Date.now()}`).then(r => r.json());
+    const keys = Array.isArray(data) ? data : data.keys;
+    if (date === "flyer") document.getElementById("flyer-enabled").checked = data.enabled;
+    const remaining = photoLimit() - keys.length;
+    updatePhotoCounts(keys.length);
     const uploadZoneEl = document.getElementById("upload-zone");
     if (remaining <= 0) {
       uploadZoneEl.classList.add("disabled");
       uploadZoneEl.title = "Maximum erreicht";
     } else {
       uploadZoneEl.classList.remove("disabled");
-      uploadZoneEl.title = `Noch ${remaining} Fotos moeglich`;
+      uploadZoneEl.title = `Noch ${remaining} ${date === "flyer" ? "Flyer" : "Fotos"} moeglich`;
     }
     keys.forEach(key => {
       const thumb = document.createElement("div");
@@ -449,19 +468,38 @@ async function loadPhotos(date) {
     });
     grid.querySelectorAll(".delete-overlay").forEach(btn => {
       btn.addEventListener("click", async () => {
-        if (!confirm("Foto loeschen?")) return;
+        const label = date === "flyer" ? "Flyer" : "Foto";
+        if (!confirm(`${label} loeschen?`)) return;
         try {
           await api(`/api/admin/photos?key=${encodeURIComponent(btn.dataset.key)}`, { method: "DELETE" });
           await loadPhotos(date);
-          showStatus("Foto geloescht");
+          showStatus(`${label} geloescht`);
         } catch (e) { showStatus("Fehler: " + e.message, "err"); }
       });
     });
   } catch (e) {
     document.getElementById("photo-count").textContent = "0 Fotos";
+    document.getElementById("photo-remaining-count").textContent = "";
     showStatus("Fotos laden fehlgeschlagen: " + e.message, "err");
   }
 }
+
+document.getElementById("flyer-enabled").addEventListener("change", async event => {
+  const enabled = event.target.checked;
+  try {
+    const res = await api("/api/admin/photos", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date: "flyer", enabled })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || res.statusText);
+    showStatus(enabled ? "Flyer aktiviert" : "Flyer deaktiviert");
+  } catch (err) {
+    event.target.checked = !enabled;
+    showStatus("Flyer-Schalter fehlgeschlagen: " + err.message, "err");
+  }
+});
 
 // Upload zone
 const uploadZone = document.getElementById("upload-zone");
@@ -478,24 +516,23 @@ photoInput.addEventListener("change", () => handleFiles(photoInput.files));
 
 async function handleFiles(fileList) {
   if (document.getElementById("upload-zone").classList.contains("disabled")) {
-    showStatus("Maximum 10 Fotos pro Termin erreicht", "err");
+    showStatus(`Maximum ${photoLimit()} ${photoLimit() === 1 ? "Flyer" : "Fotos"} erreicht`, "err");
     return;
   }
   const files = Array.from(fileList).filter(f => f.type.startsWith("image/"));
   if (!files.length) return;
 
   // Check remaining slots (server count + already pending)
-  const MAX_PHOTOS = 10;
   const grid = document.getElementById("photo-grid");
   const serverCount = grid.querySelectorAll(".photo-thumb").length;
-  const remaining = MAX_PHOTOS - serverCount - pendingFiles.length;
+  const remaining = photoLimit() - serverCount - pendingFiles.length;
   if (remaining <= 0) {
-    showStatus("Maximum 10 Fotos pro Termin erreicht", "err");
+    showStatus(`Maximum ${photoLimit()} ${photoLimit() === 1 ? "Flyer" : "Fotos"} erreicht`, "err");
     return;
   }
   const allowed = files.slice(0, remaining);
   if (allowed.length < files.length) {
-    showStatus(`Nur ${allowed.length} von ${files.length} Fotos moeglich (Limit: ${MAX_PHOTOS})`, "info");
+    showStatus(`Nur ${allowed.length} von ${files.length} moeglich (Limit: ${photoLimit()})`, "info");
   }
 
   const previews = document.getElementById("upload-previews");
@@ -506,6 +543,7 @@ async function handleFiles(fileList) {
     img.src = URL.createObjectURL(compressed);
     previews.appendChild(img);
   }
+  updatePhotoCounts(serverCount);
   document.getElementById("btn-upload").classList.remove("hidden");
 }
 
@@ -568,14 +606,15 @@ document.getElementById("btn-upload").addEventListener("click", async () => {
   }
 
   progressFill.style.width = "100%";
-  statusText.textContent = `${uploaded} Fotos hochgeladen`;
+  const label = date === "flyer" ? "Flyer" : "Fotos";
+  statusText.textContent = `${uploaded} ${label} hochgeladen`;
   pendingFiles = [];
   document.getElementById("upload-previews").innerHTML = "";
   btn.classList.add("hidden");
   btn.disabled = false;
   setTimeout(() => progressWrap.classList.add("hidden"), 2000);
   await loadPhotos(date);
-  showStatus(`${uploaded} Fotos hochgeladen`);
+  showStatus(`${uploaded} ${label} hochgeladen`);
 });
 
 // --- Password change modal ---

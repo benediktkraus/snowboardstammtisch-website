@@ -605,6 +605,59 @@ async function load() {
   render();
 }
 
+// ---- flyer after first scroll ----
+async function initFlyer() {
+  try {
+    const flyer = await fetch("/api/photos/list?date=flyer&meta=1").then(r => r.ok ? r.json() : null);
+    if (!flyer?.enabled) return;
+    const key = flyer.keys?.[flyer.keys.length - 1];
+    if (!key) return;
+
+    const dismissedKey = `sbi-flyer-dismissed:${key}`;
+    try { if (localStorage.getItem(dismissedKey)) return; } catch {}
+
+    const popup = document.createElement("section");
+    popup.className = "flyer-popup";
+    popup.hidden = true;
+    popup.setAttribute("role", "dialog");
+    popup.setAttribute("aria-modal", "true");
+    popup.setAttribute("aria-label", "Flyer");
+
+    const card = document.createElement("div");
+    card.className = "flyer-popup-card";
+    const close = document.createElement("button");
+    close.className = "flyer-popup-close";
+    close.type = "button";
+    close.setAttribute("aria-label", "Flyer schliessen");
+    close.textContent = "×";
+    const image = new Image();
+    image.alt = "Flyer";
+    card.append(close, image);
+    popup.appendChild(card);
+
+    const dismiss = () => {
+      try { localStorage.setItem(dismissedKey, "1"); } catch {}
+      popup.remove();
+    };
+    close.addEventListener("click", dismiss);
+    popup.addEventListener("click", e => { if (e.target === popup) dismiss(); });
+
+    let scheduled = false;
+    const showAfterScroll = () => {
+      if (window.scrollY < 32 || scheduled) return;
+      scheduled = true;
+      window.removeEventListener("scroll", showAfterScroll);
+      setTimeout(() => { popup.hidden = false; close.focus(); }, 450);
+    };
+    image.onload = () => {
+      document.body.appendChild(popup);
+      window.addEventListener("scroll", showAfterScroll, { passive: true });
+      showAfterScroll();
+    };
+    image.src = `/api/photos/serve?key=${encodeURIComponent(key)}`;
+  } catch {}
+}
+
 
 // ---- lightbox ----
 
@@ -662,3 +715,4 @@ lbEl?.addEventListener("touchend", e => {
 });
 
 load();
+initFlyer();

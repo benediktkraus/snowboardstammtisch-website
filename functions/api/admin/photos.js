@@ -14,15 +14,16 @@ export async function onRequestPost(context) {
   const date = formData.get("date");
   const file = formData.get("file");
   if (!date || !file) return json({ error: "date and file required" }, 400);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return json({ error: "invalid date format" }, 400);
+  const isFlyer = date === "flyer";
+  if (!isFlyer && !/^\d{4}-\d{2}-\d{2}$/.test(date)) return json({ error: "invalid date format" }, 400);
 
   // Read photo index for this date
-  const MAX_PHOTOS = 10;
+  const MAX_PHOTOS = isFlyer ? 1 : 20;
   const indexKey = `photos:${date}`;
   const existing = await context.env.SBI.get(indexKey);
   const index = existing ? JSON.parse(existing) : [];
   if (index.length >= MAX_PHOTOS) {
-    return json({ error: `max ${MAX_PHOTOS} Fotos pro Termin` }, 400);
+    return json({ error: `max ${MAX_PHOTOS} ${isFlyer ? "Flyer" : "Fotos pro Termin"}` }, 400);
   }
   const nextIdx = index.length === 0 ? 0 : Math.max(...index.map(k => parseInt(k.split(":")[2]))) + 1;
   const photoKey = `photo:${date}:${nextIdx}`;
@@ -69,4 +70,19 @@ export async function onRequestDelete(context) {
   }
 
   return json({ ok: true });
+}
+
+export async function onRequestPut(context) {
+  const denied = await requireAuth(context.request, context.env);
+  if (denied) return denied;
+
+  let data;
+  try { data = await context.request.json(); } catch {
+    return json({ error: "json body required" }, 400);
+  }
+  if (data?.date !== "flyer" || typeof data.enabled !== "boolean") {
+    return json({ error: "date flyer and boolean enabled required" }, 400);
+  }
+  await context.env.SBI.put("flyer:enabled", data.enabled ? "true" : "false");
+  return json({ ok: true, enabled: data.enabled });
 }

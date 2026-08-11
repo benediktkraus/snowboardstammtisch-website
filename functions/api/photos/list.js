@@ -8,6 +8,12 @@ export async function onRequestGet(context) {
     });
   }
   const data = await context.env.SBI.get(`photos:${date}`);
+  if (date === "flyer" && url.searchParams.get("meta") === "1") {
+    const enabled = await context.env.SBI.get("flyer:enabled");
+    return new Response(JSON.stringify({ keys: JSON.parse(data || "[]"), enabled: enabled === "true" }), {
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }
+    });
+  }
   return new Response(data || "[]", {
     headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=300" }
   });
