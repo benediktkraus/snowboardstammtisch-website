@@ -354,30 +354,24 @@ h1,h2,h3,.sheet-title,.event-card h3,.desk-event-row h3,.map-event-pop h4{font-f
 /* Export keeps the art direction edge-to-edge */
 body.export .screen{border:0!important;border-radius:0!important;box-shadow:none!important}
 
-/* Real mobile runtime: the app owns the viewport instead of sitting inside a mock frame. */
+/* Responsive mockup viewer: on phones the frame and navigation stay visible. */
+.mock-caption{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;max-width:1500px;margin:0 auto;padding:10px 13px;background:var(--paper);color:var(--ink);border:2px solid #171411;box-shadow:5px 5px 0 var(--orange)}
+.mock-caption .context{display:flex;align-items:baseline;gap:9px;min-width:0}.mock-caption .context span{font:900 9px var(--mono);letter-spacing:.06em}.mock-caption .context strong{font:900 14px var(--display);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mock-arrows{display:flex;align-items:center;gap:7px;flex:none}.mock-arrows button{width:38px;height:34px;border:2px solid #171411;background:#171411;color:var(--paper);font:900 17px var(--mono);cursor:pointer}.mock-arrows span{font:900 10px var(--mono);min-width:30px;text-align:center}
 @media(max-width:700px){
-  html,body{width:100%;height:100%;overflow:hidden;background:var(--ink)}
-  .prototype-shell{width:100%;height:100dvh;min-height:100dvh;padding:0;gap:0;background:var(--ink)}
-  .toolbar{display:none}
-  .stage{display:block;width:100%;height:100dvh;min-height:0}
-  .frame-wrap{width:100%;height:100%;transform:none!important}
-  .screen.mobile{width:100%;height:100dvh;min-height:100dvh;border:0!important;border-radius:0!important;box-shadow:none!important}
-  .screen.desktop{display:none!important}
-  .chip-row,.event-stack{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding-bottom:5px}
-  .chip-row::-webkit-scrollbar,.event-stack::-webkit-scrollbar{display:none}
-  .event-card{scroll-snap-align:start}
-  .bottom-nav{height:calc(68px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)}
-  .sheet{bottom:calc(68px + env(safe-area-inset-bottom))}
-  .sticky-actions{height:calc(76px + env(safe-area-inset-bottom));padding-bottom:calc(11px + env(safe-area-inset-bottom))}
-  .m5 .sticky-actions{height:calc(70px + env(safe-area-inset-bottom));padding-bottom:calc(11px + env(safe-area-inset-bottom))}
+  html,body{width:100%;min-height:100%;overflow-x:hidden;overflow-y:auto;background:#0c0b09}body{display:block}
+  .prototype-shell{display:block;width:100%;min-height:100dvh;height:auto;padding:138px 10px 22px;background:#0c0b09}
+  .toolbar{display:grid;grid-template-columns:1fr auto;gap:7px 10px;position:fixed;top:10px;left:10px;right:10px;z-index:50;margin:0;padding:10px;background:#0c0b09;border:2px solid #776e5e;box-shadow:5px 5px 0 #000}
+  .brand-shell{grid-column:1;grid-row:1;font-size:23px}.toolbar .tag{display:block;grid-column:1;grid-row:2;width:max-content;font-size:8px;padding:4px 6px}.segmented{grid-column:2;grid-row:1/3;align-self:center;margin:0}.segmented button{padding:9px 10px;font-size:10px}
+  .state-tabs{grid-column:1/-1;grid-row:3;width:100%;order:initial;padding-top:5px;scroll-snap-type:x mandatory;scrollbar-width:none}.state-tabs::-webkit-scrollbar{display:none}.state-tabs button{scroll-snap-align:start;padding:9px 10px;font-size:10px}
+  .mock-caption{margin:0 auto 12px;padding:9px 10px;box-shadow:4px 4px 0 var(--orange)}.mock-caption .context{display:block}.mock-caption .context span{display:block;margin-bottom:2px}.mock-caption .context strong{display:block;max-width:210px;font-size:15px}
+  .stage{display:block;position:relative;flex:none;width:100%;min-height:0;padding:7px 0 0;overflow:hidden;background:repeating-linear-gradient(-45deg,#0d0c0a 0 8px,#14120f 8px 16px)}
+  .frame-wrap{position:absolute;top:7px;transform-origin:top left;border:6px solid #201d18;outline:2px solid #7d735f;box-shadow:10px 12px 0 #000}
+  .screen.mobile,.screen.desktop{border:0!important;border-radius:0!important;box-shadow:none!important}
+  .chip-row,.event-stack{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding-bottom:5px}.chip-row::-webkit-scrollbar,.event-stack::-webkit-scrollbar{display:none}.event-card{scroll-snap-align:start}
   .nav-item,.event-card,.chip,.round-btn,.pill.ghost{cursor:pointer;-webkit-tap-highlight-color:transparent}
-  .nav-item{min-height:52px}
-  .round-btn{min-width:44px;min-height:44px;width:44px;height:44px}
-  .btn{min-height:44px}
-  .mobile-toast{position:fixed;z-index:1000;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom));padding:13px 15px;background:var(--acid);color:#111;border:2px solid #111;box-shadow:5px 5px 0 var(--orange);font:900 12px var(--mono);text-transform:uppercase;transform:translateY(140%);opacity:0;transition:transform .2s ease,opacity .2s ease;pointer-events:none}
+  .mobile-toast{position:fixed;z-index:1000;left:16px;right:16px;bottom:18px;padding:13px 15px;background:var(--acid);color:#111;border:2px solid #111;box-shadow:5px 5px 0 var(--orange);font:900 12px var(--mono);text-transform:uppercase;transform:translateY(140%);opacity:0;transition:transform .2s ease,opacity .2s ease;pointer-events:none}
   .mobile-toast.show{transform:translateY(0);opacity:1}
-  .screen.mobile.flow-in{animation:mobileFlowIn .18s ease-out}
-  @keyframes mobileFlowIn{from{opacity:.5;transform:translateX(14px)}to{opacity:1;transform:none}}
 }
 </style>
 </head>
@@ -389,6 +383,7 @@ body.export .screen{border:0!important;border-radius:0!important;box-shadow:none
     <div class="state-tabs" id="stateTabs"></div>
     <div class="segmented"><button id="mobileToggle" class="active">MOBILE</button><button id="desktopToggle">DESKTOP</button></div>
   </div>
+  <div class="mock-caption"><div class="context"><span id="deviceLabel">MOBILE APP MOCKUP · 390 × 844</span><strong id="stateLabel">Radar / Karte</strong></div><div class="mock-arrows"><button id="prevState" aria-label="Vorheriger Zustand">←</button><span id="stateCount">1 / 5</span><button id="nextState" aria-label="Nächster Zustand">→</button></div></div>
   <div class="stage"><div class="frame-wrap" id="frameWrap">
 
 <!-- MOBILE 1 -->
@@ -524,10 +519,10 @@ const names={mobile:["Radar / Karte","Event ausgewählt","Event Day / Party","So
 const params=new URLSearchParams(location.search);let device=params.get('device')||'mobile';let state=Math.max(0,Math.min(4,Number(params.get('state')||0)));
 const exportMode=params.get('export')==='1';if(exportMode)document.body.classList.add('export');
 const screens=[...document.querySelectorAll('.screen')],tabs=document.getElementById('stateTabs'),wrap=document.getElementById('frameWrap');
-function renderTabs(){tabs.innerHTML='';names[device].forEach((n,i)=>{const b=document.createElement('button');b.textContent=`${i+1}. ${n}`;b.className=i===state?'active':'';b.onclick=()=>{state=i;render()};tabs.appendChild(b)})}
+function renderTabs(){tabs.innerHTML='';names[device].forEach((n,i)=>{const b=document.createElement('button');b.textContent=`${i+1}. ${n}`;b.className=i===state?'active':'';b.onclick=()=>{state=i;render()};tabs.appendChild(b)});requestAnimationFrame(()=>tabs.querySelector('.active')?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}))}
 function isPhone(){return matchMedia('(max-width:700px)').matches}
-function fit(){if(exportMode||isPhone()){wrap.style.transform='none';return}const active=document.querySelector('.screen.active');if(!active)return;const pad=32;const rect=document.querySelector('.stage').getBoundingClientRect();const s=Math.min((rect.width-pad)/active.offsetWidth,(rect.height-pad)/active.offsetHeight,1);wrap.style.transform=`scale(${s})`;}
-function render(){if(isPhone())device='mobile';screens.forEach(s=>{const active=s.dataset.device===device&&Number(s.dataset.state)===state;s.classList.toggle('active',active);if(active&&isPhone()){s.classList.remove('flow-in');requestAnimationFrame(()=>s.classList.add('flow-in'))}});document.getElementById('mobileToggle').classList.toggle('active',device==='mobile');document.getElementById('desktopToggle').classList.toggle('active',device==='desktop');renderTabs();requestAnimationFrame(fit)}
+function fit(){if(exportMode)return;const active=document.querySelector('.screen.active');if(!active)return;const stage=document.querySelector('.stage'),rect=stage.getBoundingClientRect(),pad=isPhone()?20:32;const availableHeight=isPhone()?Infinity:Math.max(220,rect.height-pad);const s=Math.min((rect.width-pad)/active.offsetWidth,availableHeight/active.offsetHeight,1);wrap.style.transform=`scale(${s})`;if(isPhone()){wrap.style.left=`${Math.max(0,(stage.clientWidth-active.offsetWidth*s)/2)}px`;stage.style.height=`${Math.ceil(active.offsetHeight*s)+20}px`}else{wrap.style.left='';stage.style.height=''}}
+function render(){screens.forEach(s=>s.classList.toggle('active',s.dataset.device===device&&Number(s.dataset.state)===state));document.getElementById('mobileToggle').classList.toggle('active',device==='mobile');document.getElementById('desktopToggle').classList.toggle('active',device==='desktop');document.getElementById('deviceLabel').textContent=device==='mobile'?'MOBILE APP MOCKUP · 390 × 844':'DESKTOP MOCKUP · 1440 × 1024';document.getElementById('stateLabel').textContent=names[device][state];document.getElementById('stateCount').textContent=`${state+1} / 5`;renderTabs();requestAnimationFrame(fit)}
 let toastTimer;function toast(message){const el=document.getElementById('mobileToast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200)}
 function go(next){state=Math.max(0,Math.min(4,next));render()}
 document.querySelector('.m1 .event-card')?.addEventListener('click',()=>go(1));
@@ -549,7 +544,7 @@ document.querySelector('.m4 .m4-cta .btn.acid')?.addEventListener('click',()=>{t
 document.querySelector('.m5 .sticky-actions .btn.dark')?.addEventListener('click',()=>toast('Media-Kit Editor geöffnet'));
 document.querySelector('.m5 .sticky-actions .btn.acid')?.addEventListener('click',e=>{e.currentTarget.textContent='SCHEDULED ✓';toast('Social Posts eingeplant')});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role="button"]'))e.target.click()});
-let touchStartX=0;document.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].clientX},{passive:true});document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>70){go(state+(dx<0?1:-1))}},{passive:true});
+document.getElementById('prevState').onclick=()=>go((state+4)%5);document.getElementById('nextState').onclick=()=>go((state+1)%5);
 document.getElementById('mobileToggle').onclick=()=>{device='mobile';state=0;render()};document.getElementById('desktopToggle').onclick=()=>{device='desktop';state=0;render()};
 window.addEventListener('resize',fit);window.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){state=(state+1)%5;render()}if(e.key==='ArrowLeft'){state=(state+4)%5;render()}if(e.key.toLowerCase()==='m'){device='mobile';state=0;render()}if(e.key.toLowerCase()==='d'){device='desktop';state=0;render()}});render();
 </script>
