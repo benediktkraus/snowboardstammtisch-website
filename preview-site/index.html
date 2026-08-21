@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+<title>SHRED//RADAR — Oldschool Rock’n’Roll Mock</title>
+<style>
+:root{
+  --ink:#0a0b0c;
+  --ink-2:#111316;
+  --ink-3:#181b1f;
+  --snow:#f2f0e9;
+  --muted:#a2a39f;
+  --line:#2b2f33;
+  --acid:#c8ff1a;
+  --orange:#ff5b2e;
+  --cyan:#5edcff;
+  --yellow:#ffd633;
+  --radius:18px;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --body: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --display: "Arial Narrow", "HelveticaNeue-CondensedBold", Impact, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#050607;color:var(--snow);font-family:var(--body);overflow-x:hidden}
+body{display:flex;flex-direction:column}
+button{font:inherit}
+.prototype-shell{min-height:100vh;padding:18px 22px 30px;display:flex;flex-direction:column;gap:16px;background:
+  radial-gradient(circle at 20% 0%,rgba(200,255,26,.09),transparent 30%),
+  radial-gradient(circle at 80% 100%,rgba(94,220,255,.07),transparent 28%),#050607}
+.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;max-width:1500px;margin:0 auto;width:100%;position:relative;z-index:20}
+.brand-shell{font-family:var(--display);letter-spacing:.04em;font-size:24px;line-height:1}.brand-shell b{color:var(--acid)}
+.toolbar .tag{font:11px var(--mono);color:#91958d;border:1px solid #24282b;padding:6px 8px;border-radius:99px;letter-spacing:.04em}
+.segmented{display:flex;background:#111315;border:1px solid #282c30;border-radius:999px;padding:4px;gap:3px;margin-left:auto}
+.segmented button,.state-tabs button{background:transparent;border:0;color:#929690;cursor:pointer}
+.segmented button{padding:8px 14px;border-radius:999px;font-weight:800;font-size:12px;letter-spacing:.04em}
+.segmented button.active{background:var(--snow);color:#0a0b0c}
+.state-tabs{display:flex;gap:5px;overflow:auto;max-width:100%;padding:2px}
+.state-tabs button{white-space:nowrap;padding:9px 12px;border:1px solid #23272a;border-radius:10px;font-size:12px;font-weight:700}
+.state-tabs button.active{border-color:var(--acid);color:var(--acid);background:rgba(200,255,26,.07)}
+.stage{flex:1;display:grid;place-items:center;min-height:0;position:relative}
+.frame-wrap{transform-origin:center center;transition:transform .28s ease}
+.screen{display:none;position:relative;overflow:hidden;background:var(--ink);color:var(--snow);box-shadow:0 38px 100px rgba(0,0,0,.55),0 0 0 1px #272b2f;border-radius:20px}
+.screen.active{display:block}
+.screen.mobile{width:390px;height:844px;border-radius:28px}
+.screen.desktop{width:1440px;height:1024px;border-radius:18px}
+.screen:after{content:"";pointer-events:none;position:absolute;inset:0;opacity:.16;mix-blend-mode:soft-light;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.24'/%3E%3C/svg%3E")}
+
+/* Shared UI */
+.wordmark{font-family:var(--display);font-size:25px;font-weight:900;letter-spacing:.02em;line-height:.9}.wordmark .slash{color:var(--acid)}
+.micro{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.eyebrow{font:11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--acid);font-weight:800}
+.huge{font-family:var(--display);font-stretch:condensed;font-weight:900;letter-spacing:-.025em;text-transform:uppercase;line-height:.88}
+.chip-row{display:flex;gap:7px;overflow:hidden}
+.chip{white-space:nowrap;border:1px solid #34383c;background:rgba(10,11,12,.82);color:#d9d9d4;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:750;backdrop-filter:blur(14px)}
+.chip.active{background:var(--acid);color:#0b0c0c;border-color:var(--acid)}
+.chip.alert{border-color:var(--orange);color:#ff8b6b}
+.round-btn{width:39px;height:39px;border-radius:999px;border:1px solid #363a3d;background:rgba(11,12,13,.84);color:var(--snow);display:grid;place-items:center;font-weight:900;backdrop-filter:blur(16px)}
+.search{height:44px;border-radius:13px;border:1px solid #363a3e;background:rgba(10,11,12,.82);display:flex;align-items:center;gap:9px;padding:0 12px;color:#b7bbb5;backdrop-filter:blur(16px);font-size:13px}
+.search .glass{width:15px;height:15px;border:2px solid currentColor;border-radius:99px;position:relative}.search .glass:after{content:"";position:absolute;width:6px;height:2px;background:currentColor;right:-5px;bottom:-2px;transform:rotate(45deg);border-radius:2px}
+.pill{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:6px 8px;background:#23272b;color:#d5d8d3;display:inline-flex;align-items:center;gap:5px}
+.pill.acid{background:var(--acid);color:#111;font-weight:900}.pill.orange{background:var(--orange);color:#111;font-weight:900}.pill.ghost{background:transparent;border:1px solid #373b3f}.pill.cyan{background:rgba(94,220,255,.15);border:1px solid rgba(94,220,255,.45);color:var(--cyan)}
+.divider{height:1px;background:#2a2e31}
+.btn{height:44px;border:0;border-radius:12px;padding:0 15px;font-weight:900;letter-spacing:.01em;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--snow);color:#111}
+.btn.acid{background:var(--acid)}.btn.dark{background:#1b1f22;color:var(--snow);border:1px solid #33383c}.btn.orange{background:var(--orange)}
+.icon-label{display:flex;align-items:center;gap:7px;font-size:12px;color:#cfd2cc}.dot{width:7px;height:7px;border-radius:50%;background:var(--acid);box-shadow:0 0 0 4px rgba(200,255,26,.13)}
+.bottom-nav{height:68px;position:absolute;bottom:0;left:0;right:0;background:rgba(8,9,10,.94);border-top:1px solid #25292c;display:grid;grid-template-columns:repeat(4,1fr);z-index:15;backdrop-filter:blur(22px)}
+.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#80847f;font-size:9px;font-weight:750}.nav-item i{font-style:normal;font-size:18px;line-height:1}.nav-item.active{color:var(--acid)}
+.sticker{font:900 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;background:var(--yellow);color:#111;padding:6px 9px;transform:rotate(-3deg);display:inline-block;box-shadow:3px 3px 0 #111}
+.poster-visual{position:relative;overflow:hidden;background:
+ radial-gradient(circle at 65% 25%,#bec6c9 0 5%,transparent 6%),
+ linear-gradient(140deg,#1d2124 0 30%,#60696d 30% 43%,#d8d9d4 43% 46%,#32383b 46% 68%,#0e1011 68%);
+}
+.poster-visual:before{content:"";position:absolute;width:140%;height:48%;left:-20%;bottom:0;background:linear-gradient(175deg,transparent 0 38%,#e8e8e2 39% 55%,#aeb3b4 56% 58%,#252a2d 59%);transform:skewY(-6deg)}
+.poster-visual:after{content:"";position:absolute;width:80px;height:18px;border-radius:99px;background:#0b0c0d;left:52%;top:48%;transform:rotate(-18deg);box-shadow:-21px -7px 0 -5px #0b0c0d,22px 7px 0 -5px #0b0c0d}
+.map{position:relative;overflow:hidden;background:#13171a}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.map .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,5,5,.05),rgba(4,5,5,.46));pointer-events:none}
+.map-label{position:absolute;font:9px var(--mono);letter-spacing:.06em;color:#9ea6a4;text-shadow:0 1px 2px #000}.map-label.strong{font-weight:900;color:#eceee8;font-size:10px}
+.map-marker{position:absolute;width:24px;height:24px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--snow);box-shadow:0 8px 20px rgba(0,0,0,.42);display:grid;place-items:center}.map-marker:after{content:"";width:8px;height:8px;border-radius:50%;background:#111}.map-marker.acid{background:var(--acid);width:31px;height:31px}.map-marker.orange{background:var(--orange)}
+.map-marker span{transform:rotate(45deg);font:8px var(--mono);color:#111;font-weight:900}
+.map-cluster{position:absolute;display:grid;place-items:center;width:35px;height:35px;border-radius:50%;background:#0c0e0f;border:1px solid var(--acid);color:var(--acid);font:900 11px var(--mono);box-shadow:0 8px 20px rgba(0,0,0,.45)}
+.lift-line{position:absolute;height:2px;background:#e6e9e3;transform-origin:left center;opacity:.86}.lift-line:after,.lift-line:before{content:"";position:absolute;width:6px;height:6px;border:1px solid #e6e9e3;border-radius:50%;top:-3px}.lift-line:before{left:0}.lift-line:after{right:0}
+.access-line{position:absolute;height:3px;background:var(--acid);transform-origin:left center;border-radius:3px;box-shadow:0 0 0 3px rgba(200,255,26,.12)}
+
+/* Mobile 1 */
+.m1 .map{height:556px}.mobile-top{position:absolute;z-index:5;top:0;left:0;right:0;padding:19px 16px 0;display:flex;flex-direction:column;gap:12px}.mobile-brand-row{display:flex;align-items:center;justify-content:space-between}.m1 .search{width:100%}.m1 .map-label.i1{left:45px;top:235px}.m1 .map-label.i2{right:38px;top:160px}.m1 .map-label.i3{left:198px;top:334px}.m1 .map-label.i4{left:61px;top:402px}.m1 .map-marker.a{left:113px;top:268px}.m1 .map-marker.b{left:250px;top:194px}.m1 .map-marker.c{left:221px;top:363px}.m1 .map-cluster{left:73px;top:426px}.location-button{position:absolute;right:15px;bottom:88px;z-index:4}.sheet{position:absolute;z-index:7;left:0;right:0;bottom:68px;background:#0c0e0f;border-radius:23px 23px 0 0;border-top:1px solid #34383c;box-shadow:0 -20px 60px rgba(0,0,0,.42)}.sheet-handle{width:42px;height:4px;border-radius:9px;background:#42474b;margin:9px auto 10px}.m1 .sheet{height:330px;padding:0 15px}.sheet-title-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}.sheet-title{font-family:var(--display);font-size:27px;font-weight:900;letter-spacing:-.02em}.event-stack{display:flex;gap:11px;overflow:hidden}.event-card{width:264px;min-width:264px;border:1px solid #2c3033;background:#15181b;border-radius:16px;overflow:hidden}.event-card .thumb{height:108px}.event-card .content{padding:11px 12px 13px}.event-card h3{font-family:var(--display);font-size:22px;line-height:.92;text-transform:uppercase;margin:8px 0 6px;letter-spacing:-.01em}.event-card p{font-size:11px;color:#b8bbb5;margin:0;display:flex;justify-content:space-between}.event-card.secondary{width:210px;min-width:210px;opacity:.72}.event-card.secondary .thumb{background:linear-gradient(135deg,#24272a,#626a69 47%,#c8ff1a 48% 52%,#141617 53%);height:108px}
+
+/* Mobile 2 */
+.m2 .map{height:844px}.m2 .mobile-top{padding-top:18px}.m2 .map-label.i1{left:154px;top:206px}.m2 .map-label.i2{left:231px;top:344px}.m2 .map-label.i3{left:76px;top:488px}.m2 .map-marker.a{left:240px;top:375px}.m2 .map-marker.b{left:125px;top:453px}.m2 .lift-line.l1{width:126px;left:103px;top:446px;transform:rotate(-39deg)}.m2 .lift-line.l2{width:110px;left:205px;top:359px;transform:rotate(34deg)}.m2 .access-line.a1{width:111px;left:126px;top:462px;transform:rotate(-43deg)}.m2 .focus-sheet{position:absolute;z-index:10;left:12px;right:12px;bottom:82px;border-radius:22px;background:rgba(10,11,12,.96);border:1px solid #3b4044;box-shadow:0 30px 80px rgba(0,0,0,.6);overflow:hidden;backdrop-filter:blur(22px)}.m2 .focus-hero{height:126px}.focus-meta{padding:12px 14px 14px}.focus-meta h2{font-family:var(--display);font-size:30px;line-height:.88;margin:7px 0 8px;text-transform:uppercase}.focus-meta .row{display:flex;justify-content:space-between;align-items:center}.focus-actions{display:grid;grid-template-columns:1.3fr 1fr 44px;gap:8px;margin-top:12px}.focus-actions .btn{width:100%;height:42px}.m2 .floating-status{position:absolute;z-index:12;left:25px;bottom:323px}
+
+/* Mobile 3 */
+.m3{background:#0b0c0d}.event-hero-mobile{height:273px;position:relative}.event-hero-mobile .poster-visual{position:absolute;inset:0}.event-hero-mobile:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,10,11,.1),#0b0c0d 94%)}.event-hero-mobile .topbar{position:absolute;z-index:2;left:15px;right:15px;top:17px;display:flex;justify-content:space-between}.event-hero-mobile .hero-copy{position:absolute;left:17px;right:16px;bottom:12px;z-index:2}.event-hero-mobile .hero-copy h1{font-size:42px;margin:8px 0 5px}.mobile-content{padding:10px 16px 88px}.now-panel{border-top:1px solid #33383b;border-bottom:1px solid #33383b;padding:14px 0 13px}.now-grid{display:grid;grid-template-columns:70px 1fr;gap:12px;margin-top:11px}.time-big{font-family:var(--display);font-size:31px;color:var(--acid);line-height:1}.now-copy h3{font-family:var(--display);font-size:22px;margin:0 0 3px;text-transform:uppercase}.now-copy p{font-size:11px;color:#aeb2ac;margin:0}.timeline{padding-top:15px}.timeline-row{display:grid;grid-template-columns:53px 12px 1fr;gap:9px;min-height:58px}.timeline-row .t{font:11px var(--mono);color:#b6bbb5}.timeline-row .rail{position:relative}.timeline-row .rail:before{content:"";position:absolute;top:7px;left:4px;width:5px;height:5px;border-radius:50%;background:#737a76}.timeline-row .rail:after{content:"";position:absolute;left:6px;top:16px;bottom:0;width:1px;background:#33383b}.timeline-row.active .rail:before{background:var(--acid);box-shadow:0 0 0 4px rgba(200,255,26,.12)}.timeline-row .desc strong{display:block;font-size:13px}.timeline-row .desc span{font-size:10px;color:#8f948f}.safe-card{margin-top:8px;background:#1a1d1f;border:1px solid #34383c;border-radius:15px;padding:12px;display:flex;justify-content:space-between;align-items:center}.safe-card strong{font-family:var(--display);font-size:17px;text-transform:uppercase}.safe-card p{font-size:10px;color:#9da19c;margin:3px 0 0}.sticky-actions{position:absolute;z-index:10;bottom:0;left:0;right:0;height:76px;background:rgba(8,9,10,.95);backdrop-filter:blur(20px);border-top:1px solid #282d30;padding:11px 15px;display:grid;grid-template-columns:1fr 1fr 46px;gap:8px}
+
+/* Mobile 4 */
+.m4{background:#0c0d0e}.m4-header{height:86px;padding:18px 16px 12px;display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid #292d30}.m4-header h1{font-size:31px;margin:0}.progress-head{padding:16px 16px 10px}.progress-steps{display:flex;gap:6px;margin-top:10px}.progress-steps span{height:3px;flex:1;background:#2b3033;border-radius:3px}.progress-steps span.done{background:var(--acid)}.social-source{margin:7px 16px 12px;border:1px solid #34383c;border-radius:17px;overflow:hidden;background:#15181a}.social-source-top{display:flex;align-items:center;gap:9px;padding:10px 11px;border-bottom:1px solid #2c3033}.avatar{width:28px;height:28px;border-radius:50%;background:conic-gradient(var(--orange),var(--yellow),var(--acid),var(--cyan),var(--orange));padding:3px}.avatar:after{content:"";display:block;width:100%;height:100%;border-radius:50%;background:#16191b}.social-source .poster-visual{height:176px}.source-caption{padding:10px 11px;font-size:11px;line-height:1.35;color:#c3c6c0}.extract-card{margin:0 16px;border:1px solid #353a3e;border-radius:17px;background:#111416;padding:13px}.extract-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}.extract-title strong{font-size:13px}.extract-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.detected{background:#1b1f22;border-radius:10px;padding:9px;border:1px solid #2f3437}.detected span{display:block;font:9px var(--mono);color:#858a85;text-transform:uppercase;margin-bottom:4px}.detected strong{font-size:11px}.dedupe{margin:10px 16px 0;padding:10px 12px;border-radius:12px;background:rgba(94,220,255,.08);border:1px solid rgba(94,220,255,.32);display:flex;gap:9px;align-items:center}.dedupe b{font-size:11px}.dedupe span{font-size:9px;color:#9ca7a5}.m4-cta{position:absolute;left:16px;right:16px;bottom:18px;display:grid;grid-template-columns:1fr 1.7fr;gap:8px}.m4-cta .btn{height:48px}
+
+/* Mobile 5 */
+.m5{background:#0a0b0c}.m5-header{padding:18px 16px 13px;border-bottom:1px solid #282c2f;display:flex;justify-content:space-between;align-items:flex-end}.m5-header h1{font-size:31px;margin:0}.output-tabs{display:flex;gap:5px;padding:12px 16px 0}.output-tabs .chip{flex:1;text-align:center;padding:8px 6px}.preview-carousel{height:475px;position:relative;display:grid;place-items:center;overflow:hidden}.media-card{position:absolute;border-radius:18px;overflow:hidden;box-shadow:0 30px 65px rgba(0,0,0,.6);border:1px solid #3b4042;background:#16191b}.media-card.story{width:218px;height:388px;left:52px;top:35px;z-index:3}.media-card.feed{width:205px;height:256px;right:-65px;top:99px;transform:rotate(4deg);opacity:.62}.media-art{position:absolute;inset:0;background:linear-gradient(150deg,#151718 0 37%,#525b5f 38% 50%,#e9e8e2 51% 54%,#252a2d 55% 100%)}.media-art:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 34%,rgba(0,0,0,.45) 60%,#090a0b 96%)}.media-copy{position:absolute;inset:0;padding:15px;display:flex;flex-direction:column;justify-content:space-between}.media-copy .top{display:flex;justify-content:space-between}.media-copy h2{font-size:35px;margin:auto 0 8px}.media-copy .date{font:900 14px var(--mono);color:var(--acid)}.media-copy .sponsor{font:8px var(--mono);border-top:1px solid rgba(255,255,255,.28);padding-top:8px;display:flex;justify-content:space-between}.publish-list{padding:0 16px}.publish-row{height:48px;border-top:1px solid #2b2f32;display:flex;align-items:center;justify-content:space-between}.channel{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700}.channel-icon{width:26px;height:26px;border-radius:8px;background:#1f2326;display:grid;place-items:center;font:900 10px var(--mono)}.status-dot{font:10px var(--mono);color:#9da19c}.status-dot.ready{color:var(--acid)}.m5 .sticky-actions{grid-template-columns:1fr 1.3fr;height:70px}.m5 .sticky-actions .btn{height:46px}
+
+/* Desktop shared */
+.desktop-topbar{height:72px;border-bottom:1px solid #282d30;display:flex;align-items:center;padding:0 24px;gap:26px;background:rgba(9,10,11,.95);position:relative;z-index:6}.desktop-topbar .wordmark{width:190px}.desk-nav{display:flex;gap:22px;color:#929791;font-size:12px;font-weight:800}.desk-nav .active{color:var(--snow)}.desk-actions{margin-left:auto;display:flex;gap:9px;align-items:center}.desktop-topbar .search{width:290px;height:40px}.desktop-layout{position:absolute;top:72px;bottom:0;left:0;right:0}.side-list{position:absolute;left:0;top:0;bottom:0;width:430px;background:#0c0e0f;border-right:1px solid #2c3033;z-index:4}.side-map{position:absolute;left:430px;right:0;top:0;bottom:0}.section-head{padding:23px 24px 15px}.section-head h1{font-size:49px;margin:7px 0 8px}.section-head .sub{font-size:12px;color:#a5a9a3;display:flex;justify-content:space-between}.desk-filter-row{padding:0 24px 15px;display:flex;gap:7px;border-bottom:1px solid #2a2e31}.desk-event-list{padding:6px 0}.desk-event-row{display:grid;grid-template-columns:94px 1fr auto;gap:14px;padding:14px 24px;border-bottom:1px solid #24282b;align-items:center}.desk-event-row.active{background:linear-gradient(90deg,rgba(200,255,26,.12),transparent);box-shadow:inset 3px 0 var(--acid)}.desk-thumb{height:78px;border-radius:11px;overflow:hidden}.desk-event-row h3{font-family:var(--display);font-size:23px;line-height:.9;text-transform:uppercase;margin:5px 0}.desk-event-row p{font-size:10px;color:#929791;margin:0}.desk-event-row .arrow{font-size:20px;color:#626763}.desk-sponsor{position:absolute;left:24px;right:24px;bottom:18px;height:62px;border-radius:12px;border:1px solid #32373a;background:#15181a;padding:12px 14px;display:flex;align-items:center;justify-content:space-between}.desk-sponsor strong{font-family:var(--display);font-size:17px;text-transform:uppercase}.desk-sponsor .logo-box{font:900 11px var(--mono);color:var(--acid)}
+.map-controls{position:absolute;right:22px;top:20px;z-index:5;display:flex;gap:8px}.map-zoom{display:flex;flex-direction:column;border:1px solid #363b3f;border-radius:10px;overflow:hidden}.map-zoom button{width:38px;height:38px;background:rgba(10,11,12,.88);border:0;color:var(--snow);font-size:18px}.map-zoom button+button{border-top:1px solid #363b3f}.map-legend{position:absolute;right:22px;bottom:22px;z-index:5;background:rgba(10,11,12,.9);border:1px solid #383d40;border-radius:13px;padding:11px 13px;backdrop-filter:blur(14px);font:10px var(--mono)}.map-legend div{display:flex;gap:8px;align-items:center;margin:5px 0}.legend-line{width:18px;height:2px;background:var(--acid)}.legend-line.white{background:#eceee9}.legend-dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
+
+/* Desktop 1 */
+.d1 .side-map .map{height:100%}.d1 .map-label.i1{left:30%;top:31%}.d1 .map-label.i2{left:62%;top:20%}.d1 .map-label.i3{left:54%;top:59%}.d1 .map-label.i4{left:18%;top:69%}.d1 .map-marker.a{left:43%;top:39%}.d1 .map-marker.b{left:66%;top:28%}.d1 .map-marker.c{left:58%;top:63%}.d1 .map-marker.d{left:24%;top:72%}.d1 .map-cluster{left:78%;top:59%}.map-event-pop{position:absolute;left:42%;top:46%;z-index:6;width:280px;border:1px solid #3a3f43;background:rgba(11,12,13,.96);border-radius:15px;overflow:hidden;box-shadow:0 22px 60px rgba(0,0,0,.55)}.map-event-pop .mini-hero{height:96px}.map-event-pop .mini-content{padding:11px 12px}.map-event-pop h4{font-family:var(--display);font-size:24px;line-height:.9;margin:6px 0;text-transform:uppercase}.map-event-pop p{font-size:10px;color:#a2a6a0;margin:0;display:flex;justify-content:space-between}
+
+/* Desktop 2 */
+.d2{background:#0b0c0d}.event-page-grid{position:absolute;top:72px;left:0;right:0;bottom:0;display:grid;grid-template-columns:56% 44%}.event-page-left{overflow:hidden;border-right:1px solid #2d3134}.event-page-hero{height:368px;position:relative}.event-page-hero .poster-visual{position:absolute;inset:0}.event-page-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(10,11,12,.9) 93%)}.event-page-hero .copy{position:absolute;z-index:3;left:35px;right:30px;bottom:23px}.event-page-hero h1{font-size:76px;margin:10px 0 9px}.event-action-row{display:flex;gap:9px;position:absolute;right:0;bottom:3px}.event-body-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;padding:25px 34px}.event-body-grid h2{font-family:var(--display);font-size:28px;text-transform:uppercase;margin:0 0 13px}.info-line{display:grid;grid-template-columns:105px 1fr;border-top:1px solid #2d3134;padding:10px 0;font-size:11px}.info-line span:first-child{font:10px var(--mono);color:#858a85;text-transform:uppercase}.schedule-mini .srow{display:grid;grid-template-columns:54px 1fr;gap:10px;padding:9px 0;border-top:1px solid #2d3134}.schedule-mini .srow time{font:10px var(--mono);color:var(--acid)}.schedule-mini .srow strong{font-size:11px}.event-page-right{position:relative}.event-page-right .map{height:55%;border-bottom:1px solid #2d3134}.event-page-right .map-label.i1{left:29%;top:62%}.event-page-right .map-label.i2{left:61%;top:35%}.event-page-right .map-marker.a{left:58%;top:41%}.event-page-right .map-marker.b{left:31%;top:66%}.event-page-right .lift-line.l1{left:34%;top:65%;width:245px;transform:rotate(-30deg)}.event-page-right .access-line.a1{left:34%;top:65%;width:232px;transform:rotate(-30deg)}.route-panel{height:45%;padding:23px 26px}.route-panel h2{font-family:var(--display);font-size:31px;text-transform:uppercase;margin:0 0 16px}.route-step{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid #2c3033}.route-step .num{width:24px;height:24px;border-radius:50%;border:1px solid #555c5a;display:grid;place-items:center;font:9px var(--mono)}.route-step strong{font-size:12px}.route-step span{font:9px var(--mono);color:#8f948f}.route-step b{font:10px var(--mono);color:var(--acid)}.partner-strip{margin-top:12px;border:1px solid #363b3f;border-radius:13px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center;background:#16191b}.partner-strip strong{font-family:var(--display);text-transform:uppercase;font-size:17px}.partner-strip em{font:900 11px var(--mono);font-style:normal;color:var(--acid)}
+
+/* Desktop 3 social inbox */
+.admin-shell{position:absolute;top:72px;left:0;right:0;bottom:0;display:grid;background:#0b0c0d}.d3 .admin-shell{grid-template-columns:300px 1fr 370px}.admin-col{min-width:0;border-right:1px solid #2d3134;overflow:hidden}.admin-col:last-child{border-right:0}.admin-head{height:72px;padding:16px 18px;border-bottom:1px solid #2b3033;display:flex;align-items:end;justify-content:space-between}.admin-head h2{font-family:var(--display);font-size:27px;text-transform:uppercase;margin:0}.inbox-filter{padding:11px 12px;border-bottom:1px solid #2b3033;display:flex;gap:6px}.inbox-item{padding:14px 15px;border-bottom:1px solid #282c2f;display:grid;grid-template-columns:34px 1fr auto;gap:10px}.inbox-item.active{background:rgba(200,255,26,.08);box-shadow:inset 3px 0 var(--acid)}.inbox-item h4{font-size:12px;margin:0 0 4px}.inbox-item p{font-size:10px;color:#909590;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.inbox-item time{font:9px var(--mono);color:#737874}.source-inspect{padding:18px;display:grid;grid-template-columns:340px 1fr;gap:20px;height:calc(100% - 72px);overflow:auto}.source-phone{width:320px;height:640px;border:1px solid #3a4043;border-radius:24px;background:#121416;overflow:hidden;box-shadow:0 24px 50px rgba(0,0,0,.45)}.source-phone .social-source{margin:0;border:0;border-radius:0}.source-phone .social-source .poster-visual{height:390px}.source-phone .source-caption{font-size:12px;padding:15px}.extract-log{padding-top:6px}.extract-log h3{font-family:var(--display);font-size:32px;text-transform:uppercase;margin:0 0 18px}.confidence-row{display:grid;grid-template-columns:105px 1fr 42px;gap:11px;align-items:center;padding:10px 0;border-top:1px solid #2b3033}.confidence-row label{font:9px var(--mono);color:#858a85;text-transform:uppercase}.confidence-row strong{font-size:11px}.confidence{height:5px;background:#292e31;border-radius:5px;overflow:hidden}.confidence i{display:block;height:100%;background:var(--acid)}.confidence-row b{font:9px var(--mono);color:var(--acid);text-align:right}.candidate-panel{padding:17px;height:calc(100% - 72px);overflow:auto}.candidate-panel h3{font-family:var(--display);font-size:31px;text-transform:uppercase;margin:0 0 14px}.field-box{border-top:1px solid #2d3134;padding:10px 0}.field-box label{display:flex;justify-content:space-between;font:9px var(--mono);text-transform:uppercase;color:#858a85;margin-bottom:6px}.field-value{border:1px solid #363b3e;border-radius:9px;background:#15181a;padding:10px;font-size:11px}.field-value.changed{border-color:rgba(200,255,26,.5);box-shadow:inset 3px 0 var(--acid)}.candidate-panel .dedupe{margin:8px 0 12px}.candidate-actions{position:absolute;right:0;bottom:0;width:370px;padding:13px 17px;border-top:1px solid #303538;background:rgba(11,12,13,.96);display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+
+/* Desktop 4 geo editor */
+.d4 .admin-shell{grid-template-columns:1fr 390px}.geo-stage{position:relative}.geo-stage .map{height:70%}.geo-tools{position:absolute;left:20px;top:18px;z-index:5;display:flex;flex-direction:column;gap:7px}.geo-tool{width:44px;height:44px;border:1px solid #3a4043;border-radius:11px;background:rgba(11,12,13,.91);color:#dce0da;display:grid;place-items:center;font-size:16px}.geo-tool.active{border-color:var(--acid);color:var(--acid);box-shadow:0 0 0 3px rgba(200,255,26,.1)}.geo-stage .map-label.i1{left:25%;top:64%}.geo-stage .map-label.i2{left:62%;top:31%}.geo-stage .map-marker.a{left:60%;top:36%}.geo-stage .map-marker.b{left:27%;top:67%}.geo-stage .lift-line.l1{left:30%;top:66%;width:385px;transform:rotate(-28deg)}.geo-stage .access-line.a1{left:30%;top:66%;width:361px;transform:rotate(-28deg)}.geo-stage .access-line.a2{left:58%;top:40%;width:142px;transform:rotate(27deg);background:var(--cyan);box-shadow:0 0 0 3px rgba(94,220,255,.12)}.geo-tag{position:absolute;z-index:5;background:#0d0f10;border:1px solid #3a4043;border-radius:8px;padding:7px 9px;font:9px var(--mono)}.geo-tag.arrival{left:22%;top:72%}.geo-tag.venue{left:65%;top:28%;border-color:var(--acid);color:var(--acid)}.geo-tag.party{left:75%;top:50%;border-color:var(--cyan);color:var(--cyan)}.sessions-strip{height:30%;border-top:1px solid #2d3134;background:#0d0f10;padding:17px 21px}.sessions-strip .title{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.sessions-strip h3{font-family:var(--display);font-size:24px;text-transform:uppercase;margin:0}.session-cards{display:flex;gap:10px}.session-card{width:190px;border:1px solid #313639;border-radius:12px;padding:11px;background:#15181a}.session-card time{font:10px var(--mono);color:var(--acid)}.session-card strong{display:block;font-size:12px;margin-top:7px}.session-card span{font-size:9px;color:#929791}.editor-panel{border-left:1px solid #2d3134;background:#0c0e0f;overflow:auto}.editor-panel .admin-head{position:sticky;top:0;background:#0c0e0f;z-index:2}.editor-content{padding:15px 18px}.source-health{border:1px solid #34393c;border-radius:13px;padding:11px 12px;background:#15181a;margin-bottom:14px}.source-health .top{display:flex;justify-content:space-between;align-items:center}.source-health strong{font-size:11px}.source-health p{font-size:9px;color:#858a85;margin:5px 0 0}.editor-group{border-top:1px solid #2d3134;padding:13px 0}.editor-group h4{font:10px var(--mono);text-transform:uppercase;color:#8e938e;margin:0 0 10px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}.input{height:40px;border:1px solid #343a3d;border-radius:9px;background:#15181a;padding:0 10px;display:flex;align-items:center;font-size:10px;color:#c9cdc7}.input.full{grid-column:1/-1}.editor-footer{position:sticky;bottom:0;background:rgba(12,14,15,.96);border-top:1px solid #303538;padding:12px 18px;display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+
+/* Desktop 5 social studio */
+.d5 .admin-shell{grid-template-columns:300px 1fr 360px}.queue-list{padding:9px}.queue-date{font:9px var(--mono);color:#777c78;padding:10px 8px 6px}.queue-item{border:1px solid transparent;border-radius:11px;padding:11px 10px;display:grid;grid-template-columns:42px 1fr auto;gap:9px}.queue-item.active{border-color:#3a4043;background:#171a1c}.queue-item .qthumb{width:42px;height:50px;border-radius:7px;background:linear-gradient(150deg,#25292b,#70787b 46%,var(--acid) 47% 51%,#111 52%)}.queue-item h4{font-size:11px;margin:3px 0}.queue-item p{font-size:9px;color:#868b87;margin:0}.queue-item time{font:9px var(--mono);color:var(--acid)}.studio-canvas{height:100%;padding:20px 26px;overflow:auto;background:
+ radial-gradient(circle at 20% 20%,rgba(200,255,26,.07),transparent 28%),#0b0d0e}.studio-title{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}.studio-title h2{font-family:var(--display);font-size:35px;text-transform:uppercase;margin:0}.media-grid{display:grid;grid-template-columns:1fr .64fr;gap:20px;align-items:start}.big-feed{aspect-ratio:4/5;border-radius:18px;overflow:hidden;border:1px solid #3b4043;position:relative;max-height:700px}.big-story{aspect-ratio:9/16;border-radius:18px;overflow:hidden;border:1px solid #3b4043;position:relative;max-height:700px}.big-feed .media-copy,.big-story .media-copy{padding:24px}.big-feed .media-copy h2{font-size:56px}.big-story .media-copy h2{font-size:44px}.big-feed .media-copy .date,.big-story .media-copy .date{font-size:17px}.channel-panel{padding:17px;height:calc(100% - 72px);overflow:auto}.channel-panel h3{font-family:var(--display);font-size:30px;text-transform:uppercase;margin:0 0 14px}.publish-setting{border-top:1px solid #2d3134;padding:12px 0}.publish-setting .label{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;font-size:11px;font-weight:800}.toggle{width:33px;height:19px;border-radius:20px;background:#34393c;padding:3px}.toggle:after{content:"";display:block;width:13px;height:13px;border-radius:50%;background:#8b918c}.toggle.on{background:var(--acid)}.toggle.on:after{background:#111;margin-left:14px}.channel-check{display:flex;align-items:center;justify-content:space-between;border:1px solid #343a3d;border-radius:10px;padding:10px 11px;margin-bottom:7px;background:#15181a}.channel-check .left{display:flex;gap:9px;align-items:center;font-size:11px;font-weight:800}.channel-check .check{width:17px;height:17px;border-radius:5px;background:var(--acid);color:#111;display:grid;place-items:center;font-size:11px}.sponsor-lock{border:1px solid rgba(200,255,26,.35);border-radius:12px;padding:11px;background:rgba(200,255,26,.06)}.sponsor-lock .top{display:flex;justify-content:space-between;align-items:center}.sponsor-lock strong{font-size:11px}.sponsor-lock p{font-size:9px;color:#929791;margin:6px 0 0}.channel-actions{position:absolute;right:0;bottom:0;width:360px;border-top:1px solid #303538;background:rgba(11,12,13,.96);padding:13px 17px;display:grid;grid-template-columns:1fr 1.3fr;gap:8px}
+
+/* Export mode */
+body.export .prototype-shell{padding:0;background:transparent;min-height:0}
+body.export .toolbar{display:none}
+body.export .stage{display:block;min-height:0}
+body.export .frame-wrap{transform:none!important}
+body.export .screen{border-radius:0;box-shadow:none}
+body.export .screen.mobile{border-radius:0}
+
+@media(max-width:700px){.prototype-shell{padding:12px 10px 20px}.toolbar .tag{display:none}.brand-shell{font-size:19px}.segmented{margin-left:0}.state-tabs{order:4;width:100%}.screen{box-shadow:0 24px 60px rgba(0,0,0,.6)}}
+</style>
+
+<style id="oldschool-rocknroll-v2">
+/* ---------------------------------------------------------------
+   SHRED//RADAR — OLD SCHOOL SNOWBOARD / ROCK'N'ROLL ART DIRECTION
+   Same information architecture, rebuilt as a photocopied zine,
+   gig poster and snowboard-shop wall rather than a SaaS dashboard.
+---------------------------------------------------------------- */
+:root{
+  --ink:#100f0d;
+  --ink-2:#181612;
+  --ink-3:#24201b;
+  --snow:#efe7d7;
+  --paper:#e9dfca;
+  --paper-2:#d8cbb2;
+  --muted:#9f9685;
+  --line:#51493d;
+  --acid:#f3eb00;
+  --orange:#ff431f;
+  --cyan:#4bbce4;
+  --yellow:#f3eb00;
+  --display:Impact, Haettenschweiler, "Arial Narrow Bold", "Helvetica Neue Condensed Bold", sans-serif;
+  --body:Arial, Helvetica, sans-serif;
+  --mono:"Courier New", Courier, monospace;
+  --radius:2px;
+}
+html,body{background:#0c0b09;color:var(--snow);font-family:var(--body)}
+.prototype-shell{
+  background:
+    linear-gradient(115deg,transparent 0 73%,rgba(255,67,31,.12) 73% 75%,transparent 75%),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 5px),
+    #0d0c0a;
+  padding:18px 22px 30px;
+}
+.toolbar{border-bottom:3px solid var(--snow);padding:0 0 14px;gap:10px}
+.brand-shell{font-size:29px;transform:skew(-8deg) rotate(-1deg);text-shadow:3px 3px 0 #000}
+.brand-shell b{color:var(--orange)}
+.toolbar .tag{border:1px solid var(--paper);border-radius:1px;padding:5px 8px;color:var(--ink);background:var(--paper);transform:rotate(1deg);font-weight:900}
+.segmented{border:2px solid var(--paper);border-radius:1px;padding:2px;background:transparent;box-shadow:4px 4px 0 #000}
+.segmented button{border-radius:0;padding:7px 14px;font-family:var(--mono);font-weight:900}
+.segmented button.active{background:var(--acid);color:var(--ink)}
+.state-tabs{gap:8px;padding:4px 0 0}
+.state-tabs button{border:1px solid #786e5b;border-radius:1px;padding:8px 11px;background:#171511;color:#c9bfae;font-family:var(--mono);text-transform:uppercase;box-shadow:2px 2px 0 #000;transform:rotate(-.35deg)}
+.state-tabs button:nth-child(even){transform:rotate(.45deg)}
+.state-tabs button.active{border-color:var(--acid);color:var(--ink);background:var(--acid);box-shadow:3px 3px 0 var(--orange)}
+.screen{background:var(--ink);border-radius:3px!important;border:2px solid #332f28;box-shadow:16px 18px 0 #000,0 38px 100px rgba(0,0,0,.7)}
+.screen.mobile{border-radius:4px!important}
+.screen:after{opacity:.3;mix-blend-mode:overlay;background-image:
+  url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.33'/%3E%3C/svg%3E"),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px)}
+
+/* Typographic voice */
+.wordmark{font-size:27px;letter-spacing:-.01em;transform:skew(-9deg);text-shadow:2px 2px 0 #000}
+.wordmark .slash{color:var(--orange);text-shadow:none}
+.micro,.eyebrow{font-family:var(--mono);font-weight:900;letter-spacing:.06em}
+.eyebrow{color:var(--acid);background:#111;padding:3px 5px;display:inline-block;transform:rotate(-1deg)}
+.huge{letter-spacing:-.045em;line-height:.79;transform:skew(-7deg);text-shadow:3px 3px 0 rgba(0,0,0,.8)}
+h1,h2,h3,.sheet-title,.event-card h3,.desk-event-row h3,.map-event-pop h4{font-family:var(--display);letter-spacing:-.025em}
+
+/* Sticker language instead of SaaS pills */
+.chip-row{gap:8px;overflow:visible}
+.chip,.pill{border-radius:1px;text-transform:uppercase;font-family:var(--mono);font-weight:900;letter-spacing:.02em;backdrop-filter:none}
+.chip{border:1px solid #796f5e;background:#171511;color:var(--snow);padding:7px 10px;box-shadow:2px 2px 0 #000;transform:rotate(-1deg)}
+.chip:nth-child(even){transform:rotate(1deg)}
+.chip.active{background:var(--acid);color:var(--ink);border-color:#111;box-shadow:3px 3px 0 var(--orange)}
+.chip.alert{color:var(--snow);background:var(--orange);border-color:#111}
+.pill{border-radius:0;padding:5px 7px;background:var(--paper);color:var(--ink);clip-path:polygon(3% 0,100% 5%,97% 100%,0 94%)}
+.pill.acid{background:var(--acid);color:var(--ink)}
+.pill.orange{background:var(--orange);color:var(--ink)}
+.pill.ghost{background:transparent;border:1px solid #8f8370;color:var(--snow);clip-path:none}
+.pill.cyan{background:var(--cyan);border-color:#111;color:var(--ink)}
+.sticker{background:var(--acid);box-shadow:4px 4px 0 var(--orange);font-size:10px;transform:rotate(-4deg)}
+
+/* Square, physical controls */
+.btn{border-radius:1px;border:2px solid #111;height:44px;font-family:var(--display);font-size:15px;text-transform:uppercase;letter-spacing:.02em;box-shadow:4px 4px 0 #000;clip-path:polygon(0 0,97% 0,100% 88%,94% 100%,0 100%)}
+.btn.acid{background:var(--acid);color:#111}.btn.orange{background:var(--orange);color:#111}.btn.dark{background:#171511;color:var(--snow);border-color:#7a705f}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #000}
+.round-btn{border-radius:2px;border:1px solid #8d826f;background:#171511;box-shadow:2px 2px 0 #000;transform:rotate(2deg)}
+.search{border-radius:0;border:2px solid #171511;background:var(--paper);color:#201c17;box-shadow:4px 4px 0 #000;font-family:var(--mono);font-weight:900}
+.search .glass{border-color:#201c17}
+.bottom-nav{background:#11100d;border-top:3px solid var(--paper);backdrop-filter:none;height:68px}
+.nav-item{font-family:var(--mono);text-transform:uppercase;color:#9b907e}.nav-item.active{color:var(--acid)}
+.nav-item i{filter:grayscale(1);font-size:17px}
+
+/* Analogue poster/photo block */
+.poster-visual{
+  background:
+    radial-gradient(circle at 72% 18%,var(--acid) 0 7%,transparent 7.5%),
+    radial-gradient(circle at 16% 72%,rgba(0,0,0,.5) 0 1.2px,transparent 1.4px) 0 0/6px 6px,
+    linear-gradient(141deg,#171411 0 34%,var(--orange) 34% 48%,var(--paper) 48% 53%,#777064 53% 67%,#171411 67% 100%);
+  filter:contrast(1.13) saturate(.93);
+}
+.poster-visual:before{height:55%;background:linear-gradient(174deg,transparent 0 35%,var(--paper) 36% 52%,#766e61 53% 56%,#181512 57%);transform:skewY(-8deg)}
+.poster-visual:after{width:94px;height:16px;background:#0d0c0a;left:50%;top:47%;transform:rotate(-21deg);border-radius:1px;box-shadow:-25px -8px 0 -5px #0d0c0a,26px 7px 0 -5px #0d0c0a,0 0 0 2px rgba(239,231,215,.18)}
+.media-art{background:
+  radial-gradient(circle at 74% 20%,var(--acid) 0 6%,transparent 6.4%),
+  radial-gradient(circle,#171411 0 1px,transparent 1.2px) 0 0/5px 5px,
+  linear-gradient(151deg,#171411 0 35%,var(--orange) 35% 50%,var(--paper) 50% 54%,#6a6459 54% 65%,#181512 65% 100%)}
+
+/* The mountain map becomes a screenprinted zine map */
+.map{background:
+  radial-gradient(circle at 80% 15%,rgba(243,235,0,.15) 0 1px,transparent 1.3px) 0 0/7px 7px,
+  linear-gradient(145deg,#1a1814,#0e0d0b 62%)}
+.map:before{content:"";position:absolute;inset:auto -8% -13% 30%;height:42%;background:var(--paper);opacity:.06;transform:rotate(-9deg);clip-path:polygon(0 34%,18% 24%,34% 40%,48% 15%,61% 31%,79% 5%,100% 25%,100% 100%,0 100%);pointer-events:none}
+.map svg g path{stroke:#665f54!important;stroke-width:1.4!important;stroke-dasharray:2 2}
+.map svg>path{stroke:#bbb09c!important;opacity:.42}
+.map .shade{background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.28))}
+.map-label{font-size:9px;color:#cfc4b1;text-shadow:2px 2px 0 #000;font-weight:900}.map-label.strong{color:var(--acid);font-size:10px}
+.map-marker{border-radius:0;clip-path:polygon(50% 0,61% 24%,85% 15%,76% 39%,100% 50%,76% 61%,85% 85%,61% 76%,50% 100%,39% 76%,15% 85%,24% 61%,0 50%,24% 39%,15% 15%,39% 24%);transform:rotate(-9deg);background:var(--paper);box-shadow:5px 7px 0 rgba(0,0,0,.7)}
+.map-marker:after{display:none}.map-marker.acid{background:var(--acid)}.map-marker.orange{background:var(--orange)}
+.map-marker span{transform:none;font-size:9px}
+.map-cluster{border-radius:1px;background:var(--acid);border:2px solid #111;color:#111;box-shadow:4px 4px 0 var(--orange);transform:rotate(5deg);font-size:12px}
+.lift-line{background:var(--paper);height:2px}.lift-line:after,.lift-line:before{border-color:var(--paper);border-radius:0;transform:rotate(45deg)}
+.access-line{background:var(--orange);height:4px;box-shadow:0 0 0 2px var(--acid)}
+.map-zoom,.map-legend{border-radius:1px;border:1px solid #827866;background:#15130f;box-shadow:3px 3px 0 #000}
+.map-zoom button{background:#15130f}.map-legend{font-weight:900}
+
+/* Panels and cards: torn paper, ticket stubs, photocopied flyers */
+.sheet{background:var(--paper);color:#171411;border-radius:0;border:2px solid #171411;border-bottom:0;box-shadow:0 -8px 0 var(--orange),0 -24px 60px rgba(0,0,0,.6);clip-path:polygon(0 3%,4% 1%,8% 3%,13% 1%,18% 3%,22% 1%,27% 3%,33% 1%,38% 3%,44% 1%,50% 3%,56% 1%,62% 3%,67% 1%,72% 3%,78% 1%,84% 3%,89% 1%,94% 3%,100% 1%,100% 100%,0 100%)}
+.sheet-handle{background:#3d382f;border-radius:0;height:3px}.sheet .micro{color:#5f574b}.sheet-title{font-size:31px;transform:skew(-7deg)}
+.event-card{position:relative;border-radius:0;border:2px solid #171411;background:var(--paper);color:#171411;box-shadow:5px 5px 0 #171411;transform:rotate(-1deg)}
+.event-card:nth-child(even){transform:rotate(1.4deg)}
+.event-card .content{background:var(--paper)}.event-card p{color:#4d463b}.event-card.secondary{opacity:1;background:var(--orange)}
+.event-card.secondary .content{background:var(--orange)}
+.focus-sheet{border-radius:1px!important;background:var(--paper)!important;color:#171411!important;border:2px solid #171411!important;box-shadow:8px 8px 0 #000!important;transform:rotate(-.4deg);clip-path:polygon(0 0,97% 0,100% 3%,99% 100%,3% 99%,0 96%)}
+.focus-sheet .micro{color:#5c554a}.focus-meta{background:var(--paper)}
+.focus-actions .btn.dark{background:#171411;color:var(--snow)}
+.safe-card,.extract-card,.social-source,.media-card,.map-event-pop,.session-card,.source-phone,.field-value,.input,.partner-strip,.source-health,.queue-item,.sponsor-lock{border-radius:1px!important}
+.safe-card{background:var(--acid);color:#171411;border:2px solid #171411;box-shadow:5px 5px 0 var(--orange);transform:rotate(-.6deg)}
+.safe-card p{color:#494335}
+
+/* Mobile compositions */
+.mobile-top{padding-top:17px}
+.m1 .mobile-top:after{content:"LOCAL EVENTS / NO CORPORATE BULLSHIT";font:900 8px var(--mono);background:var(--orange);color:#111;padding:3px 5px;position:absolute;right:16px;top:63px;transform:rotate(2deg);box-shadow:2px 2px 0 #000}
+.m1 .sheet{height:342px;padding:4px 15px 0}
+.m1 .map{height:552px}
+.m1 .event-stack{padding:2px 5px 8px 0}
+.m1 .event-card h3{font-size:25px;line-height:.83}
+.m1 .event-card .thumb{filter:contrast(1.2)}
+.m1 .bottom-nav{color:var(--paper)}
+
+.m2:before{content:"KAUNERTAL";position:absolute;left:-48px;top:195px;z-index:1;font:900 64px var(--display);color:rgba(239,231,215,.08);transform:rotate(-90deg);letter-spacing:.03em;pointer-events:none}
+.m2 .focus-sheet{bottom:84px}.m2 .floating-status{bottom:326px;transform:rotate(-5deg)}
+.m2 .map{background:radial-gradient(circle at 12% 25%,rgba(255,67,31,.14) 0 1px,transparent 1.3px) 0 0/6px 6px,linear-gradient(145deg,#171512,#0c0b09 70%)}
+
+.m3{background:var(--paper);color:#171411}
+.m3 .event-hero-mobile{height:292px;border-bottom:8px solid var(--orange)}
+.m3 .event-hero-mobile:after{background:linear-gradient(180deg,transparent 28%,rgba(16,15,13,.25) 65%,var(--paper) 98%)}
+.m3 .event-hero-mobile .hero-copy{bottom:5px}.m3 .event-hero-mobile .hero-copy h1{font-size:49px;color:var(--paper);text-shadow:4px 4px 0 #111;transform:skew(-8deg)}
+.m3 .mobile-content{padding-top:8px}.m3 .now-panel{border-color:#312d26;transform:rotate(-.3deg)}
+.m3 .eyebrow{background:#111;color:var(--acid)}
+.m3 .time-big{color:var(--orange);font-size:35px;text-shadow:2px 2px 0 #111}
+.m3 .now-copy p,.m3 .timeline-row .desc span,.m3 .timeline-row .t{color:#5b5448}
+.m3 .timeline-row .rail:after{background:#6d6455}.m3 .timeline-row .rail:before{background:#171411}.m3 .timeline-row.active .rail:before{background:var(--orange);box-shadow:0 0 0 4px var(--acid)}
+.m3 .sticky-actions{background:#11100d;border-top:4px solid var(--orange)}
+
+.m4{background:var(--paper);color:#171411}
+.m4-header{border-bottom:5px solid #171411;background:var(--orange);color:#111;transform:skewY(-1deg);transform-origin:left top}
+.m4-header .eyebrow{background:#111;color:var(--acid)}
+.m4-header h1{font-size:39px;transform:skew(-8deg)}
+.progress-head{background:var(--paper)}.progress-head .micro{color:#5e564a}.progress-steps span{background:#9d927e;border-radius:0}.progress-steps span.done{background:var(--orange)}
+.m4 .social-source{background:#111;color:var(--paper);border:2px solid #111;box-shadow:7px 7px 0 var(--orange);transform:rotate(-.6deg)}
+.m4 .social-source-top{border-color:#4c453a}.m4 .source-caption{color:var(--paper)}
+.m4 .extract-card{background:#f4ead6;color:#171411;border:2px solid #171411;box-shadow:6px 6px 0 #171411;transform:rotate(.3deg)}
+.m4 .detected{background:transparent;border:1px dashed #514a3e;border-radius:0}.m4 .detected span{color:#6b6254}
+.m4 .dedupe{background:var(--cyan);border:2px solid #171411;box-shadow:4px 4px 0 #171411;transform:rotate(-1deg)}.m4 .dedupe span{color:#2b2925}
+
+.m5{background:#15130f}
+.m5-header{border-bottom:7px solid var(--orange);background:var(--paper);color:#111}.m5-header h1{font-size:39px;transform:skew(-8deg)}
+.output-tabs{background:#15130f;padding-top:13px}
+.preview-carousel{background:radial-gradient(circle at 10% 25%,rgba(243,235,0,.22) 0 1px,transparent 1.2px) 0 0/7px 7px}
+.media-card{border:2px solid var(--paper);border-radius:0!important;box-shadow:9px 9px 0 #000}
+.media-card.story{transform:rotate(-2deg)}.media-card.feed{transform:rotate(7deg);opacity:.78;border-color:var(--orange)}
+.media-copy h2{font-size:39px;line-height:.79}.media-copy .date{color:var(--acid);background:#111;display:inline-block;padding:3px 5px;transform:rotate(-1deg)}
+.publish-list{background:var(--paper);color:#171411;padding-top:4px}.publish-row{border-color:#77705f}.channel-icon{border-radius:1px;background:#171411;color:var(--paper)}.status-dot{color:#61594c}.status-dot.ready{color:#c12712;font-weight:900}
+
+/* Desktop overall: editorial spread, not dashboard chrome */
+.desktop-topbar{height:72px;background:#11100d;border-bottom:5px solid var(--orange);padding:0 23px;gap:24px}
+.desktop-topbar:after{content:"RIDE LOCAL / STAY LOUD";position:absolute;right:270px;top:49px;background:var(--acid);color:#111;font:900 8px var(--mono);padding:3px 6px;transform:rotate(-1deg)}
+.desk-nav{font-family:var(--mono);font-size:11px;gap:19px}.desk-nav .active{color:var(--acid);text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:7px;text-decoration-color:var(--orange)}
+.desktop-layout{top:72px}.side-list{background:var(--paper);color:#171411;border-right:5px solid #171411;width:440px}.side-map{left:440px}
+.section-head{padding:24px 25px 13px;border-bottom:2px solid #171411}.section-head h1{font-size:58px;line-height:.8;transform:skew(-8deg);text-shadow:3px 3px 0 var(--orange)}.section-head .sub{color:#4f483d;font-family:var(--mono);font-weight:900}
+.desk-filter-row{border-bottom:2px solid #171411;padding:12px 24px 16px}
+.desk-event-list{padding:5px 0}.desk-event-row{border-bottom:2px solid #171411;padding:13px 24px;grid-template-columns:98px 1fr auto}.desk-event-row.active{background:var(--acid);box-shadow:inset 8px 0 var(--orange);transform:rotate(-.2deg)}.desk-event-row h3{font-size:27px;line-height:.8}.desk-event-row p{color:#50493e;font-family:var(--mono)}.desk-event-row .arrow{color:#171411}
+.desk-thumb{border-radius:0;border:2px solid #171411;box-shadow:3px 3px 0 #171411;transform:rotate(-2deg)}
+.desk-sponsor{border-radius:0;background:#171411;color:var(--paper);border:2px solid #171411;box-shadow:7px 7px 0 var(--orange);transform:rotate(-1deg)}
+.map-event-pop{border:2px solid #171411;background:var(--paper);color:#171411;border-radius:0;box-shadow:8px 8px 0 #000;transform:rotate(-1deg)}.map-event-pop p{color:#514a3f}.map-event-pop .mini-content{background:var(--paper)}
+
+/* Desktop event profile becomes a magazine spread */
+.d2{background:var(--paper);color:#171411}.d2 .desktop-topbar{color:var(--paper)}
+.event-page-grid{grid-template-columns:58% 42%}.event-page-left{border-right:5px solid #171411;background:var(--paper)}
+.event-page-hero{height:390px;border-bottom:8px solid var(--orange)}.event-page-hero:after{background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.16) 58%,#171411 98%)}
+.event-page-hero .copy{left:34px;bottom:18px}.event-page-hero h1{font-size:84px;line-height:.78;color:var(--paper);text-shadow:5px 5px 0 #111;transform:skew(-8deg);max-width:620px}
+.event-action-row{bottom:5px}.event-body-grid{padding:24px 34px;gap:28px}.event-body-grid h2{font-size:33px;transform:skew(-6deg)}
+.info-line,.schedule-mini .srow{border-color:#5c5448;border-width:2px}.info-line span:first-child{color:#5d5549}.schedule-mini .srow time{color:#c5250c;font-weight:900;background:var(--acid);padding:2px 4px;align-self:start}
+.event-page-right{background:#11100d;color:var(--paper)}.event-page-right .map{border-bottom:6px solid var(--orange)}
+.route-panel{padding:22px 25px}.route-panel h2{font-size:37px;transform:skew(-6deg)}.route-step{border-color:#635b4e}.route-step .num{border-radius:0;background:var(--acid);color:#111;border:0;transform:rotate(-4deg);font-weight:900}.route-step span{color:#b7ac99}.route-step b{color:var(--acid)}
+.partner-strip{background:var(--orange);color:#111;border:2px solid var(--paper);box-shadow:6px 6px 0 var(--acid);transform:rotate(-.7deg)}.partner-strip .micro{color:#111}.partner-strip em{color:#111}
+
+/* Admin still works like a tool, but visually lives in the same scene */
+.admin-shell{background:var(--paper);color:#171411}.admin-col{border-right:3px solid #171411;background:var(--paper)}.admin-head{border-bottom:3px solid #171411;background:var(--orange);color:#111;height:75px}.admin-head h2{font-size:31px;transform:skew(-7deg)}.admin-head .eyebrow{background:#111;color:var(--acid)}
+.inbox-filter{border-bottom:2px solid #171411}.inbox-item{border-bottom:2px solid #5b5346}.inbox-item.active{background:var(--acid);box-shadow:inset 7px 0 var(--orange)}.inbox-item p,.inbox-item time{color:#574f43}
+.source-inspect{background:#171411;color:var(--paper);gap:24px}.source-phone{border:3px solid var(--paper);box-shadow:10px 10px 0 var(--orange);transform:rotate(-1deg);background:#111}.source-phone:before{content:"";position:absolute;width:78px;height:19px;background:rgba(239,231,215,.7);top:-8px;left:115px;transform:rotate(-3deg);z-index:10}.source-phone .source-caption{color:var(--paper)}
+.extract-log h3{font-size:39px;transform:skew(-7deg)}.confidence-row{border-color:#6e6557}.confidence-row label{color:#b8ad9a}.confidence{background:#4a4338;border-radius:0;height:8px}.confidence i{background:var(--orange);box-shadow:2px 0 0 var(--acid)}.confidence-row b{color:var(--acid)}
+.candidate-panel{background:var(--paper)}.candidate-panel h3{font-size:39px;transform:skew(-7deg)}.field-box{border-color:#5e564a;border-width:2px}.field-box label{color:#5c5448}.field-value{background:#f6ecd8;border:2px solid #171411;color:#171411;box-shadow:3px 3px 0 #171411}.field-value.changed{border-color:#171411;box-shadow:6px 0 0 var(--orange),3px 3px 0 #171411}.candidate-actions{background:#171411;border-top:4px solid var(--orange)}
+
+/* Geo operations: map desk + paper field notes */
+.d4 .admin-shell{background:#11100d}.geo-stage{background:#11100d}.geo-stage .map{border-bottom:6px solid var(--orange)}
+.geo-tools{gap:9px}.geo-tool{border-radius:1px;border:2px solid var(--paper);background:#171411;box-shadow:4px 4px 0 #000;transform:rotate(-2deg)}.geo-tool:nth-child(even){transform:rotate(2deg)}.geo-tool.active{background:var(--acid);color:#111;border-color:#111;box-shadow:5px 5px 0 var(--orange)}
+.geo-tag{border-radius:1px;background:var(--paper);color:#171411;border:2px solid #171411;box-shadow:4px 4px 0 #000;transform:rotate(-2deg)}.geo-tag.venue{background:var(--acid);color:#111;border-color:#111}.geo-tag.party{background:var(--cyan);color:#111;border-color:#111}
+.sessions-strip{background:var(--paper);color:#171411;border-top:0;padding:16px 21px}.sessions-strip h3{font-size:31px;transform:skew(-7deg)}.session-card{background:#171411;color:var(--paper);border:2px solid #171411;box-shadow:4px 4px 0 var(--orange);transform:rotate(-.7deg)}.session-card:nth-child(even){transform:rotate(.8deg)}.session-card time{color:var(--acid)}.session-card span{color:#b7ab96}
+.editor-panel{background:var(--paper);color:#171411;border-left:5px solid #171411}.editor-panel .admin-head{background:var(--orange)}.editor-content{background:var(--paper)}.source-health{background:var(--acid);color:#171411;border:2px solid #171411;box-shadow:5px 5px 0 var(--orange);transform:rotate(-.4deg)}.source-health p{color:#4c463c}.editor-group{border-color:#5e564a;border-width:2px}.editor-group h4{color:#514a3e}.input{background:#f7edda;color:#171411;border:2px solid #171411;box-shadow:2px 2px 0 #171411}.editor-footer{background:#171411;border-top:5px solid var(--orange)}
+
+/* Social studio as a paste-up table */
+.d5 .admin-shell{background:#15130f}.d5 .admin-col:first-child{background:var(--paper);color:#171411}.queue-date{color:#5c5448}.queue-item{border-radius:0}.queue-item.active{background:var(--acid);border:2px solid #171411;box-shadow:4px 4px 0 var(--orange);transform:rotate(-.5deg)}.queue-item p{color:#554d42}.queue-item time{color:#c52710}.queue-item .qthumb{border-radius:0;border:2px solid #171411;transform:rotate(-3deg)}
+.studio-canvas{background:
+  linear-gradient(90deg,transparent 0 49.8%,rgba(239,231,215,.08) 50%,transparent 50.2%),
+  radial-gradient(circle at 15% 20%,rgba(243,235,0,.15) 0 1px,transparent 1.3px) 0 0/7px 7px,
+  #171511!important}
+.studio-title h2{font-size:42px!important;transform:skew(-8deg)}
+.big-feed,.big-story{border-radius:0!important;border:3px solid var(--paper)!important;box-shadow:12px 12px 0 #000!important}.big-feed{transform:rotate(-1.5deg)}.big-story{transform:rotate(2.4deg)}
+.big-feed .media-copy h2,.big-story .media-copy h2{font-size:58px;line-height:.77}
+.channel-panel{background:var(--paper);color:#171411}.channel-panel h3{font-size:31px;transform:skew(-7deg)}.channel-check,.publish-setting{border-color:#5e564a;border-width:2px}.channel-check .channel-icon{background:#171411;color:var(--paper)}.check{background:var(--acid)!important;color:#111!important;border-radius:0!important}.toggle{border-radius:0!important;background:#4e473c!important}.toggle.on{background:var(--orange)!important}.sponsor-lock{background:var(--acid);color:#171411;border:2px solid #171411;box-shadow:4px 4px 0 var(--orange)}.channel-actions{background:#171411;border-top:5px solid var(--orange)}
+
+/* Export keeps the art direction edge-to-edge */
+body.export .screen{border:0!important;border-radius:0!important;box-shadow:none!important}
+</style>
+</head>
+<body>
+<div class="prototype-shell">
+  <div class="toolbar">
+    <div class="brand-shell">SHRED<b>//</b>RADAR</div>
+    <div class="tag">CONCEPT MOCK · 21 AUG 2026</div>
+    <div class="state-tabs" id="stateTabs"></div>
+    <div class="segmented"><button id="mobileToggle" class="active">MOBILE</button><button id="desktopToggle">DESKTOP</button></div>
+  </div>
+  <div class="stage"><div class="frame-wrap" id="frameWrap">
+
+<!-- MOBILE 1 -->
+<section class="screen mobile m1 active" data-device="mobile" data-state="0" data-name="Radar / Karte">
+  <div class="map">
+    <svg viewBox="0 0 390 556" aria-hidden="true">
+      <defs><filter id="blur1"><feGaussianBlur stdDeviation="16"/></filter></defs>
+      <path d="M-30 104 C55 55,132 84,205 32 S338 23,420 85" fill="none" stroke="#293136" stroke-width="28" opacity=".36" filter="url(#blur1)"/>
+      <g fill="none" stroke="#30373a" stroke-width="1" opacity=".82">
+        <path d="M-50 89 C45 20,128 80,205 46 S327 21,450 91"/><path d="M-54 111 C32 44,127 103,203 69 S334 42,438 111"/><path d="M-35 136 C46 66,126 128,213 92 S347 72,430 140"/>
+        <path d="M-44 197 C46 138,123 186,213 146 S342 131,432 195"/><path d="M-43 222 C40 164,124 212,216 174 S352 159,440 227"/>
+        <path d="M-40 303 C37 247,126 279,211 247 S349 232,435 304"/><path d="M-39 331 C44 273,128 315,217 278 S349 267,438 340"/>
+        <path d="M-25 423 C67 364,131 392,219 359 S351 355,426 413"/><path d="M-28 453 C58 398,136 424,215 392 S347 384,438 454"/>
+      </g>
+      <path d="M-10 300 C63 286,82 245,144 251 C230 258,242 220,312 226 C350 229,378 211,410 188" fill="none" stroke="#515b5f" stroke-width="4" opacity=".75"/>
+      <path d="M35 485 C80 428,103 394,146 381 C201 365,243 402,301 371 C338 352,372 348,410 355" fill="none" stroke="#232a2e" stroke-width="13" opacity=".55"/>
+      <g stroke="#7f8b8d" stroke-width="1" opacity=".42"><path d="M57 312 L97 224"/><path d="M240 221 L292 149"/><path d="M199 399 L244 332"/></g>
+    </svg>
+    <div class="shade"></div>
+    <div class="mobile-top">
+      <div class="mobile-brand-row"><div class="wordmark">SHRED<span class="slash">//</span>RADAR</div><div class="round-btn">⌖</div></div>
+      <div class="search"><span class="glass"></span><span>Event, Ort oder Skigebiet</span></div>
+      <div class="chip-row"><span class="chip active">Dieses Wochenende</span><span class="chip">Mitfahren</span><span class="chip">Rail / Jam</span></div>
+    </div>
+    <div class="map-label strong i1">INNSBRUCK</div><div class="map-label i2">STUBAI</div><div class="map-label i3">AXAMER LIZUM</div><div class="map-label i4">KAUNERTAL</div>
+    <div class="map-marker a"><span></span></div><div class="map-marker b orange"><span></span></div><div class="map-marker c acid"><span>★</span></div><div class="map-cluster">4</div>
+    <div class="round-btn location-button">◎</div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title-row"><div><div class="micro">10–11 OCT · TIROL</div><div class="sheet-title">7 EVENTS</div></div><span class="pill ghost">LISTE ↗</span></div>
+    <div class="event-stack">
+      <article class="event-card"><div class="thumb poster-visual"></div><div class="content"><div><span class="pill acid">OPEN TO RIDE</span> <span class="pill">OPENING</span></div><h3>Kaunertal<br>Opening</h3><p><span>SA · 10 OCT</span><span>1h 16m</span></p></div></article>
+      <article class="event-card secondary"><div class="thumb"></div><div class="content"><span class="pill orange">PARTY</span><h3>Axamer<br>After Dark</h3><p><span>SA · 24 OCT</span></p></div></article>
+    </div>
+  </div>
+  <nav class="bottom-nav"><div class="nav-item active"><i>⌁</i>DISCOVER</div><div class="nav-item"><i>◇</i>MAP</div><div class="nav-item"><i>♡</i>SAVED</div><div class="nav-item"><i>＋</i>DROP</div></nav>
+</section>
+
+<!-- MOBILE 2 -->
+<section class="screen mobile m2" data-device="mobile" data-state="1" data-name="Event ausgewählt">
+  <div class="map">
+    <svg viewBox="0 0 390 844" aria-hidden="true">
+      <g fill="none" stroke="#30373a" stroke-width="1" opacity=".88">
+        <path d="M-40 80 C40 20,140 90,226 47 S343 38,431 85"/><path d="M-50 111 C30 51,143 118,225 79 S350 70,431 116"/><path d="M-43 148 C45 91,131 154,225 111 S355 108,440 159"/>
+        <path d="M-36 223 C52 165,128 229,222 185 S352 188,436 238"/><path d="M-35 262 C43 204,131 273,223 225 S360 230,438 279"/>
+        <path d="M-34 354 C49 288,126 357,216 314 S355 317,439 371"/><path d="M-32 397 C49 337,128 408,224 361 S354 365,438 420"/>
+        <path d="M-31 490 C53 425,124 493,218 454 S350 451,438 510"/><path d="M-31 535 C53 471,132 541,219 499 S354 502,438 560"/>
+        <path d="M-28 651 C57 589,132 654,217 614 S350 612,436 669"/>
+      </g>
+      <path d="M-10 612 C60 558,118 576,165 522 C216 465,278 471,402 381" fill="none" stroke="#475257" stroke-width="4"/>
+      <path d="M30 693 C91 643,135 635,199 651 C254 665,311 638,420 608" fill="none" stroke="#232a2e" stroke-width="16" opacity=".65"/>
+    </svg>
+    <div class="shade"></div>
+    <div class="mobile-top"><div class="mobile-brand-row"><div class="round-btn">←</div><div class="pill ghost">RESORT VIEW</div><div class="round-btn">↗</div></div></div>
+    <div class="map-label strong i1">KAUNERTALER GLETSCHER</div><div class="map-label i2">NÖRDERBERG</div><div class="map-label i3">ARRIVAL · TALSTATION</div>
+    <div class="lift-line l1"></div><div class="lift-line l2"></div><div class="access-line a1"></div>
+    <div class="map-marker a acid"><span>★</span></div><div class="map-marker b"><span></span></div>
+    <span class="sticker floating-status">REGISTRATION OPEN</span>
+    <article class="focus-sheet"><div class="focus-hero poster-visual"></div><div class="focus-meta"><div class="row"><div><span class="pill acid">OPEN TO RIDE</span> <span class="pill">3 DAYS</span></div><span class="micro">1H 16M</span></div><h2>Kaunertal<br>Opening 2026</h2><div class="row"><div class="icon-label"><span class="dot"></span><span>10–11 OCT · SNOWPARK</span></div><span class="micro">FREE</span></div><div class="focus-actions"><button class="btn acid">REGISTER ↗</button><button class="btn dark">ROUTE</button><button class="btn dark">♡</button></div></div></article>
+  </div>
+  <nav class="bottom-nav"><div class="nav-item"><i>⌁</i>DISCOVER</div><div class="nav-item active"><i>◇</i>MAP</div><div class="nav-item"><i>♡</i>SAVED</div><div class="nav-item"><i>＋</i>DROP</div></nav>
+</section>
+
+<!-- MOBILE 3 -->
+<section class="screen mobile m3" data-device="mobile" data-state="2" data-name="Event Day / Party">
+  <div class="event-hero-mobile"><div class="poster-visual"></div><div class="topbar"><div class="round-btn">←</div><div style="display:flex;gap:8px"><div class="round-btn">♡</div><div class="round-btn">↗</div></div></div><div class="hero-copy"><span class="pill orange">LIVE NOW</span> <span class="pill">DAY 2</span><h1 class="huge">KAUNERTAL<br>OPENING</h1><div class="icon-label"><span class="dot"></span><span>SNOWPARK · 11 OCT · 14:32</span></div></div></div>
+  <main class="mobile-content"><div class="now-panel"><div class="eyebrow">NOW / NEXT</div><div class="now-grid"><div class="time-big">14:30</div><div class="now-copy"><h3>PRO FINALS</h3><p>Main Park · 28 min remaining</p></div></div></div>
+    <div class="timeline"><div class="timeline-row active"><div class="t">15:30</div><div class="rail"></div><div class="desc"><strong>AWARDS</strong><span>Base Area · walk 4 min</span></div></div><div class="timeline-row"><div class="t">18:00</div><div class="rail"></div><div class="desc"><strong>MOVIE PREMIERE</strong><span>Feichten Cinema · shuttle</span></div></div><div class="timeline-row"><div class="t">22:00</div><div class="rail"></div><div class="desc"><strong>AFTERPARTY</strong><span>Club 420 · 18+</span></div></div></div>
+    <div class="safe-card"><div><span class="eyebrow">GET HOME SAFE</span><strong>LAST SHUTTLE 02:10</strong><p>Feichten → Landeck · supported by ZERO</p></div><span class="pill acid">ROUTE</span></div>
+  </main>
+  <div class="sticky-actions"><button class="btn acid">OPEN VENUE MAP</button><button class="btn dark">PROGRAM</button><button class="btn dark">↗</button></div>
+</section>
+
+<!-- MOBILE 4 -->
+<section class="screen mobile m4" data-device="mobile" data-state="3" data-name="Social Input / Drop">
+  <header class="m4-header"><div><div class="eyebrow">COMMUNITY INPUT</div><h1 class="huge">DROP IT</h1></div><div class="round-btn">×</div></header>
+  <div class="progress-head"><div style="display:flex;justify-content:space-between"><span class="micro">SHARED FROM INSTAGRAM</span><span class="micro" style="color:var(--acid)">2 / 3</span></div><div class="progress-steps"><span class="done"></span><span class="done"></span><span></span></div></div>
+  <article class="social-source"><div class="social-source-top"><div class="avatar"></div><div><strong style="font-size:11px">@axamer.crews</strong><div class="micro">ORIGINAL POST</div></div><span class="pill ghost" style="margin-left:auto">VIEW ↗</span></div><div class="poster-visual"></div><div class="source-caption">AXAMER AFTER DARK ⚡ Cash for tricks, music, night lines. Saturday 24 October. Registration in bio.</div></article>
+  <section class="extract-card"><div class="extract-title"><strong>WE FOUND THIS</strong><span class="pill acid">94% MATCH</span></div><div class="extract-grid"><div class="detected"><span>EVENT</span><strong>Axamer After Dark</strong></div><div class="detected"><span>DATE</span><strong>24 OCT · 18:00</strong></div><div class="detected"><span>PLACE</span><strong>Axamer Lizum</strong></div><div class="detected"><span>TYPE</span><strong>Rail Jam + Party</strong></div></div></section>
+  <div class="dedupe"><span class="pill cyan">NO DUPLICATE</span><div><b>Looks new</b><br><span>3 similar events checked</span></div></div>
+  <div class="m4-cta"><button class="btn dark">EDIT</button><button class="btn acid">SUBMIT TO RADAR</button></div>
+</section>
+
+<!-- MOBILE 5 -->
+<section class="screen mobile m5" data-device="mobile" data-state="4" data-name="Media Kit / Output">
+  <header class="m5-header"><div><div class="eyebrow">ORGANIZER STUDIO</div><h1 class="huge">MEDIA KIT</h1></div><span class="pill acid">READY</span></header>
+  <div class="output-tabs"><span class="chip active">STORY</span><span class="chip">FEED</span><span class="chip">REEL</span></div>
+  <div class="preview-carousel"><article class="media-card story"><div class="media-art"></div><div class="media-copy"><div class="top"><div class="wordmark" style="font-size:15px">SHRED<span class="slash">//</span>RADAR</div><span class="pill acid">OPEN</span></div><div><div class="date">10–11 OCT · KAUNERTAL</div><h2 class="huge">OPENING<br>WEEKEND</h2><div class="micro" style="color:#fff">RAIL JAM · TESTIVAL · PARTY</div></div><div class="sponsor"><span>SUPPORTED BY</span><b>ZERO//</b></div></div></article><article class="media-card feed"><div class="media-art"></div><div class="media-copy"><div class="top"><span class="pill orange">JUST DROPPED</span></div><div><h2 class="huge" style="font-size:28px">KAUNERTAL<br>OPENING</h2><div class="date">10–11 OCT</div></div></div></article></div>
+  <div class="publish-list"><div class="publish-row"><div class="channel"><span class="channel-icon">IG</span>Instagram Story</div><span class="status-dot ready">READY</span></div><div class="publish-row"><div class="channel"><span class="channel-icon">FB</span>Facebook</div><span class="status-dot">SAT · 10:00</span></div><div class="publish-row"><div class="channel"><span class="channel-icon">TT</span>TikTok Draft</div><span class="status-dot">REVIEW</span></div></div>
+  <div class="sticky-actions"><button class="btn dark">EDIT</button><button class="btn acid">APPROVE & SCHEDULE</button></div>
+</section>
+
+<!-- DESKTOP 1 -->
+<section class="screen desktop d1" data-device="desktop" data-state="0" data-name="Radar / Split View">
+  <header class="desktop-topbar"><div class="wordmark">SHRED<span class="slash">//</span>RADAR</div><nav class="desk-nav"><span class="active">DISCOVER</span><span>MAP</span><span>RESORTS</span><span>SCENE</span></nav><div class="desk-actions"><div class="search"><span class="glass"></span><span>Event, Ort oder Skigebiet</span></div><button class="btn acid">＋ DROP EVENT</button><div class="round-btn">BK</div></div></header>
+  <div class="desktop-layout"><aside class="side-list"><div class="section-head"><div class="eyebrow">TIROL · 10–11 OCT 2026</div><h1 class="huge">THIS<br>WEEKEND</h1><div class="sub"><span>7 EVENTS · 4 OPEN TO RIDE</span><span>MAP SYNC ON</span></div></div><div class="desk-filter-row"><span class="chip active">ALL</span><span class="chip">RIDE</span><span class="chip">PARTY</span><span class="chip">≤ 90 MIN</span></div><div class="desk-event-list"><article class="desk-event-row active"><div class="desk-thumb poster-visual"></div><div><span class="pill acid">OPEN</span><h3>Kaunertal Opening</h3><p>SA 10 OCT · 1H 16M · FREE</p></div><div class="arrow">→</div></article><article class="desk-event-row"><div class="desk-thumb" style="background:linear-gradient(145deg,#202326,#5c6466 50%,#ff5b2e 51%,#101112)"></div><div><span class="pill orange">PARTY</span><h3>Axamer After Dark</h3><p>SA 24 OCT · 31 MIN · €12</p></div><div class="arrow">→</div></article><article class="desk-event-row"><div class="desk-thumb" style="background:linear-gradient(135deg,#202326,#586164 42%,#5edcff 43% 48%,#111 49%)"></div><div><span class="pill cyan">GROMS</span><h3>Stubai Rookie Day</h3><p>SO 11 OCT · 52 MIN · FREE</p></div><div class="arrow">→</div></article></div><div class="desk-sponsor"><div><span class="micro">WEEKEND RADAR PARTNER</span><strong>RIDES, NOT BANNERS.</strong></div><div class="logo-box">ZERO//</div></div></aside>
+    <main class="side-map"><div class="map"><svg viewBox="0 0 1010 952" aria-hidden="true"><g fill="none" stroke="#30373a" stroke-width="2" opacity=".82"><path d="M-40 130 C170 25,310 154,500 80 S795 48,1070 145"/><path d="M-20 188 C165 80,315 204,500 133 S800 111,1070 207"/><path d="M-10 270 C170 160,320 290,510 208 S810 194,1070 289"/><path d="M-10 390 C190 280,322 407,512 329 S800 316,1080 410"/><path d="M-10 510 C171 408,320 529,510 452 S808 445,1070 533"/><path d="M-10 646 C174 537,315 662,507 584 S808 571,1070 672"/><path d="M-20 780 C160 676,318 801,510 721 S812 713,1075 810"/></g><path d="M-40 580 C110 482,238 536,330 448 C440 340,582 404,706 322 C810 253,900 278,1060 196" fill="none" stroke="#475257" stroke-width="7"/><path d="M0 806 C141 714,256 735,390 705 C550 668,684 709,820 650 C911 611,991 616,1060 578" fill="none" stroke="#232a2e" stroke-width="31" opacity=".62"/></svg><div class="shade"></div><div class="map-label strong i1">INNSBRUCK</div><div class="map-label i2">STUBAI</div><div class="map-label i3">AXAMER LIZUM</div><div class="map-label i4">KAUNERTAL</div><div class="map-marker a acid"><span>★</span></div><div class="map-marker b orange"><span></span></div><div class="map-marker c"><span></span></div><div class="map-marker d"><span></span></div><div class="map-cluster">3</div><article class="map-event-pop"><div class="mini-hero poster-visual"></div><div class="mini-content"><span class="pill acid">OPEN TO RIDE</span><h4>Kaunertal Opening</h4><p><span>10–11 OCT</span><span>1H 16M →</span></p></div></article><div class="map-controls"><span class="chip active">EVENTS</span><span class="chip">LIFTS</span><span class="chip">TERRAIN</span><div class="map-zoom"><button>＋</button><button>−</button></div></div><div class="map-legend"><div><span class="legend-dot"></span> EVENT</div><div><span class="legend-line white"></span> LIFT</div><div><span class="legend-line"></span> ACCESS</div></div></div></main>
+  </div>
+</section>
+
+<!-- DESKTOP 2 -->
+<section class="screen desktop d2" data-device="desktop" data-state="1" data-name="Eventprofil / Route">
+  <header class="desktop-topbar"><div class="wordmark">SHRED<span class="slash">//</span>RADAR</div><nav class="desk-nav"><span>DISCOVER</span><span class="active">EVENT</span><span>KAUNERTAL</span></nav><div class="desk-actions"><button class="btn dark">♡ SAVE</button><button class="btn dark">↗ SHARE</button></div></header>
+  <div class="event-page-grid"><section class="event-page-left"><div class="event-page-hero"><div class="poster-visual"></div><div class="copy"><div><span class="pill acid">REGISTRATION OPEN</span> <span class="pill">OPEN TO RIDE</span></div><h1 class="huge">KAUNERTAL<br>OPENING</h1><div class="icon-label"><span class="dot"></span><span>10–11 OCT 2026 · SNOWPARK KAUNERTAL</span></div><div class="event-action-row"><button class="btn acid">REGISTER ↗</button><button class="btn dark">ADD TO CALENDAR</button></div></div></div><div class="event-body-grid"><div><h2>NEED TO KNOW</h2><div class="info-line"><span>FORMAT</span><b>Rail Jam · Testival · Open Session</b></div><div class="info-line"><span>ENTRY</span><b>Free · Lift pass required</b></div><div class="info-line"><span>LEVEL</span><b>Open / Advanced · Groms welcome</b></div><div class="info-line"><span>CHECK-IN</span><b>Base Area · 08:30–10:30</b></div><div class="info-line"><span>STATUS</span><b style="color:var(--acid)">Organizer confirmed 2h ago</b></div></div><div class="schedule-mini"><h2>PROGRAM</h2><div class="srow"><time>09:00</time><strong>Lift opens</strong></div><div class="srow"><time>11:00</time><strong>Open training</strong></div><div class="srow"><time>14:30</time><strong>Pro finals</strong></div><div class="srow"><time>22:00</time><strong>Afterparty</strong></div></div></div></section><aside class="event-page-right"><div class="map"><svg viewBox="0 0 634 522" aria-hidden="true"><g fill="none" stroke="#30373a" stroke-width="1.5"><path d="M-20 70 C110 15,210 92,333 44 S510 34,660 92"/><path d="M-20 115 C110 61,221 138,329 87 S511 78,660 139"/><path d="M-20 176 C118 121,213 196,335 148 S513 139,660 198"/><path d="M-20 254 C111 199,221 274,337 228 S518 220,660 276"/><path d="M-20 340 C110 287,216 360,330 314 S517 309,660 364"/><path d="M-20 428 C112 371,220 452,334 401 S514 402,660 450"/></g><path d="M-10 430 C100 390,181 389,262 332 C348 271,422 282,650 166" fill="none" stroke="#465156" stroke-width="5"/></svg><div class="shade"></div><div class="map-label strong i1">ARRIVAL / PARKING</div><div class="map-label i2">EVENT VENUE</div><div class="map-marker a acid"><span>★</span></div><div class="map-marker b"><span></span></div><div class="lift-line l1"></div><div class="access-line a1"></div><div class="map-controls"><button class="btn acid">GOOGLE ROUTE ↗</button></div></div><div class="route-panel"><div class="eyebrow">RIDE-IN CHAIN</div><h2>FROM CAR TO PARK</h2><div class="route-step"><div class="num">1</div><div><strong>Gletscherbahn parking</strong><br><span>NAVIGATION TARGET</span></div><b>00:00</b></div><div class="route-step"><div class="num">2</div><div><strong>Gondola to Mittelberg</strong><br><span>LIFT G1</span></div><b>+12 MIN</b></div><div class="route-step"><div class="num">3</div><div><strong>Nörderberg chair</strong><br><span>LIFT C4</span></div><b>+19 MIN</b></div><div class="route-step"><div class="num">4</div><div><strong>Traverse to Main Park</strong><br><span>FOLLOW ACID LINE</span></div><b>+27 MIN</b></div><div class="partner-strip"><div><span class="micro">FREE ENTRY MADE POSSIBLE BY</span><strong>ZERO// COMMUNITY FUND</strong></div><em>PROOF READY</em></div></div></aside></div>
+</section>
+
+<!-- DESKTOP 3 -->
+<section class="screen desktop d3" data-device="desktop" data-state="2" data-name="Social Inbox / Moderation">
+  <header class="desktop-topbar"><div class="wordmark">SHRED<span class="slash">//</span>OPS</div><nav class="desk-nav"><span class="active">INBOX</span><span>EVENTS</span><span>MAP DATA</span><span>SOCIAL</span><span>SPONSORS</span></nav><div class="desk-actions"><span class="pill acid">6 NEW</span><div class="round-btn">BK</div></div></header>
+  <div class="admin-shell"><aside class="admin-col"><div class="admin-head"><h2>SOCIAL INBOX</h2><span class="micro">18 ITEMS</span></div><div class="inbox-filter"><span class="chip active">NEW 6</span><span class="chip">DM</span><span class="chip">MENTION</span></div><div class="inbox-item active"><div class="avatar"></div><div><h4>@axamer.crews</h4><p>Shared a post · Rail Jam + Party</p></div><time>4m</time></div><div class="inbox-item"><div class="channel-icon">IG</div><div><h4>@stubai.zoo</h4><p>Mentioned @shred.tirol</p></div><time>17m</time></div><div class="inbox-item"><div class="channel-icon">↗</div><div><h4>Share Target</h4><p>Snowpark opening poster</p></div><time>31m</time></div><div class="inbox-item"><div class="channel-icon">TT</div><div><h4>TikTok link</h4><p>Possible event · Mayrhofen</p></div><time>1h</time></div></aside>
+    <section class="admin-col"><div class="admin-head"><div><span class="eyebrow">SOURCE INSPECT</span><h2>INSTAGRAM DM</h2></div><span class="pill acid">EXTRACTED</span></div><div class="source-inspect"><div class="source-phone"><article class="social-source"><div class="social-source-top"><div class="avatar"></div><div><strong style="font-size:11px">@axamer.crews</strong><div class="micro">ORIGINAL POST</div></div><span class="pill ghost" style="margin-left:auto">OPEN ↗</span></div><div class="poster-visual"></div><div class="source-caption"><b>AXAMER AFTER DARK ⚡</b><br>Cash for tricks, music, night lines. Saturday 24 October. Registration in bio.</div></article></div><div class="extract-log"><div class="eyebrow">FIELD CONFIDENCE</div><h3>PARSED EVENT</h3><div class="confidence-row"><label>TITLE</label><div><strong>Axamer After Dark</strong><div class="confidence"><i style="width:99%"></i></div></div><b>99%</b></div><div class="confidence-row"><label>DATE</label><div><strong>24 Oct · 18:00</strong><div class="confidence"><i style="width:96%"></i></div></div><b>96%</b></div><div class="confidence-row"><label>RESORT</label><div><strong>Axamer Lizum</strong><div class="confidence"><i style="width:94%"></i></div></div><b>94%</b></div><div class="confidence-row"><label>FORMAT</label><div><strong>Rail Jam + Party</strong><div class="confidence"><i style="width:88%"></i></div></div><b>88%</b></div><div class="confidence-row"><label>REGISTRATION</label><div><strong>Link in bio</strong><div class="confidence"><i style="width:71%"></i></div></div><b>71%</b></div></div></div></section>
+    <aside class="admin-col"><div class="admin-head"><div><span class="eyebrow">CANONICAL CANDIDATE</span><h2>NEW EVENT</h2></div><span class="pill cyan">NO DUPLICATE</span></div><div class="candidate-panel"><h3>REVIEW 5 FIELDS</h3><div class="field-box"><label><span>EVENT NAME</span><span>INSTAGRAM</span></label><div class="field-value changed">Axamer After Dark</div></div><div class="field-box"><label><span>DATE / TIME</span><span>INSTAGRAM</span></label><div class="field-value changed">24 October 2026 · 18:00–01:30</div></div><div class="field-box"><label><span>LOCATION</span><span>GEOCODED</span></label><div class="field-value">Axamer Lizum · Base Area</div></div><div class="field-box"><label><span>TYPE</span><span>MODEL SUGGESTION</span></label><div class="field-value">Rail Jam · Cash for Tricks · Party</div></div><div class="field-box"><label><span>MEDIA RIGHTS</span><span>DEFAULT</span></label><div class="field-value">Source only — generate own poster</div></div><div class="dedupe"><span class="pill cyan">CHECKED</span><div><b>3 nearby events</b><br><span>No title/date collision</span></div></div></div><div class="candidate-actions"><button class="btn dark">ASK 1 QUESTION</button><button class="btn acid">CREATE EVENT</button></div></aside></div>
+</section>
+
+<!-- DESKTOP 4 -->
+<section class="screen desktop d4" data-device="desktop" data-state="3" data-name="Geo Editor / Event Ops">
+  <header class="desktop-topbar"><div class="wordmark">SHRED<span class="slash">//</span>OPS</div><nav class="desk-nav"><span>INBOX</span><span class="active">EVENT EDITOR</span><span>MAP DATA</span><span>SOURCES</span></nav><div class="desk-actions"><span class="pill acid">AUTO-SAVED</span><button class="btn acid">PUBLISH</button></div></header>
+  <div class="admin-shell"><section class="geo-stage"><div class="map"><svg viewBox="0 0 1050 665" aria-hidden="true"><g fill="none" stroke="#30373a" stroke-width="1.6"><path d="M-20 85 C170 20,330 122,514 60 S800 48,1090 125"/><path d="M-20 142 C170 80,327 178,516 116 S806 109,1090 184"/><path d="M-20 220 C175 157,330 255,512 194 S800 188,1090 263"/><path d="M-20 322 C170 255,330 360,515 294 S800 287,1090 365"/><path d="M-20 432 C180 370,329 469,515 407 S807 399,1090 477"/><path d="M-20 548 C170 481,331 585,515 520 S800 516,1090 592"/></g><path d="M20 550 C190 487,290 509,404 420 C523 327,675 351,1060 183" fill="none" stroke="#465156" stroke-width="6"/></svg><div class="shade"></div><div class="map-label strong i1">ARRIVAL / TALSTATION</div><div class="map-label i2">MAIN PARK / VENUE</div><div class="map-marker a acid"><span>★</span></div><div class="map-marker b"><span></span></div><div class="lift-line l1"></div><div class="access-line a1"></div><div class="access-line a2"></div><div class="geo-tag arrival">1 · ARRIVAL</div><div class="geo-tag venue">3 · EVENT VENUE</div><div class="geo-tag party">4 · AFTERPARTY SHUTTLE</div></div><div class="geo-tools"><button class="geo-tool">⌖</button><button class="geo-tool active">↗</button><button class="geo-tool">＋</button><button class="geo-tool">◇</button><button class="geo-tool">↶</button></div><div class="sessions-strip"><div class="title"><div><span class="eyebrow">EVENT SESSIONS</span><h3>MOUNTAIN → PARTY</h3></div><button class="btn dark">＋ ADD SESSION</button></div><div class="session-cards"><article class="session-card"><time>09:00 · MOUNTAIN</time><strong>Open training</strong><span>Main Park · Lift C4</span></article><article class="session-card"><time>14:30 · MOUNTAIN</time><strong>Pro finals</strong><span>Main Park · Live</span></article><article class="session-card"><time>18:00 · VALLEY</time><strong>Movie premiere</strong><span>Feichten Cinema</span></article><article class="session-card"><time>22:00 · PARTY</time><strong>Afterparty</strong><span>Club 420 · Shuttle</span></article></div></div></section><aside class="editor-panel"><div class="admin-head"><div><span class="eyebrow">EVENT EDITOR</span><h2>KAUNERTAL OPENING</h2></div><span class="pill ghost">PREVIEW ↗</span></div><div class="editor-content"><div class="source-health"><div class="top"><strong>SOURCE PULSE</strong><span class="pill acid">HEALTHY</span></div><p>Organizer confirmed · Registration link OK · 2 sources agree</p></div><div class="editor-group"><h4>Core details</h4><div class="form-row"><div class="input full">Kaunertal Opening 2026</div><div class="input">10 Oct · 09:00</div><div class="input">11 Oct · 02:00</div><div class="input full">Snowpark Kaunertal</div></div></div><div class="editor-group"><h4>Ride-in chain</h4><div class="form-row"><div class="input full">Arrival · Gletscherbahn parking</div><div class="input full">Gondola G1 → Chair C4 → Traverse</div><div class="input full" style="border-color:var(--acid)">Event venue · Main Park</div></div></div><div class="editor-group"><h4>Registration</h4><div class="form-row"><div class="input full">https://register.example/opening</div><div class="input">Free</div><div class="input">Open to ride</div></div></div><div class="editor-group"><h4>Sponsorship</h4><div class="form-row"><div class="input full">ZERO// Community Fund</div><div class="input">Free Entry</div><div class="input">Weekend Radar</div></div></div></div><div class="editor-footer"><button class="btn dark">SAVE DRAFT</button><button class="btn acid">PUBLISH CHANGES</button></div></aside></div>
+</section>
+
+<!-- DESKTOP 5 -->
+<section class="screen desktop d5" data-device="desktop" data-state="4" data-name="Social Studio / Output">
+  <header class="desktop-topbar"><div class="wordmark">SHRED<span class="slash">//</span>OPS</div><nav class="desk-nav"><span>INBOX</span><span>EVENTS</span><span class="active">SOCIAL STUDIO</span><span>SPONSORS</span></nav><div class="desk-actions"><span class="pill acid">3 READY</span><button class="btn dark">CONTENT QUEUE</button></div></header>
+  <div class="admin-shell"><aside class="admin-col"><div class="admin-head"><h2>QUEUE</h2><span class="micro">THIS WEEK</span></div><div class="queue-list"><div class="queue-date">FRI · 21 AUG</div><article class="queue-item active"><div class="qthumb"></div><div><h4>Kaunertal Opening</h4><p>Announcement · 4 channels</p></div><time>18:00</time></article><article class="queue-item"><div class="qthumb" style="filter:hue-rotate(125deg)"></div><div><h4>Weekend Radar</h4><p>Carousel · 7 events</p></div><time>20:00</time></article><div class="queue-date">SAT · 22 AUG</div><article class="queue-item"><div class="qthumb" style="filter:hue-rotate(230deg)"></div><div><h4>Axamer After Dark</h4><p>TikTok draft · review</p></div><time>10:00</time></article></div></aside><main class="studio-canvas"><div class="studio-title"><div><span class="eyebrow">AUTO-GENERATED FROM EVENT</span><h2>KAUNERTAL OPENING</h2></div><div class="chip-row"><span class="chip active">4:5 FEED</span><span class="chip">9:16 STORY</span><span class="chip">REEL</span></div></div><div class="media-grid"><article class="big-feed"><div class="media-art"></div><div class="media-copy"><div class="top"><div class="wordmark" style="font-size:20px">SHRED<span class="slash">//</span>RADAR</div><span class="pill acid">OPEN TO RIDE</span></div><div><div class="date">10–11 OCT · KAUNERTAL</div><h2 class="huge">OPENING<br>WEEKEND</h2><div class="micro" style="color:#fff;font-size:11px">RAIL JAM · TESTIVAL · MOVIE · PARTY</div></div><div class="sponsor"><span>FREE ENTRY MADE POSSIBLE BY</span><b>ZERO//</b></div></div></article><article class="big-story"><div class="media-art"></div><div class="media-copy"><div class="top"><span class="pill orange">JUST DROPPED</span></div><div><div class="date">10–11 OCT</div><h2 class="huge">KAUNERTAL<br>OPENING</h2><div class="micro" style="color:#fff">REGISTER ON SHRED//RADAR</div></div><div class="sponsor"><span>SUPPORTED BY</span><b>ZERO//</b></div></div></article></div></main><aside class="admin-col"><div class="admin-head"><div><span class="eyebrow">DELIVERY</span><h2>PUBLISH</h2></div><span class="pill acid">READY</span></div><div class="channel-panel"><h3>4 CHANNELS</h3><div class="channel-check"><div class="left"><span class="channel-icon">IG</span>Instagram Feed</div><span class="check">✓</span></div><div class="channel-check"><div class="left"><span class="channel-icon">FB</span>Facebook Page</div><span class="check">✓</span></div><div class="channel-check"><div class="left"><span class="channel-icon">TH</span>Threads</div><span class="check">✓</span></div><div class="channel-check"><div class="left"><span class="channel-icon">TT</span>TikTok Draft</div><span class="check">✓</span></div><div class="publish-setting"><div class="label"><span>SCHEDULE</span><span class="toggle on"></span></div><div class="field-value">Friday · 21 Aug · 18:00</div></div><div class="publish-setting"><div class="label"><span>AUTO-CANCEL ON EVENT CHANGE</span><span class="toggle on"></span></div></div><div class="publish-setting"><div class="label"><span>TRACK EVENT ACTIONS</span><span class="toggle on"></span></div><div class="micro">REGISTRATION · ROUTE · SAVE · SHARE</div></div><div class="sponsor-lock"><div class="top"><strong>SPONSOR LOCKUP</strong><span class="pill acid">VALID</span></div><p>ZERO// · Free Entry Partner · 10–11 Oct · all social surfaces</p></div></div><div class="channel-actions"><button class="btn dark">SAVE DRAFT</button><button class="btn acid">APPROVE & SCHEDULE</button></div></aside></div>
+</section>
+
+  </div></div>
+</div>
+<script>
+const names={mobile:["Radar / Karte","Event ausgewählt","Event Day / Party","Social Input / Drop","Media Kit / Output"],desktop:["Radar / Split View","Eventprofil / Route","Social Inbox / Moderation","Geo Editor / Event Ops","Social Studio / Output"]};
+const params=new URLSearchParams(location.search);let device=params.get('device')||'mobile';let state=Math.max(0,Math.min(4,Number(params.get('state')||0)));
+const exportMode=params.get('export')==='1';if(exportMode)document.body.classList.add('export');
+const screens=[...document.querySelectorAll('.screen')],tabs=document.getElementById('stateTabs'),wrap=document.getElementById('frameWrap');
+function renderTabs(){tabs.innerHTML='';names[device].forEach((n,i)=>{const b=document.createElement('button');b.textContent=`${i+1}. ${n}`;b.className=i===state?'active':'';b.onclick=()=>{state=i;render()};tabs.appendChild(b)})}
+function fit(){if(exportMode)return;const active=document.querySelector('.screen.active');if(!active)return;const pad=32;const rect=document.querySelector('.stage').getBoundingClientRect();const s=Math.min((rect.width-pad)/active.offsetWidth,(rect.height-pad)/active.offsetHeight,1);wrap.style.transform=`scale(${s})`;}
+function render(){screens.forEach(s=>s.classList.toggle('active',s.dataset.device===device&&Number(s.dataset.state)===state));document.getElementById('mobileToggle').classList.toggle('active',device==='mobile');document.getElementById('desktopToggle').classList.toggle('active',device==='desktop');renderTabs();requestAnimationFrame(fit)}
+document.getElementById('mobileToggle').onclick=()=>{device='mobile';state=0;render()};document.getElementById('desktopToggle').onclick=()=>{device='desktop';state=0;render()};
+window.addEventListener('resize',fit);window.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){state=(state+1)%5;render()}if(e.key==='ArrowLeft'){state=(state+4)%5;render()}if(e.key.toLowerCase()==='m'){device='mobile';state=0;render()}if(e.key.toLowerCase()==='d'){device='desktop';state=0;render()}});render();
+</script>
+</body>
+</html>
