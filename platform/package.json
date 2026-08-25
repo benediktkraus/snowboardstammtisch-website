@@ -1,0 +1,16 @@
+{
+  "name": "stammtisch-platform",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "config": "node scripts/render-wrangler.mjs",
+    "dev": "npm run config && npx --yes wrangler@4 dev --config .wrangler.generated.toml",
+    "deploy": "npm run config && npx --yes wrangler@4 deploy --config .wrangler.generated.toml",
+    "db:local": "npm run config && npx --yes wrangler@4 d1 migrations apply stammtisch-platform --local --config .wrangler.generated.toml && npx --yes wrangler@4 d1 execute stammtisch-platform --local --file seed.example.sql --config .wrangler.generated.toml",
+    "db:remote": "npm run config && npx --yes wrangler@4 d1 migrations apply stammtisch-platform --remote --config .wrangler.generated.toml"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
