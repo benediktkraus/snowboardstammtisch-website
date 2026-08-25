@@ -100,13 +100,16 @@ test("normalizes hostnames before tenant lookup", () => {
 test("renders the platform subdomain from site data with custom-domain canonical", async () => {
   const handler = createHandler({ repositoryFactory: repositoryFor(makeSite()), now: fixedNow });
   const response = await handler.fetch(new Request("https://innsbruck.stammtisch.test/"), {
-    ASSET_ORIGIN: "https://assets.example"
+    ASSET_ORIGIN: "https://fallback-assets.example"
   });
   const html = await response.text();
+  const csp = response.headers.get("content-security-policy");
 
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type"), /text\/html/);
-  assert.match(response.headers.get("content-security-policy"), /frame-ancestors 'none'/);
+  assert.match(csp, /frame-ancestors 'none'/);
+  assert.match(csp, /https:\/\/assets\.example/);
+  assert.match(csp, /https:\/\/fallback-assets\.example/);
   assert.match(html, /Snowboard Stammtisch Innsbruck/);
   assert.match(html, /Saison <span>2026\/27<\/span>/);
   assert.match(html, /NOCH 23 TAGE/);

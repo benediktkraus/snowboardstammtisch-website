@@ -39,10 +39,28 @@ function canonicalRedirect(site, requestUrl) {
   return responseRedirect(absoluteUrl(site.primaryHostname, `${requestUrl.pathname}${requestUrl.search}`));
 }
 
-function securityHeaders(env) {
-  const assetOrigin = String(env.ASSET_ORIGIN || "").replace(/\/$/, "");
+function cspOrigin(value) {
+  if (!value) return "";
+  try {
+    const url = new URL(String(value));
+    return ["https:", "http:"].includes(url.protocol) ? url.origin : "";
+  } catch {
+    return "";
+  }
+}
+
+function securityHeaders(env, site = null) {
+  const assetOrigins = new Set([
+    cspOrigin(env.ASSET_ORIGIN),
+    cspOrigin(site?.assetOrigin)
+  ].filter(Boolean));
   const imageSources = ["'self'", "data:", "https:"].join(" ");
-  const styleSources = ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", assetOrigin].filter(Boolean).join(" ");
+  const styleSources = [
+    "'self'",
+    "'unsafe-inline'",
+    "https://fonts.googleapis.com",
+    ...assetOrigins
+  ].join(" ");
   return {
     "content-security-policy": `default-src 'self'; img-src ${imageSources}; style-src ${styleSources}; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`,
     "permissions-policy": "camera=(), microphone=(), geolocation=()",
@@ -121,11 +139,11 @@ export function createHandler({ repositoryFactory = createD1Repository, now = ()
       }
 
       if (url.pathname !== "/") {
-        return responseHtml(renderUnknownDomain(hostname), 404, securityHeaders(env));
+        return responseHtml(renderUnknownDomain(hostname), 404, securityHeaders(env, site));
       }
 
       const html = renderCrewPage(site, url, now());
-      const response = responseHtml(html, 200, securityHeaders(env));
+      const response = responseHtml(html, 200, securityHeaders(env, site));
       if (ctx?.waitUntil && env?.CACHE_PURGE_PROMISE) ctx.waitUntil(env.CACHE_PURGE_PROMISE);
       return response;
     }

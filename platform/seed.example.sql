@@ -1,7 +1,7 @@
 -- Safe example data for local development. Replace the .test/.example hostnames
 -- with the real platform subdomain and customer domain before production deploy.
 
-INSERT OR REPLACE INTO sites (
+INSERT INTO sites (
   id, slug, name, short_name, status, locale, timezone, season_label,
   started_in_year, intro_json, meta_description, time_label,
   location_name, location_address, location_maps_url,
@@ -28,13 +28,42 @@ INSERT OR REPLACE INTO sites (
   'https://snowboardstammtisch-website.pages.dev',
   'https://snowboardstammtisch-website.pages.dev/impressum.html',
   '{"logo":"Lisa Rasch","website":"Benedikt Kraus"}'
-);
+)
+ON CONFLICT(id) DO UPDATE SET
+  slug = excluded.slug,
+  name = excluded.name,
+  short_name = excluded.short_name,
+  status = excluded.status,
+  locale = excluded.locale,
+  timezone = excluded.timezone,
+  season_label = excluded.season_label,
+  started_in_year = excluded.started_in_year,
+  intro_json = excluded.intro_json,
+  meta_description = excluded.meta_description,
+  time_label = excluded.time_label,
+  location_name = excluded.location_name,
+  location_address = excluded.location_address,
+  location_maps_url = excluded.location_maps_url,
+  whatsapp_url = excluded.whatsapp_url,
+  board_swap_url = excluded.board_swap_url,
+  logo_url = excluded.logo_url,
+  asset_origin = excluded.asset_origin,
+  imprint_url = excluded.imprint_url,
+  credits_json = excluded.credits_json,
+  updated_at = CURRENT_TIMESTAMP;
 
-INSERT OR REPLACE INTO site_domains (
+INSERT INTO site_domains (
   hostname, site_id, kind, status, is_primary, redirect_to_primary, verified_at
 ) VALUES
   ('innsbruck.stammtisch.test', 'innsbruck', 'platform', 'active', 0, 0, CURRENT_TIMESTAMP),
-  ('snowboardstammtisch.example', 'innsbruck', 'custom', 'active', 1, 0, CURRENT_TIMESTAMP);
+  ('snowboardstammtisch.example', 'innsbruck', 'custom', 'active', 1, 0, CURRENT_TIMESTAMP)
+ON CONFLICT(hostname) DO UPDATE SET
+  site_id = excluded.site_id,
+  kind = excluded.kind,
+  status = excluded.status,
+  is_primary = excluded.is_primary,
+  redirect_to_primary = excluded.redirect_to_primary,
+  verified_at = excluded.verified_at;
 
 INSERT OR IGNORE INTO events (site_id, starts_on, starts_at, title, status) VALUES
   ('innsbruck', '2025-11-20', '20:00', 'Snowboard Stammtisch Innsbruck', 'scheduled'),
