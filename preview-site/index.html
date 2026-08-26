@@ -226,23 +226,26 @@ h1,h2,h3,.sheet-title,.event-card h3,.desk-event-row h3,.map-event-pop h4{font-f
   radial-gradient(circle,#171411 0 1px,transparent 1.2px) 0 0/5px 5px,
   linear-gradient(151deg,#171411 0 35%,var(--orange) 35% 50%,var(--paper) 50% 54%,#6a6459 54% 65%,#181512 65% 100%)}
 
-/* The mountain map becomes a screenprinted zine map */
+/* Bright winter-atlas map: practical first, zine accents second */
 .map{background:
-  radial-gradient(circle at 80% 15%,rgba(243,235,0,.15) 0 1px,transparent 1.3px) 0 0/7px 7px,
-  linear-gradient(145deg,#1a1814,#0e0d0b 62%)}
-.map:before{content:"";position:absolute;inset:auto -8% -13% 30%;height:42%;background:var(--paper);opacity:.06;transform:rotate(-9deg);clip-path:polygon(0 34%,18% 24%,34% 40%,48% 15%,61% 31%,79% 5%,100% 25%,100% 100%,0 100%);pointer-events:none}
-.map svg g path{stroke:#665f54!important;stroke-width:1.4!important;stroke-dasharray:2 2}
-.map svg>path{stroke:#bbb09c!important;opacity:.42}
-.map .shade{background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.28))}
-.map-label{font-size:9px;color:#cfc4b1;text-shadow:2px 2px 0 #000;font-weight:900}.map-label.strong{color:var(--acid);font-size:10px}
-.map-marker{border-radius:0;clip-path:polygon(50% 0,61% 24%,85% 15%,76% 39%,100% 50%,76% 61%,85% 85%,61% 76%,50% 100%,39% 76%,15% 85%,24% 61%,0 50%,24% 39%,15% 15%,39% 24%);transform:rotate(-9deg);background:var(--paper);box-shadow:5px 7px 0 rgba(0,0,0,.7)}
-.map-marker:after{display:none}.map-marker.acid{background:var(--acid)}.map-marker.orange{background:var(--orange)}
-.map-marker span{transform:none;font-size:9px}
-.map-cluster{border-radius:1px;background:var(--acid);border:2px solid #111;color:#111;box-shadow:4px 4px 0 var(--orange);transform:rotate(5deg);font-size:12px}
-.lift-line{background:var(--paper);height:2px}.lift-line:after,.lift-line:before{border-color:var(--paper);border-radius:0;transform:rotate(45deg)}
-.access-line{background:var(--orange);height:4px;box-shadow:0 0 0 2px var(--acid)}
-.map-zoom,.map-legend{border-radius:1px;border:1px solid #827866;background:#15130f;box-shadow:3px 3px 0 #000}
-.map-zoom button{background:#15130f}.map-legend{font-weight:900}
+  radial-gradient(circle at 76% 13%,rgba(255,255,255,.96) 0 16%,transparent 39%),
+  linear-gradient(148deg,#f8fbfc 0 36%,#e8f1f4 58%,#dce9ee 100%)}
+.map:before{display:none}
+.map svg{filter:drop-shadow(0 1px 0 rgba(255,255,255,.9))}
+.map svg g path{stroke:#9fb3ba!important;stroke-width:1.35!important;stroke-dasharray:none!important;opacity:.72}
+.map svg>path{stroke:#617b86!important;stroke-width:2!important;opacity:.58}
+.map .shade{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(91,132,148,.09))}
+.map-label{padding:4px 6px;font-size:9px;color:#253b45;text-shadow:none;font-weight:900;background:rgba(255,255,255,.88);border:1px solid rgba(91,123,136,.28);box-shadow:0 2px 7px rgba(42,67,77,.13)}
+.map-label.strong{color:#102c3a;font-size:10px;background:#fff;border-color:#7ca3b2;box-shadow:3px 3px 0 rgba(92,138,155,.22)}
+.map-marker{border-radius:50% 50% 50% 7px;clip-path:none;transform:rotate(-45deg);background:#fff;border:2px solid #173443;box-shadow:0 5px 12px rgba(34,68,83,.28)}
+.map-marker:after{display:block;background:#173443}.map-marker.acid{background:var(--acid)}.map-marker.orange{background:var(--orange)}
+.map-marker span{position:relative;z-index:1;transform:rotate(45deg);font-size:9px}
+.map-cluster{border-radius:50%;background:var(--acid);border:2px solid #173443;color:#173443;box-shadow:0 5px 12px rgba(34,68,83,.28);transform:none;font-size:12px}
+.lift-line{background:#173f59;height:3px;box-shadow:0 0 0 1px rgba(255,255,255,.82)}.lift-line:after,.lift-line:before{border-color:#173f59;background:#fff;border-radius:50%;transform:none}
+.access-line{background:var(--orange);height:4px;box-shadow:0 0 0 2px rgba(255,255,255,.9)}
+.map-zoom,.map-legend{border-radius:8px;border:1px solid #9bb3bd;background:rgba(255,255,255,.94);color:#183542;box-shadow:0 5px 16px rgba(42,67,77,.18)}
+.map-zoom button{background:#fff;color:#183542}.map-zoom button+button{border-color:#bdd0d7}.map-legend{font-weight:900}
+.legend-line{background:var(--orange)}.legend-line.white{background:#173f59}.legend-dot{border:1px solid #173443}
 
 /* Panels and cards: torn paper, ticket stubs, photocopied flyers */
 .sheet{background:var(--paper);color:#171411;border-radius:0;border:2px solid #171411;border-bottom:0;box-shadow:0 -8px 0 var(--orange),0 -24px 60px rgba(0,0,0,.6);clip-path:polygon(0 3%,4% 1%,8% 3%,13% 1%,18% 3%,22% 1%,27% 3%,33% 1%,38% 3%,44% 1%,50% 3%,56% 1%,62% 3%,67% 1%,72% 3%,78% 1%,84% 3%,89% 1%,94% 3%,100% 1%,100% 100%,0 100%)}
